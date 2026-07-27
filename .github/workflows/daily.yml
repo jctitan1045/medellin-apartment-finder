@@ -1,0 +1,49 @@
+name: Daily apartment scan
+
+on:
+  schedule:
+    - cron: "30 12 * * *"   # 12:30 UTC = 07:30 America/Bogotá (Medellín)
+  workflow_dispatch:          # allow manual runs from the Actions tab
+
+permissions:
+  contents: write             # to commit dashboard + seen ledger back
+
+concurrency:
+  group: apartment-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run finder
+        env:
+          TWILIO_ACCOUNT_SID:   ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN:    ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_WHATSAPP_FROM: ${{ secrets.TWILIO_WHATSAPP_FROM }}
+          WHATSAPP_TO:          ${{ secrets.WHATSAPP_TO }}
+          TELEGRAM_BOT_TOKEN:   ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:     ${{ secrets.TELEGRAM_CHAT_ID }}
+          DASHBOARD_URL:        ${{ secrets.DASHBOARD_URL }}
+        run: python run.py
+
+      - name: Commit dashboard + dedup ledger
+        run: |
+          git config user.name  "apartment-finder-bot"
+          git config user.email "actions@github.com"
+          git add docs/ data/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Daily scan: update dashboard + seen ledger [skip ci]"
+            git push
+          fi

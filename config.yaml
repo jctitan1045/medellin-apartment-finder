@@ -1,0 +1,105 @@
+# ===========================================================================
+# Medellín Apartment Finder — configuration
+# Everything Jordan is likely to tune lives here. No code changes needed.
+# ===========================================================================
+
+# ---- HARD FILTERS (deal-breakers) -----------------------------------------
+hard:
+  # Enforced on rent + administración (HOA) combined, in COP.
+  # 5,000,000 ≈ $1,235/mo — raised from 4.5M to catch sub-budget penthouses.
+  max_total_cop: 5000000
+  min_bedrooms: 2
+  min_bathrooms: 2
+  require_unfurnished: true      # drop listings detected as furnished (amoblado)
+  # Listings whose furnished status can't be determined are KEPT and flagged,
+  # never silently dropped.
+  allowed_cities: ["medellin", "envigado"]
+  # Property types to include. Options: apartamento, casa, penthouse.
+  # (penthouse is auto-derived from top-floor apartments.) Studios/offices
+  # that slip into combined listings are dropped by omission here.
+  include_types: ["apartamento", "casa", "penthouse"]
+
+# FX rate only used for display ($ estimate) and the sanity-check ceiling.
+# Updated occasionally; COP cap above is the real enforced limit.
+fx_cop_per_usd: 4050
+
+# ---- TARGET AREAS ---------------------------------------------------------
+# Ciencuadras is scraped city-wide, so listings are matched to an area by
+# these lowercase, accent-stripped tokens found in the neighborhood name.
+# Fincaraíz is scraped per-area URL, so its area is trusted from the source.
+areas:
+  poblado:
+    label: "El Poblado"
+    tokens: ["poblado", "tesoro", "balsos", "castropol", "manila", "astorga",
+             "patio bonito", "san lucas", "lomas", "alejandria", "aguacatala",
+             "villa carlota", "provenza", "lalinde", "linde", "oviedo",
+             "santa maria de los angeles", "los naranjos", "la florida"]
+  laureles:
+    label: "Laureles"
+    tokens: ["laureles", "estadio", "castellana", "conquistadores",
+             "bolivariana", "lorena", "nogal", "florida nueva",
+             "carlos e restrepo", "suramericana", "velodromo", "las acacias"]
+  ciudad_del_rio:
+    label: "Ciudad del Río"
+    tokens: ["ciudad del rio", "barrio colombia"]
+  envigado:
+    label: "Envigado"
+    tokens: ["envigado", "zuniga", "loma del esmeraldal", "el dorado",
+             "la paz", "milan vallejuelos", "jardines", "alcala", "el portal"]
+
+# ---- SCORING (strong preferences) -----------------------------------------
+# Each rule adds points to a 0–100 score. Matched against title + description
+# + amenities (accent-stripped). Booleans from structured data also feed in.
+# Tune weights freely; order doesn't matter.
+scoring:
+  three_plus_bedrooms:   {points: 8,  any: [],  flag: "3+ bedrooms"}
+  balcony_terrace:       {points: 15, any: ["balcon", "terraza", "patio", "outdoor", "azotea"], flag: "Balcony/terrace"}
+  top_floor_penthouse:   {points: 10, any: ["penthouse", "pent house", "ultimo piso", "duplex", "cobertura"], flag: "Penthouse/top floor"}
+  view:                  {points: 8,  any: ["vista", "view", "panoramic", "mirador"], flag: "View"}
+  pool:                  {points: 8,  any: ["piscina", "pool"], flag: "Pool"}
+  steam_sauna:           {points: 8,  any: ["turco", "sauna", "vapor", "steam"], flag: "Turco/sauna"}
+  office:                {points: 8,  any: ["estudio", "oficina", "office", "home office", "cuarto de estudio"], flag: "Office/study"}
+  security_24h:          {points: 6,  any: ["vigilancia", "porteria", "seguridad", "24 horas", "24h", "24/7"], flag: "24h security"}
+  elevator:              {points: 5,  any: ["ascensor", "elevator"], flag: "Elevator"}
+  gym:                   {points: 4,  any: ["gimnasio", "gym"], flag: "Gym"}
+  near_park_nature:      {points: 6,  any: ["parque", "park", "naturaleza", "verde", "bosque", "nature"], flag: "Near park/nature"}
+  natural_light:         {points: 4,  any: ["iluminacion natural", "luz natural", "iluminado", "muy iluminado", "natural light"], flag: "High natural light"}
+  social_event_space:    {points: 6,  any: ["salon social", "zona social", "bbq", "rooftop", "terraza comunal", "salon comunal"], flag: "Social/event space"}
+  quiet:                 {points: 3,  any: ["tranquil", "silencioso", "cerrado", "privado"], flag: "Quiet"}
+  pet_friendly:          {points: 5,  any: ["mascota", "pet friendly", "pet-friendly", "se admiten mascotas", "admite mascotas"], flag: "Pet-friendly"}
+  large_area:            {points: 6,  any: [], flag: "Spacious (120m²+)"}
+
+# ---- SCRAPE SOURCES -------------------------------------------------------
+sources:
+  # All source paths use the combined "casas + apartamentos" listing so houses
+  # and penthouses come back alongside apartments in one query.
+  fincaraiz:
+    enabled: true
+    max_pages_per_area: 4          # ~21 listings/page
+    areas:
+      poblado:        "arriendo/casas-y-apartamentos/el-poblado/suroriente/medellin"
+      ciudad_del_rio: "arriendo/casas-y-apartamentos/ciudad-del-rio/suroriente/medellin"
+      laureles:       "arriendo/casas-y-apartamentos/laureles/occidente/medellin"
+      envigado:       "arriendo/casas-y-apartamentos/envigado/antioquia"
+  ciencuadras:
+    enabled: true
+    max_pages: 6                   # ~20 listings/page, city-wide then token-filtered
+    urls:
+      - "arriendo/casas-apartamentos/medellin"
+      - "arriendo/casas-apartamentos/envigado"
+  metrocuadrado:
+    enabled: true
+    max_pages: 2                   # ~54 listings/page, per-neighborhood
+    areas:
+      poblado:        "casas-apartamentos/arriendo/medellin/el-poblado/"
+      ciudad_del_rio: "casas-apartamentos/arriendo/medellin/ciudad-del-rio/"
+      laureles:       "casas-apartamentos/arriendo/medellin/laureles/"
+      envigado:       "casas-apartamentos/arriendo/envigado/"
+
+# ---- OUTPUT ---------------------------------------------------------------
+output:
+  dashboard_title: "Medellín Apartment Finder"
+  # Only listings scoring at/above this appear in the daily push (dashboard shows all).
+  push_min_score: 0
+  # Cap items in a single push so WhatsApp/Telegram messages stay readable.
+  push_max_items: 15
