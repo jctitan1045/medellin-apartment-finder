@@ -72,6 +72,14 @@ def _to_listing(raw: dict, area_hint: str) -> Listing | None:
     neigh = _name(raw.get("mnombrecomunbarrio")) or _name(raw.get("mbarrio"))
     desc = raw.get("comment", "") or ""
 
+    # gallery: mgaleriainmueble is a list of photo ids -> CDN url pattern
+    photo_ids = raw.get("mgaleriainmueble") or []
+    gallery = [f"https://multimedia.metrocuadrado.com/{sid}/{pid}_p.jpg"
+               for pid in photo_ids if pid][:12]
+    primary = raw.get("imageLink", "") or (gallery[0] if gallery else "")
+    if primary and primary not in gallery:
+        gallery = [primary] + gallery
+
     return Listing(
         source="metrocuadrado",
         source_id=sid,
@@ -90,7 +98,8 @@ def _to_listing(raw: dict, area_hint: str) -> Listing | None:
         stratum=parse_int(raw.get("estrato")),
         garages=parse_int(raw.get("mnrogarajes")),
         description=desc,
-        image=raw.get("imageLink", "") or "",
+        image=primary,
+        images=gallery[:12],
     )
 
 

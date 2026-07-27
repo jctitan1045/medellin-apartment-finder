@@ -65,6 +65,7 @@ def _list_to_listing(raw: dict) -> Listing | None:
         area_m2=parse_area(raw.get("area")),
         garages=parse_int(raw.get("garages")),
         image=raw.get("image", "") or "",
+        images=[raw["image"]] if raw.get("image") else [],   # replaced by gallery on enrich
         created_at=str(raw.get("createdAt", "") or ""),
     )
 
@@ -110,6 +111,12 @@ def _enrich(listing: Listing) -> None:
     if g.get("view"):
         amen.append("Vista")
     listing.amenities = amen
+
+    gallery = [p.get("url") for p in ((detail.get("galleryData") or {}).get("flatPhotos") or [])
+               if p.get("url")]
+    if gallery:
+        listing.images = gallery[:12]
+        listing.image = listing.image or gallery[0]
 
 
 def scrape(cfg: dict, hard: dict, areas_cfg: dict, match_area) -> list[Listing]:

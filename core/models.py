@@ -51,7 +51,8 @@ class Listing:
     description: str = ""
     lat: Optional[float] = None
     lng: Optional[float] = None
-    image: str = ""
+    image: str = ""                   # primary photo (kept for back-compat)
+    images: list = field(default_factory=list)   # full gallery, first = primary
     created_at: str = ""
     updated_at: str = ""
 

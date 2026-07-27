@@ -65,6 +65,12 @@ def _to_listing(raw: dict, area_key: str) -> Listing | None:
         link = raw.get("link") or ""
         url = link if link.startswith("http") else BASE + link
 
+        img = raw.get("img", "") or ""
+        gallery = [i.get("image") for i in (raw.get("images") or []) if i.get("image")]
+        if not gallery and img:
+            gallery = [img]
+        gallery = gallery[:12]
+
         return Listing(
             source="fincaraiz",
             source_id=sid,
@@ -93,7 +99,8 @@ def _to_listing(raw: dict, area_key: str) -> Listing | None:
             description=raw.get("description", "") or "",
             lat=raw.get("latitude"),
             lng=raw.get("longitude"),
-            image=raw.get("img", "") or "",
+            image=img,
+            images=gallery,
             created_at=raw.get("created_at", "") or "",
             updated_at=raw.get("updated_at", "") or "",
         )

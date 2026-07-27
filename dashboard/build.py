@@ -76,7 +76,15 @@ _TEMPLATE = r"""<!DOCTYPE html>
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;
         box-shadow:var(--shadow);display:flex;flex-direction:column;transition:opacity .15s}
   .card.saved{border-color:var(--yes);box-shadow:0 0 0 2px var(--yes) inset}
-  .thumb{aspect-ratio:16/10;background:var(--chip) center/cover no-repeat;position:relative}
+  .thumb{aspect-ratio:16/10;background:var(--chip) center/cover no-repeat;position:relative;
+         touch-action:pan-y}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;padding:0;
+       border:none;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font-size:18px;line-height:1;
+       display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:.55;transition:opacity .15s}
+  .nav:hover{opacity:1;background:rgba(0,0,0,.7)}
+  .nav.prev{left:8px} .nav.next{right:8px}
+  .counter{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;
+           font-size:11px;padding:2px 8px;border-radius:10px;pointer-events:none}
   .badges{position:absolute;top:8px;left:8px;display:flex;gap:6px}
   .score{background:var(--accent);color:var(--accent-ink);font-weight:700;border-radius:20px;
          padding:3px 9px;font-size:13px}
@@ -193,7 +201,12 @@ function render(){
                                 : 'No listings match this view.';
   for(const d of rows){
     const el=document.createElement('div');el.className='card'+(saved[d.uid]?' saved':'');
-    const img=d.image?`style="background-image:url('${d.image}')"`:'';
+    const gal=(d.images&&d.images.length)?d.images:(d.image?[d.image]:[]);
+    const img=gal.length?`style="background-image:url('${gal[0]}')"`:'';
+    const carousel = gal.length>1
+      ? `<button class="nav prev" data-nav="prev" aria-label="Previous photo">‹</button>
+         <button class="nav next" data-nav="next" aria-label="Next photo">›</button>
+         <span class="counter">1/${gal.length}</span>` : '';
     const usd=d.price_usd?`<small>≈ $${d.price_usd}/mo</small>`:'';
     const m2=d.area_m2?`${Math.round(d.area_m2)}m²`:'';
     const chips=(d.score_flags||[]).slice(0,6).map(f=>`<span class="chip">${f}</span>`).join('');
@@ -201,9 +214,9 @@ function render(){
     const isSaved=!!saved[d.uid];
     const ptb=d.property_type&&d.property_type!=='apartamento'
       ?`<span class="ptype ${d.property_type}">${d.property_type==='casa'?'HOUSE':'PENTHOUSE'}</span>`:'';
-    el.innerHTML=`<div class="thumb" ${img}>
+    el.innerHTML=`<div class="thumb" data-uid="${d.uid}" data-idx="0" ${img}>
         <div class="badges"><span class="score">${d.score}</span>${d.is_new?'<span class="newb">NEW</span>':''}${ptb}</div>
-        <span class="src">${d.source}</span></div>
+        <span class="src">${d.source}</span>${carousel}</div>
       <div class="body">
         <div class="price">${money(d.price_total)} ${usd}</div>
         <div class="meta"><span class="where">${areaLabel(d.area_key)}</span>${d.neighborhood?' · '+d.neighborhood:''}</div>
@@ -221,7 +234,19 @@ function render(){
   }
 }
 
+function galleryOf(uid){ return (byUid[uid]||saved[uid]||{}).images || []; }
+function flip(thumb,dir){
+  const imgs=galleryOf(thumb.dataset.uid); if(imgs.length<2) return;
+  let i=(+thumb.dataset.idx||0);
+  i = dir>0 ? (i+1)%imgs.length : (i-1+imgs.length)%imgs.length;
+  thumb.dataset.idx=i;
+  thumb.style.backgroundImage=`url('${imgs[i]}')`;
+  const c=thumb.querySelector('.counter'); if(c) c.textContent=(i+1)+'/'+imgs.length;
+}
+
 grid.addEventListener('click',e=>{
+  const nav=e.target.closest('.nav');
+  if(nav){ e.preventDefault(); flip(nav.closest('.thumb'), nav.dataset.nav==='next'?1:-1); return; }
   const b=e.target.closest('.act'); if(!b) return;
   const uid=b.dataset.uid;
   if(b.dataset.act==='reject'){ delete saved[uid]; rejected.add(uid); }
@@ -229,6 +254,12 @@ grid.addEventListener('click',e=>{
          else { saved[uid]=byUid[uid]||saved[uid]; rejected.delete(uid); } }
   persist(); updateStats(); render();
 });
+
+// swipe to flip photos on touch devices
+grid.addEventListener('touchstart',e=>{const t=e.target.closest('.thumb');if(t)t._sx=e.touches[0].clientX;},{passive:true});
+grid.addEventListener('touchend',e=>{const t=e.target.closest('.thumb');
+  if(t&&t._sx!=null){const dx=e.changedTouches[0].clientX-t._sx;
+    if(Math.abs(dx)>30) flip(t, dx<0?1:-1); t._sx=null;}},{passive:true});
 
 function download(name,obj){
   const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
