@@ -45,6 +45,8 @@ _TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>__TITLE__</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root{
     --bg:#f6f7f9; --card:#fff; --ink:#12161c; --muted:#5b6673; --line:#e5e8ec;
@@ -114,6 +116,16 @@ _TEMPLATE = r"""<!DOCTYPE html>
   a.view{background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;
          border-radius:8px;padding:7px 12px;font-size:13px}
   .empty{max-width:1180px;margin:40px auto;text-align:center;color:var(--muted)}
+  #mapwrap{max-width:1180px;margin:0 auto;padding:16px;display:none}
+  #map{height:70vh;min-height:420px;border-radius:12px;border:1px solid var(--line);z-index:1}
+  .maphint{color:var(--muted);font-size:12px;margin:8px 2px 0;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .lg{display:inline-flex;align-items:center;gap:5px}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .pop{width:180px;font:13px/1.4 -apple-system,sans-serif}
+  .pop img{width:100%;height:104px;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px}
+  .pop .pp{font-weight:700;font-size:14px}
+  .pop .pm{color:#5b6673;font-size:12px;margin:2px 0 6px}
+  .pop a{color:#1f7a5a;font-weight:600;text-decoration:none}
   footer{max-width:1180px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);font-size:12px}
 </style>
 </head>
@@ -137,11 +149,22 @@ _TEMPLATE = r"""<!DOCTYPE html>
     <option value="area_desc">Sort: Size ↓</option>
   </select>
   <button id="newonly">Show new only</button>
+  <button id="mapBtn">🗺 Map</button>
   <span class="spacer"></span>
   <button class="link" id="exportSaved">⬇ Export saved</button>
   <button class="link" id="exportRej">⬇ Export hidden</button>
 </div>
 <div class="grid" id="grid"></div>
+<div id="mapwrap">
+  <div id="map"></div>
+  <div class="maphint">
+    <span id="mapcount"></span>
+    <span class="lg"><span class="dot" style="background:#1f7a5a"></span>Poblado</span>
+    <span class="lg"><span class="dot" style="background:#6d28d9"></span>Laureles</span>
+    <span class="lg"><span class="dot" style="background:#b45309"></span>Envigado</span>
+    <span class="lg"><span class="dot" style="background:#0369a1"></span>Ciudad del Río</span>
+  </div>
+</div>
 <div class="empty" id="empty" style="display:none"></div>
 <footer>✓ saves to your list · ✕ hides a listing for good (recover with “reset” up top).
 Decisions are stored in this browser. ⚠️ flags mean a spec (furnished / administración) couldn't be
@@ -152,7 +175,7 @@ const grid=document.getElementById('grid'), empty=document.getElementById('empty
 const areaSel=document.getElementById('area'), typeSel=document.getElementById('type'),
       srcSel=document.getElementById('src'), sortSel=document.getElementById('sort');
 const newBtn=document.getElementById('newonly'), savedBtn=document.getElementById('savedBtn');
-let newOnly=false, savedView=false;
+let newOnly=false, savedView=false, mapView=false;
 
 // ---- persistent triage state (survives the daily rebuild) ----
 const LS_REJ='maf.rejected', LS_SAVE='maf.saved';
@@ -183,7 +206,7 @@ function updateStats(){
     rejected=new Set(); persist(); updateStats(); render(); } };
 }
 
-function render(){
+function currentRows(){
   let rows = savedView ? Object.values(saved) : DATA.filter(d=>!rejected.has(d.uid));
   rows = rows.filter(d=>(!areaSel.value||d.area_key===areaSel.value)
     &&(!typeSel.value||d.property_type===typeSel.value)
@@ -195,8 +218,12 @@ function render(){
     : s==='area_desc'?(b.area_m2||0)-(a.area_m2||0)
     : s==='new'?(b.is_new-a.is_new)||(b.score-a.score)
     : (b.score-a.score));
+  return rows;
+}
+function render(){
+  const rows=currentRows();
   grid.innerHTML='';
-  empty.style.display=rows.length?'none':'block';
+  empty.style.display=(!mapView&&!rows.length)?'block':'none';
   empty.textContent = savedView ? 'No saved listings yet — tap ✓ Save on ones you like.'
                                 : 'No listings match this view.';
   for(const d of rows){
@@ -269,10 +296,60 @@ function download(name,obj){
 document.getElementById('exportSaved').onclick=()=>download('saved.json',Object.values(saved));
 document.getElementById('exportRej').onclick=()=>download('rejected.json',[...rejected]);
 
-[areaSel,typeSel,srcSel,sortSel].forEach(e=>e.addEventListener('change',render));
-newBtn.addEventListener('click',()=>{newOnly=!newOnly;newBtn.classList.toggle('on',newOnly);render();});
+// ---- map view (Leaflet + OpenStreetMap, lazy-initialised on first open) ----
+const AREA_COLOR={poblado:'#1f7a5a',laureles:'#6d28d9',envigado:'#b45309',ciudad_del_rio:'#0369a1'};
+let map=null, markerLayer=null;
+const mapBtn=document.getElementById('mapBtn'), mapwrap=document.getElementById('mapwrap');
+function initMap(){
+  if(map||typeof L==='undefined') return;
+  map=L.map('map',{scrollWheelZoom:true}).setView([6.230,-75.575],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+  markerLayer=L.layerGroup().addTo(map);
+}
+window.mafSave=function(uid){
+  if(saved[uid]) delete saved[uid];
+  else { saved[uid]=byUid[uid]||saved[uid]; rejected.delete(uid); }
+  persist(); updateStats(); render(); renderMap();
+};
+function popupHTML(d){
+  const gal=(d.images&&d.images.length)?d.images:(d.image?[d.image]:[]);
+  const m2=d.area_m2?Math.round(d.area_m2)+'m²':'';
+  return `<div class="pop">${gal.length?`<img src="${gal[0]}" alt="">`:''}
+    <div class="pp">${money(d.price_total)}</div>
+    <div class="pm">${areaLabel(d.area_key)}${d.neighborhood?' · '+d.neighborhood:''}<br>
+      ${d.bedrooms??'?'} bd · ${d.bathrooms??'?'} ba · ${m2} · score ${d.score}</div>
+    <a href="${d.url}" target="_blank" rel="noopener">View →</a> &nbsp;·&nbsp;
+    <a href="javascript:void(0)" onclick="mafSave('${d.uid}')">${saved[d.uid]?'✓ Saved':'♡ Save'}</a></div>`;
+}
+function renderMap(){
+  if(!map) return;
+  markerLayer.clearLayers();
+  const shown=currentRows();
+  const rows=shown.filter(d=>typeof d.lat==='number'&&typeof d.lng==='number');
+  const pts=[];
+  for(const d of rows){
+    L.circleMarker([d.lat,d.lng],{radius:7,weight:1.5,color:'#fff',
+      fillColor:AREA_COLOR[d.area_key]||'#555',fillOpacity:saved[d.uid]?1:.85})
+      .bindPopup(popupHTML(d),{minWidth:180}).addTo(markerLayer);
+    pts.push([d.lat,d.lng]);
+  }
+  document.getElementById('mapcount').textContent=`${pts.length} of ${shown.length} shown listings mapped`;
+  if(pts.length) map.fitBounds(pts,{padding:[30,30],maxZoom:15});
+  setTimeout(()=>map.invalidateSize(),0);
+}
+function setMapView(on){
+  mapView=on; mapBtn.classList.toggle('on',on);
+  mapwrap.style.display=on?'block':'none'; grid.style.display=on?'none':'';
+  render(); if(on){ initMap(); renderMap(); }
+}
+mapBtn.addEventListener('click',()=>setMapView(!mapView));
+
+function refresh(){ render(); if(mapView) renderMap(); }
+[areaSel,typeSel,srcSel,sortSel].forEach(e=>e.addEventListener('change',refresh));
+newBtn.addEventListener('click',()=>{newOnly=!newOnly;newBtn.classList.toggle('on',newOnly);refresh();});
 savedBtn.addEventListener('click',()=>{savedView=!savedView;savedBtn.classList.toggle('on',savedView);
-  newBtn.style.display=savedView?'none':'';render();});
+  newBtn.style.display=savedView?'none':'';refresh();});
 updateStats(); render();
 </script>
 </body>

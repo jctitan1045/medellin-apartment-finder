@@ -49,6 +49,7 @@ def _list_to_listing(raw: dict) -> Listing | None:
     if url and not url.startswith("http"):
         url = BASE + ("" if url.startswith("/") else "/") + url
     rent = _num(raw.get("rentPrice"))
+    coord = raw.get("coordinates") or {}
     return Listing(
         source="ciencuadras",
         source_id=sid,
@@ -64,6 +65,8 @@ def _list_to_listing(raw: dict) -> Listing | None:
         bathrooms=parse_int(raw.get("baths")),
         area_m2=parse_area(raw.get("area")),
         garages=parse_int(raw.get("garages")),
+        lat=coord.get("latitude"),
+        lng=coord.get("longitude"),
         image=raw.get("image", "") or "",
         images=[raw["image"]] if raw.get("image") else [],   # replaced by gallery on enrich
         created_at=str(raw.get("createdAt", "") or ""),

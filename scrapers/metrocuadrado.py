@@ -80,6 +80,15 @@ def _to_listing(raw: dict, area_hint: str) -> Listing | None:
     if primary and primary not in gallery:
         gallery = [primary] + gallery
 
+    lat = lng = None                       # geopoints[0] = building-level location
+    gp = raw.get("geopoints") or []
+    if gp:
+        try:
+            lat = float(gp[0].get("latitude"))
+            lng = float(gp[0].get("longitude"))
+        except (TypeError, ValueError):
+            lat = lng = None
+
     return Listing(
         source="metrocuadrado",
         source_id=sid,
@@ -98,6 +107,8 @@ def _to_listing(raw: dict, area_hint: str) -> Listing | None:
         stratum=parse_int(raw.get("estrato")),
         garages=parse_int(raw.get("mnrogarajes")),
         description=desc,
+        lat=lat,
+        lng=lng,
         image=primary,
         images=gallery[:12],
     )
