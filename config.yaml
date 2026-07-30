@@ -6,9 +6,9 @@
 # ---- HARD FILTERS (deal-breakers) -----------------------------------------
 hard:
   # Enforced on rent + administración (HOA) combined, in COP.
-  # 5,500,000 ≈ $1,358/mo. Soft ceiling — list prices are negotiable, so this is
-  # set a bit high to surface more options (raised 4.5M → 5M → 5.5M).
-  max_total_cop: 5500000
+  # 6,000,000 ≈ $1,480/mo. Soft ceiling — list prices are negotiable, so this is
+  # set a bit high to surface more options (raised 4.5M → 5M → 5.5M → 6M).
+  max_total_cop: 6000000
   min_bedrooms: 2
   min_bathrooms: 2
   require_unfurnished: true      # drop listings detected as furnished (amoblado)
