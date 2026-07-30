@@ -94,13 +94,20 @@
   <h1>Medellín Apartment Finder</h1>
   <div class="sub"><span id="stat-count">540 current matches</span> · <b>69 new today</b>
     · <span id="stat-saved">0 saved</span> · <span id="stat-hidden"></span>
-    · updated 2026-07-30 16:21 -05</div>
+    · updated 2026-07-30 16:42 -05</div>
 </header>
 <div class="bar">
   <button id="savedBtn">★ Saved (<span id="savedN">0</span>)</button>
   <select id="area"><option value="">All areas</option></select>
   <select id="type"><option value="">All types</option></select>
   <select id="src"><option value="">All sources</option></select>
+  <select id="minscore">
+    <option value="0">Any score</option>
+    <option value="50">Score 50+</option>
+    <option value="60">Score 60+</option>
+    <option value="70">Score 70+</option>
+    <option value="80">Score 80+</option>
+  </select>
   <select id="sort">
     <option value="score">Sort: Best match</option>
     <option value="new">Sort: New first</option>
@@ -136,6 +143,7 @@ const grid=document.getElementById('grid'), empty=document.getElementById('empty
 const areaSel=document.getElementById('area'), typeSel=document.getElementById('type'),
       srcSel=document.getElementById('src'), sortSel=document.getElementById('sort');
 const newBtn=document.getElementById('newonly'), savedBtn=document.getElementById('savedBtn');
+const minScoreSel=document.getElementById('minscore');
 let newOnly=false, savedView=false, mapView=false;
 
 // ---- persistent triage state (survives the daily rebuild) ----
@@ -169,9 +177,11 @@ function updateStats(){
 
 function currentRows(){
   let rows = savedView ? Object.values(saved) : DATA.filter(d=>!rejected.has(d.uid));
+  const minScore=+minScoreSel.value||0;
   rows = rows.filter(d=>(!areaSel.value||d.area_key===areaSel.value)
     &&(!typeSel.value||d.property_type===typeSel.value)
     &&(!srcSel.value||d.source===srcSel.value)
+    &&(d.score>=minScore)
     &&(savedView||!newOnly||d.is_new));
   const s=sortSel.value;
   rows.sort((a,b)=> s==='price_asc'?(a.price_total||9e9)-(b.price_total||9e9)
@@ -307,7 +317,7 @@ function setMapView(on){
 mapBtn.addEventListener('click',()=>setMapView(!mapView));
 
 function refresh(){ render(); if(mapView) renderMap(); }
-[areaSel,typeSel,srcSel,sortSel].forEach(e=>e.addEventListener('change',refresh));
+[areaSel,typeSel,srcSel,minScoreSel,sortSel].forEach(e=>e.addEventListener('change',refresh));
 newBtn.addEventListener('click',()=>{newOnly=!newOnly;newBtn.classList.toggle('on',newOnly);refresh();});
 savedBtn.addEventListener('click',()=>{savedView=!savedView;savedBtn.classList.toggle('on',savedView);
   newBtn.style.display=savedView?'none':'';refresh();});
