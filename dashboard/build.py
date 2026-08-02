@@ -131,6 +131,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
 </head>
 <body>
 <header>
+  <a href="tryout.html" style="color:var(--accent);text-decoration:none;font-weight:600;font-size:13px">🧭 Neighborhood tryout planner →</a>
   <h1>__TITLE__</h1>
   <div class="sub"><span id="stat-count">__COUNT__ current matches</span> · <b>__NEW__ new today</b>
     · <span id="stat-saved">0 saved</span> · <span id="stat-hidden"></span>

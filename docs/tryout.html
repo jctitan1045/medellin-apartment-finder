@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Neighborhood Tryout — Medellín</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#12161c; --muted:#5b6673; --line:#e5e8ec;
+    --accent:#1f7a5a; --accent-ink:#fff; --chip:#eef1f4; --warn:#c2410c;
+    --shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0e1116;--card:#171b22;--ink:#e6e9ee;--muted:#9aa4b2;--line:#252b34;
+          --accent:#38b489;--accent-ink:#08130e;--chip:#222833;--warn:#fb923c;--shadow:0 1px 3px rgba(0,0,0,.4);}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg);color:var(--ink)}
+  header{max-width:900px;margin:0 auto;padding:22px 16px 6px}
+  h1{margin:0 0 3px;font-size:21px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:13px}
+  .sub b{color:var(--ink)}
+  a.top{color:var(--accent);text-decoration:none;font-weight:600;font-size:13px}
+  .intro{max-width:900px;margin:6px auto 0;padding:0 16px;color:var(--muted);font-size:13.5px}
+  .wrap{max-width:900px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+  .stay{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+        padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .stay.booked{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+  .srow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .mnum{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);
+        font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+  select,input,button,textarea{font:inherit;color:var(--ink);background:var(--bg);
+        border:1px solid var(--line);border-radius:8px;padding:6px 9px}
+  select.area{font-weight:700;font-size:16px;background:var(--card)}
+  input[type=date]{color-scheme:light dark}
+  button{background:var(--card);cursor:pointer}
+  .btn-air{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);
+           text-decoration:none;font-weight:600;padding:7px 12px;border-radius:8px;font-size:13px;display:inline-block}
+  .btn-2nd{background:var(--card);color:var(--accent);border:1px solid var(--accent);
+           text-decoration:none;font-weight:600;padding:7px 12px;border-radius:8px;font-size:13px;display:inline-block}
+  .coliv{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+  .cv{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .cv .nm{font-weight:700}
+  .cv .ar{color:var(--muted);font-size:12.5px;margin:2px 0 4px}
+  .cv a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:600}
+  .cv .pr{font-size:12px;color:var(--muted)}
+  .status{cursor:pointer;font-weight:600;font-size:12px;border-radius:20px;padding:4px 11px}
+  .st-researching{background:var(--chip);color:var(--muted)}
+  .st-shortlisting{background:#fde68a;color:#78350f}
+  .st-booked{background:var(--accent);color:var(--accent-ink)}
+  .st-living{background:#bfdbfe;color:#1e3a8a}
+  .st-done{background:#e9d5ff;color:#5b21b6}
+  .spacer{flex:1}
+  .dates{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:3px}
+  .cands{display:flex;flex-direction:column;gap:6px}
+  .cand{display:flex;gap:8px;align-items:center;font-size:13px}
+  .cand a{color:var(--accent);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%}
+  .cand .x{color:var(--muted);cursor:pointer;border:none;background:none;padding:0 4px}
+  .addcand{display:flex;gap:6px}
+  .addcand input{flex:1}
+  .score{display:flex;flex-wrap:wrap;gap:12px;padding-top:4px;border-top:1px dashed var(--line)}
+  .crit{display:flex;flex-direction:column;gap:3px}
+  .stars{display:flex;gap:2px}
+  .star{cursor:pointer;font-size:17px;color:var(--line)}
+  .star.on{color:#f59e0b}
+  textarea{width:100%;min-height:44px;resize:vertical;background:var(--card)}
+  .foot{max-width:900px;margin:0 auto;padding:4px 16px 40px;color:var(--muted);font-size:12px}
+  .rank{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .rank h3{margin:0 0 8px;font-size:15px}
+  .rankrow{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .rankrow:last-child{border:none}
+  .addmonth{align-self:flex-start;font-size:13px;color:var(--accent);font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <a class="top" href="index.html">← Long-term finder</a>
+  <h1>Neighborhood Tryout — Medellín</h1>
+  <div class="sub">Solo · target <b>under $1,500/mo</b> furnished (Airbnb, 28+ nights) · from <b>Sep 2026</b>
+    · <span id="statusline"></span></div>
+</header>
+<div class="intro">
+  Try a neighborhood a month at a time, then sign a long-term unfurnished lease where it feels right.
+  Each month: hit <b>Search Airbnb</b> (pre-filtered to that area, your dates, entire place), shortlist a few,
+  book one, then <b>rate it after living there</b>. Ratings roll up into the ranking at the bottom.
+  Everything you enter is saved in this browser.
+</div>
+<div class="wrap" id="wrap"></div>
+<div class="wrap"><button class="addmonth" id="addMonth">+ Add another month</button></div>
+
+<div class="wrap">
+  <div class="rank">
+    <h3>Colivings (best value for solo month-stays)</h3>
+    <div style="color:var(--muted);font-size:13px;margin-bottom:10px">
+      Private room in a shared house, roughly $500–1,200/mo including community and coworking, mostly Poblado and
+      Laureles. Verified operating 2026. Availability lives on each site, so these are direct links, not a live feed.
+    </div>
+    <div class="coliv">
+      <div class="cv"><div class="nm">Co404</div><div class="ar">Laureles · private rooms, ~40-person community, daily activities</div>
+        <div class="pr">book direct</div><a href="https://co404.com/medellin/" target="_blank" rel="noopener">co404.com →</a></div>
+      <div class="cv"><div class="nm">Outsite</div><div class="ar">El Poblado / El Tesoro · coliving + built-in coworking</div>
+        <div class="pr">membership + nightly</div><a href="https://www.outsite.co/" target="_blank" rel="noopener">outsite.co →</a></div>
+      <div class="cv"><div class="nm">Nomadico</div><div class="ar">Near Laureles · affordable, nomad community</div>
+        <div class="pr">monthly</div><a href="https://www.nomadico.io/medellin-coliving" target="_blank" rel="noopener">nomadico.io →</a></div>
+      <div class="cv"><div class="nm">Coliving.com</div><div class="ar">Aggregator · browse every Medellín coliving in one place</div>
+        <div class="pr">compare</div><a href="https://coliving.com/medellin" target="_blank" rel="noopener">coliving.com →</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap"><div class="rank" id="rank"></div></div>
+<footer class="foot">
+  Airbnb can't be auto-scraped, so these are smart search links, not a live feed — set the price slider to your
+  monthly total once you're there (a $1,500/mo budget ≈ $50/night before the monthly discount). Dates are editable.
+  Tip: for 28+ nights Airbnb auto-applies the monthly discount, which is where the real savings are.
+</footer>
+<script>
+const AREAS=["El Poblado","Laureles","Envigado","Ciudad del Río","Las Palmas"];
+// Casacol = furnished monthly operator (expat core: Poblado/Laureles/Provenza)
+const CASACOL_POBLADO="https://en.casacol.co/poblado-rental-apartment-collection/";
+const CASACOL_LONGTERM="https://en.casacol.co/long-term-rental-medellin/";
+function casacolURL(area){ return area==="El Poblado"?CASACOL_POBLADO:CASACOL_LONGTERM; }
+const STATUSES=["researching","shortlisting","booked","living","done"];
+const CRITERIA=[["noise","Quiet"],["walk","Walkable"],["vibe","Vibe"],["cost","Value"],["sign","Would sign"]];
+const LS="maf.tryout";
+
+function seed(){
+  // Sept 5 2026 → one month each, default area order (editable)
+  const stays=[]; let d=new Date("2026-09-05T00:00:00");
+  for(let i=0;i<AREAS.length;i++){
+    const ci=new Date(d), co=new Date(d); co.setMonth(co.getMonth()+1);
+    stays.push({area:AREAS[i], checkin:iso(ci), checkout:iso(co),
+      status:"researching", candidates:[], scores:{}, notes:""});
+    d.setMonth(d.getMonth()+1);
+  }
+  return {stays};
+}
+function iso(dt){return dt.toISOString().slice(0,10);}
+function load(){ try{return JSON.parse(localStorage.getItem(LS))||seed();}catch(e){return seed();} }
+function save(){ localStorage.setItem(LS, JSON.stringify(state)); }
+let state=load();
+
+function monthLabel(ci){
+  try{return new Date(ci+"T00:00:00").toLocaleDateString('en-US',{month:'long',year:'numeric'});}
+  catch(e){return "";}
+}
+function airbnbURL(s){
+  const q=encodeURIComponent(s.area+", Medellín, Colombia");
+  const p=new URLSearchParams({checkin:s.checkin,checkout:s.checkout,adults:"1",currency:"USD"});
+  return `https://www.airbnb.com/s/${q}/homes?${p.toString()}&room_types%5B%5D=Entire%20home%2Fapt`;
+}
+
+function render(){
+  const wrap=document.getElementById('wrap'); wrap.innerHTML='';
+  state.stays.forEach((s,i)=>{
+    const el=document.createElement('div');
+    el.className='stay'+(s.status==='booked'?' booked':'');
+    const areaOpts=AREAS.map(a=>`<option ${a===s.area?'selected':''}>${a}</option>`).join('');
+    const cands=s.candidates.map((c,ci)=>`<div class="cand">🔗 <a href="${c.url}" target="_blank" rel="noopener">${c.note||c.url}</a>
+        <button class="x" data-x="${i}:${ci}" title="remove">✕</button></div>`).join('');
+    const showScore = s.status==='living'||s.status==='done';
+    const scoreHTML = CRITERIA.map(([k,label])=>{
+      const v=s.scores[k]||0;
+      const stars=[1,2,3,4,5].map(n=>`<span class="star ${n<=v?'on':''}" data-star="${i}:${k}:${n}">★</span>`).join('');
+      return `<div class="crit"><span class="lbl">${label}</span><div class="stars">${stars}</div></div>`;
+    }).join('');
+    el.innerHTML=`
+      <div class="srow">
+        <div class="mnum">${i+1}</div>
+        <select class="area" data-area="${i}">${areaOpts}</select>
+        <span class="status st-${s.status}" data-status="${i}">${s.status}</span>
+        <span class="spacer"></span>
+        <a class="btn-2nd" href="${casacolURL(s.area)}" target="_blank" rel="noopener">Casacol →</a>
+        <a class="btn-air" href="${airbnbURL(s)}" target="_blank" rel="noopener">Search Airbnb →</a>
+      </div>
+      <div class="srow">
+        <div><div class="lbl">Month</div><b>${monthLabel(s.checkin)}</b></div>
+        <div class="dates"><div><div class="lbl">Check-in</div><input type="date" data-ci="${i}" value="${s.checkin}"></div>
+          <span style="align-self:end;padding-bottom:6px">→</span>
+          <div><div class="lbl">Check-out</div><input type="date" data-co="${i}" value="${s.checkout}"></div></div>
+      </div>
+      <div>
+        <div class="lbl">Candidates (paste Airbnb links you like)</div>
+        <div class="cands">${cands||'<span style="color:var(--muted);font-size:13px">None yet</span>'}</div>
+        <div class="addcand"><input placeholder="Airbnb link" data-curl="${i}">
+          <input placeholder="note (e.g. $1,150, 1BR)" data-cnote="${i}" style="max-width:150px">
+          <button data-addcand="${i}">Add</button></div>
+      </div>
+      ${showScore?`<div class="score">${scoreHTML}</div>
+      <textarea data-notes="${i}" placeholder="How was living here? noise, walkability, would you sign long-term…">${s.notes||''}</textarea>`:''}
+    `;
+    wrap.appendChild(el);
+  });
+  renderRank();
+  document.getElementById('statusline').textContent =
+    state.stays.filter(s=>s.status==='booked'||s.status==='living'||s.status==='done').length + ' of '
+    + state.stays.length + ' months planned';
+}
+
+function renderRank(){
+  const rated=state.stays.filter(s=>Object.keys(s.scores).length);
+  const rank=document.getElementById('rank');
+  if(!rated.length){ rank.innerHTML='<h3>Ranking</h3><div style="color:var(--muted);font-size:13px">Rate a neighborhood after living there and it’ll rank here — your leading long-term pick floats to the top.</div>'; return; }
+  const scored=rated.map(s=>{
+    const vals=CRITERIA.map(([k])=>s.scores[k]||0).filter(Boolean);
+    const avg=vals.reduce((a,b)=>a+b,0)/(vals.length||1);
+    return {area:s.area, avg};
+  }).sort((a,b)=>b.avg-a.avg);
+  rank.innerHTML='<h3>Ranking — leading long-term pick</h3>'+
+    scored.map((r,i)=>`<div class="rankrow"><span>${i+1}. ${r.area}</span><b>${r.avg.toFixed(1)} / 5</b></div>`).join('');
+}
+
+document.getElementById('wrap').addEventListener('click',e=>{
+  const st=e.target.closest('[data-status]');
+  if(st){ const i=+st.dataset.status; const cur=STATUSES.indexOf(state.stays[i].status);
+    state.stays[i].status=STATUSES[(cur+1)%STATUSES.length]; save(); render(); return; }
+  const star=e.target.closest('[data-star]');
+  if(star){ const [i,k,n]=star.dataset.star.split(':'); const s=state.stays[+i];
+    s.scores[k]=(s.scores[k]===+n)?0:+n; save(); render(); return; }
+  const x=e.target.closest('[data-x]');
+  if(x){ const [i,ci]=x.dataset.x.split(':'); state.stays[+i].candidates.splice(+ci,1); save(); render(); return; }
+  const add=e.target.closest('[data-addcand]');
+  if(add){ const i=+add.dataset.addcand;
+    const url=document.querySelector(`[data-curl="${i}"]`).value.trim();
+    const note=document.querySelector(`[data-cnote="${i}"]`).value.trim();
+    if(url){ state.stays[i].candidates.push({url,note}); save(); render(); } return; }
+});
+document.getElementById('wrap').addEventListener('change',e=>{
+  const a=e.target.closest('[data-area]'); if(a){ state.stays[+a.dataset.area].area=a.value; save(); render(); return; }
+  const ci=e.target.closest('[data-ci]'); if(ci){ state.stays[+ci.dataset.ci].checkin=ci.value; save(); render(); return; }
+  const co=e.target.closest('[data-co]'); if(co){ state.stays[+co.dataset.co].checkout=co.value; save(); render(); return; }
+});
+document.getElementById('wrap').addEventListener('input',e=>{
+  const n=e.target.closest('[data-notes]'); if(n){ state.stays[+n.dataset.notes].notes=n.value; save(); }
+});
+document.getElementById('addMonth').addEventListener('click',()=>{
+  const last=state.stays[state.stays.length-1];
+  const ci=new Date((last?last.checkout:"2026-09-05")+"T00:00:00");
+  const co=new Date(ci); co.setMonth(co.getMonth()+1);
+  state.stays.push({area:AREAS[0],checkin:iso(ci),checkout:iso(co),status:"researching",candidates:[],scores:{},notes:""});
+  save(); render();
+});
+render();
+</script>
+</body>
+</html>
