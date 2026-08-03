@@ -9,9 +9,9 @@ hard:
   # 6,000,000 ≈ $1,480/mo. Soft ceiling — list prices are negotiable, so this is
   # set a bit high to surface more options (raised 4.5M → 5M → 5.5M → 6M).
   max_total_cop: 6000000
-  min_bedrooms: 2
-  min_bathrooms: 2
-  min_area_m2: 90                # área construida floor — solo + dog + lots of stuff, wants space
+  min_bedrooms: 1               # 1BR included (2026-07-30) — spacious 1BRs OK for solo
+  min_bathrooms: 1              # lowered from 2 so 1BRs (usually 1 bath) aren't excluded
+  min_area_m2: 80                # área construida floor — solo + dog + lots of stuff, wants space
 
   require_unfurnished: true      # drop listings detected as furnished (amoblado)
   # Listings whose furnished status can't be determined are KEPT and flagged,

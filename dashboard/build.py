@@ -143,6 +143,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
   <select id="type"><option value="">All types</option></select>
   <select id="beds">
     <option value="">Any beds</option>
+    <option value="1">1 bed</option>
     <option value="2">2 bed</option>
     <option value="3">3 bed</option>
     <option value="4">4+ bed</option>
