@@ -14,7 +14,7 @@ hard:
   require_unfurnished: true      # drop listings detected as furnished (amoblado)
   # Listings whose furnished status can't be determined are KEPT and flagged,
   # never silently dropped.
-  allowed_cities: ["medellin", "envigado"]
+  allowed_cities: ["medellin", "envigado", "sabaneta"]
   # Property types to include. Options: apartamento, casa, penthouse.
   # (penthouse is auto-derived from top-floor apartments.) Studios/offices
   # that slip into combined listings are dropped by omission here.
@@ -52,13 +52,18 @@ areas:
     label: "Envigado"
     tokens: ["envigado", "zuniga", "loma del esmeraldal", "el dorado",
              "la paz", "milan vallejuelos", "jardines", "alcala", "el portal"]
+  sabaneta:
+    label: "Sabaneta"
+    tokens: ["sabaneta", "aves marias", "la doctora", "san jose", "holanda",
+             "maria auxiliadora", "restrepo naranjo", "calle del banco",
+             "prados de sabaneta", "san remo", "playa rica", "las lomitas"]
 
 # ---- SCORING (strong preferences) -----------------------------------------
 # Each rule adds points to a 0–100 score. Matched against title + description
 # + amenities (accent-stripped). Booleans from structured data also feed in.
 # Tune weights freely; order doesn't matter.
 scoring:
-  three_plus_bedrooms:   {points: 8,  any: [],  flag: "3+ bedrooms"}
+  # (3+ bedrooms bonus removed 2026-07-30 — solo now, 2BR and 3BR weighted equally)
   balcony_terrace:       {points: 15, any: ["balcon", "terraza", "patio", "outdoor", "azotea"], flag: "Balcony/terrace"}
   top_floor_penthouse:   {points: 10, any: ["penthouse", "pent house", "ultimo piso", "duplex", "cobertura"], flag: "Penthouse/top floor"}
   view:                  {points: 8,  any: ["vista", "view", "panoramic", "mirador"], flag: "View"}
@@ -88,12 +93,14 @@ sources:
       ciudad_del_rio: "arriendo/casas-y-apartamentos/ciudad-del-rio/suroriente/medellin"
       laureles:       "arriendo/casas-y-apartamentos/laureles/occidente/medellin"
       envigado:       "arriendo/casas-y-apartamentos/envigado/antioquia"
+      sabaneta:       "arriendo/casas-y-apartamentos/sabaneta/antioquia"
   ciencuadras:
     enabled: true
     max_pages: 6                   # ~20 listings/page, city-wide then token-filtered
     urls:
       - "arriendo/casas-apartamentos/medellin"
       - "arriendo/casas-apartamentos/envigado"
+      - "arriendo/casas-apartamentos/sabaneta"
   metrocuadrado:
     enabled: true
     max_pages: 4                   # ~54 listings/page, per-neighborhood
@@ -103,6 +110,7 @@ sources:
       ciudad_del_rio: "casas-apartamentos/arriendo/medellin/ciudad-del-rio/"
       laureles:       "casas-apartamentos/arriendo/medellin/laureles/"
       envigado:       "casas-apartamentos/arriendo/envigado/"
+      sabaneta:       "casas-apartamentos/arriendo/sabaneta/"
 
 # ---- OUTPUT ---------------------------------------------------------------
 output:

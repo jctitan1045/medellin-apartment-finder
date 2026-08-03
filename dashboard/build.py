@@ -141,6 +141,12 @@ _TEMPLATE = r"""<!DOCTYPE html>
   <button id="savedBtn">★ Saved (<span id="savedN">0</span>)</button>
   <select id="area"><option value="">All areas</option></select>
   <select id="type"><option value="">All types</option></select>
+  <select id="beds">
+    <option value="">Any beds</option>
+    <option value="2">2 bed</option>
+    <option value="3">3 bed</option>
+    <option value="4">4+ bed</option>
+  </select>
   <select id="src"><option value="">All sources</option></select>
   <select id="minscore">
     <option value="0">Any score</option>
@@ -155,6 +161,8 @@ _TEMPLATE = r"""<!DOCTYPE html>
     <option value="price_asc">Sort: Price ↑</option>
     <option value="price_desc">Sort: Price ↓</option>
     <option value="area_desc">Sort: Size ↓</option>
+    <option value="beds_desc">Sort: Bedrooms ↓</option>
+    <option value="beds_asc">Sort: Bedrooms ↑</option>
   </select>
   <button id="newonly">Show new only</button>
   <button id="mapBtn">🗺 Map</button>
@@ -172,6 +180,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
     <span class="lg"><span class="dot" style="background:#b45309"></span>Envigado</span>
     <span class="lg"><span class="dot" style="background:#0369a1"></span>Ciudad del Río</span>
     <span class="lg"><span class="dot" style="background:#db2777"></span>Las Palmas</span>
+    <span class="lg"><span class="dot" style="background:#0d9488"></span>Sabaneta</span>
   </div>
 </div>
 <div class="empty" id="empty" style="display:none"></div>
@@ -184,7 +193,7 @@ const grid=document.getElementById('grid'), empty=document.getElementById('empty
 const areaSel=document.getElementById('area'), typeSel=document.getElementById('type'),
       srcSel=document.getElementById('src'), sortSel=document.getElementById('sort');
 const newBtn=document.getElementById('newonly'), savedBtn=document.getElementById('savedBtn');
-const minScoreSel=document.getElementById('minscore');
+const minScoreSel=document.getElementById('minscore'), bedsSel=document.getElementById('beds');
 let newOnly=false, savedView=false, mapView=false;
 
 // ---- persistent triage state (survives the daily rebuild) ----
@@ -218,16 +227,19 @@ function updateStats(){
 
 function currentRows(){
   let rows = savedView ? Object.values(saved) : DATA.filter(d=>!rejected.has(d.uid));
-  const minScore=+minScoreSel.value||0;
+  const minScore=+minScoreSel.value||0, beds=bedsSel.value;
   rows = rows.filter(d=>(!areaSel.value||d.area_key===areaSel.value)
     &&(!typeSel.value||d.property_type===typeSel.value)
     &&(!srcSel.value||d.source===srcSel.value)
     &&(d.score>=minScore)
+    &&(!beds || (beds==='4' ? (d.bedrooms||0)>=4 : d.bedrooms===+beds))
     &&(savedView||!newOnly||d.is_new));
   const s=sortSel.value;
   rows.sort((a,b)=> s==='price_asc'?(a.price_total||9e9)-(b.price_total||9e9)
     : s==='price_desc'?(b.price_total||0)-(a.price_total||0)
     : s==='area_desc'?(b.area_m2||0)-(a.area_m2||0)
+    : s==='beds_desc'?((b.bedrooms||0)-(a.bedrooms||0))||(b.score-a.score)
+    : s==='beds_asc'?((a.bedrooms||99)-(b.bedrooms||99))||(b.score-a.score)
     : s==='new'?(b.is_new-a.is_new)||(b.score-a.score)
     : (b.score-a.score));
   return rows;
@@ -309,7 +321,7 @@ document.getElementById('exportSaved').onclick=()=>download('saved.json',Object.
 document.getElementById('exportRej').onclick=()=>download('rejected.json',[...rejected]);
 
 // ---- map view (Leaflet + OpenStreetMap, lazy-initialised on first open) ----
-const AREA_COLOR={poblado:'#1f7a5a',laureles:'#6d28d9',envigado:'#b45309',ciudad_del_rio:'#0369a1',las_palmas:'#db2777'};
+const AREA_COLOR={poblado:'#1f7a5a',laureles:'#6d28d9',envigado:'#b45309',ciudad_del_rio:'#0369a1',las_palmas:'#db2777',sabaneta:'#0d9488'};
 let map=null, markerLayer=null;
 const mapBtn=document.getElementById('mapBtn'), mapwrap=document.getElementById('mapwrap');
 function initMap(){
@@ -358,7 +370,7 @@ function setMapView(on){
 mapBtn.addEventListener('click',()=>setMapView(!mapView));
 
 function refresh(){ render(); if(mapView) renderMap(); }
-[areaSel,typeSel,srcSel,minScoreSel,sortSel].forEach(e=>e.addEventListener('change',refresh));
+[areaSel,typeSel,bedsSel,srcSel,minScoreSel,sortSel].forEach(e=>e.addEventListener('change',refresh));
 newBtn.addEventListener('click',()=>{newOnly=!newOnly;newBtn.classList.toggle('on',newOnly);refresh();});
 savedBtn.addEventListener('click',()=>{savedView=!savedView;savedBtn.classList.toggle('on',savedView);
   newBtn.style.display=savedView?'none':'';refresh();});
