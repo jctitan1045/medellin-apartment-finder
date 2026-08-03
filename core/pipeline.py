@@ -85,10 +85,11 @@ def apply_hard_filter(listing: Listing, hard: dict) -> list:
     ):
         fails.append(f"city '{listing.city}' not in target")
 
-    min_area = hard.get("min_area_m2")
-    if min_area and listing.area_m2 is not None:
-        if listing.area_m2 < min_area:
-            fails.append(f"{int(listing.area_m2)}m² (< {min_area}m²)")
+    by_beds = hard.get("min_area_by_beds") or {}
+    floor = by_beds.get(listing.bedrooms, hard.get("min_area_m2"))
+    if floor and listing.area_m2 is not None:
+        if listing.area_m2 < floor:
+            fails.append(f"{int(listing.area_m2)}m² (< {floor}m²)")
         elif listing.area_m2 > 5000:          # garbage value (lot/finca or parse error)
             fails.append(f"{int(listing.area_m2)}m² (bad data)")
 
