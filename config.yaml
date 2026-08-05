@@ -6,9 +6,8 @@
 # ---- HARD FILTERS (deal-breakers) -----------------------------------------
 hard:
   # Enforced on rent + administración (HOA) combined, in COP.
-  # 6,000,000 ≈ $1,480/mo. Soft ceiling — list prices are negotiable, so this is
-  # set a bit high to surface more options (raised 4.5M → 5M → 5.5M → 6M).
-  max_total_cop: 6000000
+  # 4,500,000 ≈ $1,110/mo. Lowered back from 6M (2026-07-30) — firmer budget.
+  max_total_cop: 4500000
   min_bedrooms: 1               # 1BR included (2026-07-30) — spacious 1BRs OK for solo
   min_bathrooms: 1              # lowered from 2 so 1BRs (usually 1 bath) aren't excluded
   min_area_m2: 80                # default área construida floor — solo + dog + stuff, wants space
