@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Apartamentos de interés — Medellín</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#12161c; --muted:#5b6673; --line:#e5e8ec;
+    --accent:#1f7a5a; --wa:#25d366; --shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0e1116;--card:#171b22;--ink:#e6e9ee;--muted:#9aa4b2;--line:#252b34;
+          --accent:#38b489;--wa:#25d366;--shadow:0 1px 3px rgba(0,0,0,.4);}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg);color:var(--ink)}
+  header{max-width:760px;margin:0 auto;padding:20px 16px 6px}
+  h1{margin:0 0 3px;font-size:20px}
+  .sub{color:var(--muted);font-size:13.5px}
+  .grid{max-width:760px;margin:0 auto;padding:14px;display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+        box-shadow:var(--shadow)}
+  .thumb{aspect-ratio:16/9;background:var(--line) center/cover no-repeat}
+  .body{padding:13px 15px;display:flex;flex-direction:column;gap:7px}
+  .price{font-size:19px;font-weight:700}
+  .price small{font-weight:500;color:var(--muted);font-size:13px}
+  .where{font-weight:600}
+  .meta{color:var(--muted);font-size:14px}
+  .who{font-size:13px;color:var(--muted)}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .btns a{flex:1 1 auto;text-align:center;text-decoration:none;font-weight:700;font-size:14px;
+          padding:11px 12px;border-radius:10px;white-space:nowrap}
+  .wa{background:var(--wa);color:#053}
+  .call{background:var(--accent);color:#fff}
+  .ver{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
+  .empty{max-width:760px;margin:60px auto;text-align:center;color:var(--muted);padding:0 16px}
+  footer{max-width:760px;margin:0 auto;padding:6px 16px 40px;color:var(--muted);font-size:12px}
+  .num{font-weight:700;color:var(--accent);margin-right:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Apartamentos de interés — Medellín</h1>
+  <div class="sub" id="sub"></div>
+</header>
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty" style="display:none">
+  Este enlace no contiene una lista. Pídele a la persona que te compartió el enlace que lo genere de nuevo.
+</div>
+<footer>Lista compartida de apartamentos preseleccionados. Toca <b>WhatsApp</b> para escribir directamente
+al anunciante (mensaje ya redactado), <b>Llamar</b> para llamar, o <b>Ver anuncio</b> para abrir la publicación.</footer>
+<script>
+const money=n=>n?('$'+Number(n).toLocaleString('es-CO')+' COP'):'Precio a confirmar';
+function decodePayload(){
+  try{
+    const h=location.hash.slice(1); if(!h) return null;
+    return JSON.parse(decodeURIComponent(escape(atob(h))));
+  }catch(e){ return null; }
+}
+function waLink(it){
+  if(!it.wa) return '';
+  const msg=`Hola, le escribo por el apartamento en ${it.n||'Medellín'} `
+    +`(${it.b||'?'} hab, ${it.ba||'?'} baños). ¿Sigue disponible? Quisiera agendar una visita.`
+    +(it.u?(' '+it.u):'');
+  return `https://wa.me/${it.wa}?text=${encodeURIComponent(msg)}`;
+}
+function render(){
+  const items=decodePayload();
+  const grid=document.getElementById('grid');
+  if(!items||!items.length){ document.getElementById('empty').style.display='block';
+    document.getElementById('sub').textContent=''; return; }
+  document.getElementById('sub').textContent=`${items.length} apartamento${items.length!==1?'s':''} preseleccionado${items.length!==1?'s':''} · toca para contactar`;
+  items.forEach((it,i)=>{
+    const el=document.createElement('div'); el.className='card';
+    const img=it.img?`<div class="thumb" style="background-image:url('${it.img}')"></div>`:'';
+    const wa=waLink(it);
+    const tel=it.ph?`tel:${String(it.ph).replace(/\D/g,'')}`:'';
+    const m2=it.m?`${it.m} m²`:'';
+    el.innerHTML=`${img}
+      <div class="body">
+        <div class="price">${money(it.p)} ${it.pu?`<small>≈ $${it.pu}/mes</small>`:''}</div>
+        <div class="meta"><span class="where">${it.a||''}</span>${it.n?' · '+it.n:''}</div>
+        <div class="meta"><span class="num">${i+1}.</span>${it.b??'?'} hab · ${it.ba??'?'} baños${m2?' · '+m2:''}</div>
+        ${it.cn?`<div class="who">Anunciante: ${it.cn}</div>`:''}
+        <div class="btns">
+          ${wa?`<a class="wa" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>`:''}
+          ${tel?`<a class="call" href="${tel}">Llamar</a>`:''}
+          ${it.u?`<a class="ver" href="${it.u}" target="_blank" rel="noopener">Ver anuncio</a>`:''}
+        </div>
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+render();
+window.addEventListener('hashchange',()=>location.reload());
+</script>
+</body>
+</html>

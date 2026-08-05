@@ -106,7 +106,7 @@
   <h1>Medellín Apartment Finder</h1>
   <div class="sub"><span id="stat-count">204 current matches</span> · <b>8 new today</b>
     · <span id="stat-saved">0 saved</span> · <span id="stat-hidden"></span>
-    · updated 2026-08-05 12:09 -05</div>
+    · updated 2026-08-05 13:02 -05</div>
 </header>
 <div class="bar">
   <button id="savedBtn">★ Saved (<span id="savedN">0</span>)</button>
@@ -145,6 +145,7 @@
   <button id="newonly">Show new only</button>
   <button id="mapBtn">🗺 Map</button>
   <span class="spacer"></span>
+  <button class="link" id="shareBroker">📤 Send to broker</button>
   <button class="link" id="exportView">⬇ Export view (CSV)</button>
   <button class="link" id="exportSaved">⬇ Export saved (CSV)</button>
   <button class="link" id="exportRej">⬇ Export hidden</button>
@@ -355,6 +356,24 @@ document.getElementById('exportView').onclick=()=>{
   downloadBlob('listings-view.csv', rowsToCSV(rows), 'text/csv;charset=utf-8');
 };
 document.getElementById('exportRej').onclick=()=>downloadBlob('rejected.json',JSON.stringify([...rejected],null,2),'application/json');
+// Build a shareable, forward-facing broker page (data rides in the URL; no backend)
+document.getElementById('shareBroker').onclick=()=>{
+  const rows=Object.values(saved).sort((a,b)=>b.score-a.score);
+  if(!rows.length){ alert('Save some listings first (tap ✓ Save), then send them to your broker.'); return; }
+  const payload=rows.map(d=>({
+    a:areaLabel(d.area_key), n:d.neighborhood, b:d.bedrooms, ba:d.bathrooms,
+    m:d.area_m2?Math.round(d.area_m2):'', p:d.price_total, pu:d.price_usd,
+    cn:d.contact_name, ph:d.contact_phone, wa:d.contact_whatsapp,
+    u:d.url, img:(d.images&&d.images[0])||d.image||''
+  }));
+  const b64=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  const base=(location.origin+location.pathname).replace(/[^/]*$/,'');
+  const link=base+'broker.html#'+b64;
+  const long = link.length>7000 ? '\n\n(Long list — if the link breaks when sending, share fewer at a time or use Export view CSV.)' : '';
+  const done=()=>alert('Broker link copied ✓  ('+rows.length+' saved listings)\n\nPaste it to your broker via WhatsApp or email. She opens it and can WhatsApp / call each place — no login needed.'+long);
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link).then(done,()=>prompt('Copy this link for your broker:',link)); }
+  else prompt('Copy this link for your broker:',link);
+};
 
 // ---- map view (Leaflet + OpenStreetMap, lazy-initialised on first open) ----
 const AREA_COLOR={poblado:'#1f7a5a',laureles:'#6d28d9',envigado:'#b45309',ciudad_del_rio:'#0369a1',las_palmas:'#db2777',sabaneta:'#0d9488'};
