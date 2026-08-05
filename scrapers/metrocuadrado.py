@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 import re
 
-from core.models import Listing, parse_int, parse_area, normalize_type
+from core.models import Listing, parse_int, parse_area, normalize_type, wa_number, clean_phone
 from .http import get, polite_sleep
 
 BASE = "https://www.metrocuadrado.com"
@@ -111,6 +111,9 @@ def _to_listing(raw: dict, area_hint: str) -> Listing | None:
         lng=lng,
         image=primary,
         images=gallery[:12],
+        contact_name=_name(raw.get("moferente")) if raw.get("moferente") not in ("RealEstate", None) else "",
+        contact_phone=clean_phone(raw.get("contactPhone") or raw.get("mcontactoinmobiliaria_fijo1")),
+        contact_whatsapp=wa_number(raw.get("whatsapp")),
     )
 
 

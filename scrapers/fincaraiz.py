@@ -62,6 +62,9 @@ def _to_listing(raw: dict, area_key: str) -> Listing | None:
         allow_pets = _tech(sheet, "allowPets")
         pets = True if (allow_pets and str(allow_pets).strip()) else None
 
+        owner = raw.get("owner") or {}
+        # Fincaraíz masks the real phone — capture the agency name; number comes off the page
+
         link = raw.get("link") or ""
         url = link if link.startswith("http") else BASE + link
 
@@ -101,6 +104,7 @@ def _to_listing(raw: dict, area_key: str) -> Listing | None:
             lng=raw.get("longitude"),
             image=img,
             images=gallery,
+            contact_name=(owner.get("name") or "").strip(),
             created_at=raw.get("created_at", "") or "",
             updated_at=raw.get("updated_at", "") or "",
         )

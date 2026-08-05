@@ -53,6 +53,11 @@ class Listing:
     lng: Optional[float] = None
     image: str = ""                   # primary photo (kept for back-compat)
     images: list = field(default_factory=list)   # full gallery, first = primary
+
+    contact_name: str = ""            # agency / advisor
+    contact_phone: str = ""           # call number (may be a landline)
+    contact_whatsapp: str = ""        # WhatsApp digits, 57-prefixed (mobiles only)
+    contact_email: str = ""
     created_at: str = ""
     updated_at: str = ""
 
@@ -83,6 +88,27 @@ class Listing:
         d["uid"] = self.uid
         d["price_usd"] = self.price_usd
         return d
+
+
+def wa_number(raw) -> str:
+    """Normalize a Colombian phone to WhatsApp digits (57 + 10-digit mobile).
+    Returns '' for landlines/unusable values — only mobiles (start 3) get a link."""
+    if not raw:
+        return ""
+    d = re.sub(r"\D", "", str(raw))
+    if d.startswith("57"):
+        d = d[2:]
+    return "57" + d if len(d) == 10 and d.startswith("3") else ""
+
+
+def clean_phone(raw) -> str:
+    """Human-readable call number: digits only (keeps landlines like 604…)."""
+    if not raw:
+        return ""
+    d = re.sub(r"\D", "", str(raw))
+    if d.startswith("57") and len(d) > 10:
+        d = d[2:]
+    return d
 
 
 def normalize_type(name: str) -> str:

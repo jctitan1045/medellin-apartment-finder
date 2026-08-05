@@ -71,6 +71,17 @@ _TEMPLATE = r"""<!DOCTYPE html>
   select,button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);
        border-radius:8px;padding:7px 10px;cursor:pointer}
   button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .dd{position:relative}
+  .dd>summary{list-style:none;cursor:pointer;background:var(--card);border:1px solid var(--line);
+       border-radius:8px;padding:7px 10px;user-select:none;white-space:nowrap}
+  .dd>summary::-webkit-details-marker{display:none}
+  .dd[open]>summary{border-color:var(--accent)}
+  .ddbody{position:absolute;top:calc(100% + 4px);left:0;z-index:20;background:var(--card);
+       border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:8px;min-width:180px}
+  .ddbody label{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:6px;cursor:pointer;font-size:14px}
+  .ddbody label:hover{background:var(--chip)}
+  .ddall{border-bottom:1px solid var(--line);margin-bottom:4px;padding-bottom:6px!important;font-weight:600}
+  .ddbody input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
   .spacer{flex:1}
   .link{background:none;border:none;color:var(--muted);text-decoration:underline;padding:7px 4px}
   .grid{max-width:1180px;margin:0 auto;padding:16px;display:grid;gap:14px;
@@ -139,7 +150,13 @@ _TEMPLATE = r"""<!DOCTYPE html>
 </header>
 <div class="bar">
   <button id="savedBtn">★ Saved (<span id="savedN">0</span>)</button>
-  <select id="area"><option value="">All areas</option></select>
+  <details class="dd" id="areaDD">
+    <summary id="areaSum">All areas</summary>
+    <div class="ddbody">
+      <label class="ddall"><input type="checkbox" id="areaAll" checked> All areas</label>
+      <div id="areaBoxes"></div>
+    </div>
+  </details>
   <select id="type"><option value="">All types</option></select>
   <select id="beds">
     <option value="">Any beds</option>
@@ -168,6 +185,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
   <button id="newonly">Show new only</button>
   <button id="mapBtn">🗺 Map</button>
   <span class="spacer"></span>
+  <button class="link" id="exportView">⬇ Export view (CSV)</button>
   <button class="link" id="exportSaved">⬇ Export saved (CSV)</button>
   <button class="link" id="exportRej">⬇ Export hidden</button>
 </div>
@@ -191,8 +209,10 @@ auto-verified — check the listing. Prices are rent + administración in COP.</
 <script>
 const DATA = __DATA__;
 const grid=document.getElementById('grid'), empty=document.getElementById('empty');
-const areaSel=document.getElementById('area'), typeSel=document.getElementById('type'),
+const typeSel=document.getElementById('type'),
       srcSel=document.getElementById('src'), sortSel=document.getElementById('sort');
+const areaSum=document.getElementById('areaSum'), areaBoxes=document.getElementById('areaBoxes'),
+      areaAll=document.getElementById('areaAll');
 const newBtn=document.getElementById('newonly'), savedBtn=document.getElementById('savedBtn');
 const minScoreSel=document.getElementById('minscore'), bedsSel=document.getElementById('beds');
 let newOnly=false, savedView=false, mapView=false;
@@ -207,8 +227,20 @@ function persist(){localStorage.setItem(LS_REJ,JSON.stringify([...rejected]));
 
 const areaLabel=k=>(k||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 const TYPE_LABEL={apartamento:'Apartments',casa:'Houses',penthouse:'Penthouses'};
-[...new Set(DATA.map(d=>d.area_key).filter(Boolean))].sort().forEach(a=>{
-  const o=document.createElement('option');o.value=a;o.textContent=areaLabel(a);areaSel.appendChild(o);});
+const ALL_AREAS=[...new Set(DATA.map(d=>d.area_key).filter(Boolean))].sort();
+ALL_AREAS.forEach(a=>{
+  const lb=document.createElement('label');
+  lb.innerHTML=`<input type="checkbox" class="areaChk" value="${a}" checked> ${areaLabel(a)}`;
+  areaBoxes.appendChild(lb);
+});
+function checkedAreas(){ return new Set([...areaBoxes.querySelectorAll('.areaChk:checked')].map(c=>c.value)); }
+function updateAreaSummary(){
+  const chosen=checkedAreas(), n=chosen.size;
+  areaAll.checked = n===ALL_AREAS.length;
+  areaAll.indeterminate = n>0 && n<ALL_AREAS.length;
+  areaSum.textContent = n===ALL_AREAS.length ? 'All areas'
+    : n===0 ? 'No areas' : n===1 ? areaLabel([...chosen][0]) : n+' areas';
+}
 [...new Set(DATA.map(d=>d.property_type).filter(Boolean))].sort().forEach(t=>{
   const o=document.createElement('option');o.value=t;o.textContent=TYPE_LABEL[t]||areaLabel(t);typeSel.appendChild(o);});
 [...new Set(DATA.map(d=>d.source))].sort().forEach(s=>{
@@ -228,8 +260,8 @@ function updateStats(){
 
 function currentRows(){
   let rows = savedView ? Object.values(saved) : DATA.filter(d=>!rejected.has(d.uid));
-  const minScore=+minScoreSel.value||0, beds=bedsSel.value;
-  rows = rows.filter(d=>(!areaSel.value||d.area_key===areaSel.value)
+  const minScore=+minScoreSel.value||0, beds=bedsSel.value, areas=checkedAreas();
+  rows = rows.filter(d=>(areas.has(d.area_key))
     &&(!typeSel.value||d.property_type===typeSel.value)
     &&(!srcSel.value||d.source===srcSel.value)
     &&(d.score>=minScore)
@@ -319,31 +351,48 @@ function downloadBlob(name,text,mime){
   URL.revokeObjectURL(a.href);
 }
 // CSV with every field, RFC-4180 quoting, UTF-8 BOM so accents open right in Excel
+function waLink(d){
+  if(!d.contact_whatsapp) return '';
+  const msg=`Hola, vi este inmueble en ${d.neighborhood||'Medellín'} (${d.bedrooms||'?'} hab, `
+    +`${d.bathrooms||'?'} baños) publicado en ${d.source} y me interesa. ¿Sigue disponible? `
+    +`Me gustaría agendar una visita. ${d.url}`;
+  return `https://wa.me/${d.contact_whatsapp}?text=${encodeURIComponent(msg)}`;
+}
+// Ordered as a contact/call sheet for the assistant: what it is, then how to reach them.
 const CSV_COLS=[
-  ['score','score'],['area',d=>areaLabel(d.area_key)],['neighborhood','neighborhood'],['city','city'],
+  ['score','score'],['area',d=>areaLabel(d.area_key)],['neighborhood','neighborhood'],
   ['type','property_type'],['bedrooms','bedrooms'],['bathrooms','bathrooms'],
   ['area_m2',d=>d.area_m2?Math.round(d.area_m2):''],
-  ['rent_cop','price_rent'],['admin_cop','price_admin'],['total_cop','price_total'],['approx_usd','price_usd'],
-  ['stratum','stratum'],['floor','floor'],['garages','garages'],
+  ['total_cop','price_total'],['approx_usd','price_usd'],
+  ['contact_name','contact_name'],['phone','contact_phone'],
+  ['whatsapp_link',waLink],['email','contact_email'],['listing_url','url'],
+  ['status',''],['notes_for_visit',''],   // blank columns for the assistant to fill in
+  ['source','source'],['stratum','stratum'],['floor','floor'],['garages','garages'],
   ['furnished',d=>d.furnished===true?'furnished':d.furnished===false?'unfurnished':'unknown'],
   ['pet_friendly',d=>d.pets===true?'yes':''],
   ['match_flags',d=>(d.score_flags||[]).join('; ')],
   ['warnings',d=>(d.notes||[]).join('; ')],
   ['is_new',d=>d.is_new?'new':''],
-  ['source','source'],['url','url'],['photo',d=>(d.images&&d.images[0])||d.image||''],
+  ['photo',d=>(d.images&&d.images[0])||d.image||''],
+  ['rent_cop','price_rent'],['admin_cop','price_admin'],
   ['latitude','lat'],['longitude','lng'],['id','uid'],
 ];
 function csvCell(v){ if(v==null) return ''; const s=String(v).replace(/"/g,'""');
   return /[",\n\r]/.test(s)?`"${s}"`:s; }
-function savedToCSV(){
-  const rows=Object.values(saved).sort((a,b)=>b.score-a.score);
+function rowsToCSV(rows){
   const head=CSV_COLS.map(c=>c[0]).join(',');
   const body=rows.map(d=>CSV_COLS.map(c=>csvCell(typeof c[1]==='function'?c[1](d):d[c[1]])).join(','));
   return '﻿'+[head,...body].join('\r\n');
 }
 document.getElementById('exportSaved').onclick=()=>{
-  if(!Object.keys(saved).length){ alert('No saved listings yet — tap ✓ Save on ones you like first.'); return; }
-  downloadBlob('saved-listings.csv', savedToCSV(), 'text/csv;charset=utf-8');
+  const rows=Object.values(saved).sort((a,b)=>b.score-a.score);
+  if(!rows.length){ alert('No saved listings yet — tap ✓ Save on ones you like first.'); return; }
+  downloadBlob('saved-listings.csv', rowsToCSV(rows), 'text/csv;charset=utf-8');
+};
+document.getElementById('exportView').onclick=()=>{
+  const rows=currentRows();
+  if(!rows.length){ alert('Nothing in the current view to export.'); return; }
+  downloadBlob('listings-view.csv', rowsToCSV(rows), 'text/csv;charset=utf-8');
 };
 document.getElementById('exportRej').onclick=()=>downloadBlob('rejected.json',JSON.stringify([...rejected],null,2),'application/json');
 
@@ -397,11 +446,15 @@ function setMapView(on){
 mapBtn.addEventListener('click',()=>setMapView(!mapView));
 
 function refresh(){ render(); if(mapView) renderMap(); }
-[areaSel,typeSel,bedsSel,srcSel,minScoreSel,sortSel].forEach(e=>e.addEventListener('change',refresh));
+[typeSel,bedsSel,srcSel,minScoreSel,sortSel].forEach(e=>e.addEventListener('change',refresh));
+areaBoxes.addEventListener('change',()=>{ updateAreaSummary(); refresh(); });
+areaAll.addEventListener('change',()=>{
+  areaBoxes.querySelectorAll('.areaChk').forEach(c=>c.checked=areaAll.checked);
+  updateAreaSummary(); refresh(); });
 newBtn.addEventListener('click',()=>{newOnly=!newOnly;newBtn.classList.toggle('on',newOnly);refresh();});
 savedBtn.addEventListener('click',()=>{savedView=!savedView;savedBtn.classList.toggle('on',savedView);
   newBtn.style.display=savedView?'none':'';refresh();});
-updateStats(); render();
+updateAreaSummary(); updateStats(); render();
 </script>
 </body>
 </html>"""

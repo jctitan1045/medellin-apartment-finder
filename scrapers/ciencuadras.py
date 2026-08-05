@@ -15,7 +15,7 @@ import json
 import re
 from urllib.parse import urlparse
 
-from core.models import Listing, parse_int, parse_area, normalize_type
+from core.models import Listing, parse_int, parse_area, normalize_type, wa_number, clean_phone
 from .http import get, polite_sleep
 
 BASE = "https://www.ciencuadras.com"
@@ -120,6 +120,11 @@ def _enrich(listing: Listing) -> None:
     if gallery:
         listing.images = gallery[:12]
         listing.image = listing.image or gallery[0]
+
+    listing.contact_name = g.get("advisoryName") or listing.contact_name
+    listing.contact_phone = clean_phone(g.get("advisoryPhone")) or listing.contact_phone
+    listing.contact_whatsapp = wa_number(g.get("whatsAppContact") or g.get("advisorWhatsapp"))
+    listing.contact_email = g.get("advisorMail") or listing.contact_email
 
 
 def scrape(cfg: dict, hard: dict, areas_cfg: dict, match_area) -> list[Listing]:
