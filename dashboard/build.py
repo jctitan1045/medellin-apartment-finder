@@ -168,7 +168,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
   <button id="newonly">Show new only</button>
   <button id="mapBtn">🗺 Map</button>
   <span class="spacer"></span>
-  <button class="link" id="exportSaved">⬇ Export saved</button>
+  <button class="link" id="exportSaved">⬇ Export saved (CSV)</button>
   <button class="link" id="exportRej">⬇ Export hidden</button>
 </div>
 <div class="grid" id="grid"></div>
@@ -313,13 +313,39 @@ grid.addEventListener('touchend',e=>{const t=e.target.closest('.thumb');
   if(t&&t._sx!=null){const dx=e.changedTouches[0].clientX-t._sx;
     if(Math.abs(dx)>30) flip(t, dx<0?1:-1); t._sx=null;}},{passive:true});
 
-function download(name,obj){
-  const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+function downloadBlob(name,text,mime){
+  const blob=new Blob([text],{type:mime});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();
   URL.revokeObjectURL(a.href);
 }
-document.getElementById('exportSaved').onclick=()=>download('saved.json',Object.values(saved));
-document.getElementById('exportRej').onclick=()=>download('rejected.json',[...rejected]);
+// CSV with every field, RFC-4180 quoting, UTF-8 BOM so accents open right in Excel
+const CSV_COLS=[
+  ['score','score'],['area',d=>areaLabel(d.area_key)],['neighborhood','neighborhood'],['city','city'],
+  ['type','property_type'],['bedrooms','bedrooms'],['bathrooms','bathrooms'],
+  ['area_m2',d=>d.area_m2?Math.round(d.area_m2):''],
+  ['rent_cop','price_rent'],['admin_cop','price_admin'],['total_cop','price_total'],['approx_usd','price_usd'],
+  ['stratum','stratum'],['floor','floor'],['garages','garages'],
+  ['furnished',d=>d.furnished===true?'furnished':d.furnished===false?'unfurnished':'unknown'],
+  ['pet_friendly',d=>d.pets===true?'yes':''],
+  ['match_flags',d=>(d.score_flags||[]).join('; ')],
+  ['warnings',d=>(d.notes||[]).join('; ')],
+  ['is_new',d=>d.is_new?'new':''],
+  ['source','source'],['url','url'],['photo',d=>(d.images&&d.images[0])||d.image||''],
+  ['latitude','lat'],['longitude','lng'],['id','uid'],
+];
+function csvCell(v){ if(v==null) return ''; const s=String(v).replace(/"/g,'""');
+  return /[",\n\r]/.test(s)?`"${s}"`:s; }
+function savedToCSV(){
+  const rows=Object.values(saved).sort((a,b)=>b.score-a.score);
+  const head=CSV_COLS.map(c=>c[0]).join(',');
+  const body=rows.map(d=>CSV_COLS.map(c=>csvCell(typeof c[1]==='function'?c[1](d):d[c[1]])).join(','));
+  return '﻿'+[head,...body].join('\r\n');
+}
+document.getElementById('exportSaved').onclick=()=>{
+  if(!Object.keys(saved).length){ alert('No saved listings yet — tap ✓ Save on ones you like first.'); return; }
+  downloadBlob('saved-listings.csv', savedToCSV(), 'text/csv;charset=utf-8');
+};
+document.getElementById('exportRej').onclick=()=>downloadBlob('rejected.json',JSON.stringify([...rejected],null,2),'application/json');
 
 // ---- map view (Leaflet + OpenStreetMap, lazy-initialised on first open) ----
 const AREA_COLOR={poblado:'#1f7a5a',laureles:'#6d28d9',envigado:'#b45309',ciudad_del_rio:'#0369a1',las_palmas:'#db2777',sabaneta:'#0d9488'};
