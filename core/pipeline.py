@@ -65,8 +65,10 @@ def apply_hard_filter(listing: Listing, hard: dict) -> list:
     """Return a list of deal-breaker reasons. Empty list == passes."""
     fails = []
 
-    if listing.bedrooms is not None and listing.bedrooms < hard["min_bedrooms"]:
-        fails.append(f"{listing.bedrooms} bedrooms (< {hard['min_bedrooms']})")
+    bed_floor = (hard.get("min_bedrooms_by_area") or {}).get(
+        listing.area_key, hard["min_bedrooms"])
+    if listing.bedrooms is not None and listing.bedrooms < bed_floor:
+        fails.append(f"{listing.bedrooms} bedrooms (< {bed_floor} in {listing.area_key})")
     if listing.bathrooms is not None and listing.bathrooms < hard["min_bathrooms"]:
         fails.append(f"{listing.bathrooms} bathrooms (< {hard['min_bathrooms']})")
 
