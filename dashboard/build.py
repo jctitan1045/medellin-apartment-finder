@@ -186,9 +186,11 @@ _TEMPLATE = r"""<!DOCTYPE html>
   <button id="mapBtn">🗺 Map</button>
   <span class="spacer"></span>
   <button class="link" id="shareBroker">📤 Send to broker</button>
-  <button class="link" id="exportView">⬇ Export view (CSV)</button>
-  <button class="link" id="exportSaved">⬇ Export saved (CSV)</button>
-  <button class="link" id="exportRej">⬇ Export hidden</button>
+  <button class="link" id="exportViewX">⬇ View (Excel)</button>
+  <button class="link" id="exportView">View (CSV)</button>
+  <button class="link" id="exportSavedX">⬇ Saved (Excel)</button>
+  <button class="link" id="exportSaved">Saved (CSV)</button>
+  <button class="link" id="exportRej">Hidden</button>
 </div>
 <div class="grid" id="grid"></div>
 <div id="mapwrap">
@@ -395,6 +397,48 @@ document.getElementById('exportView').onclick=()=>{
   downloadBlob('listings-view.csv', rowsToCSV(rows), 'text/csv;charset=utf-8');
 };
 document.getElementById('exportRej').onclick=()=>downloadBlob('rejected.json',JSON.stringify([...rejected],null,2),'application/json');
+
+// ---- native Excel (.xlsx) via SheetJS, lazy-loaded on first use ----
+let xlsxLoading=null;
+function ensureXLSX(){
+  if(window.XLSX) return Promise.resolve();
+  if(xlsxLoading) return xlsxLoading;
+  xlsxLoading=new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js';
+    s.onload=res; s.onerror=()=>rej(new Error('could not load the Excel library'));
+    document.head.appendChild(s);
+  });
+  return xlsxLoading;
+}
+const LINK_CELLS={whatsapp_link:'WhatsApp', listing_url:'Ver anuncio', photo:'Foto'};
+function rowsToXLSX(rows,filename){
+  ensureXLSX().then(()=>{
+    const header=CSV_COLS.map(c=>c[0]);
+    const aoa=[header, ...rows.map(d=>CSV_COLS.map(c=>{
+      const v=typeof c[1]==='function'?c[1](d):d[c[1]]; return v==null?'':v; }))];
+    const ws=XLSX.utils.aoa_to_sheet(aoa);
+    rows.forEach((d,ri)=>Object.entries(LINK_CELLS).forEach(([col,label])=>{
+      const ci=header.indexOf(col); if(ci<0) return;
+      const addr=XLSX.utils.encode_cell({r:ri+1,c:ci}); const cell=ws[addr];
+      if(cell&&cell.v){ cell.l={Target:String(cell.v)}; cell.v=label; }
+    }));
+    ws['!cols']=header.map(h=>({wch:Math.min(Math.max(h.length+2,10),42)}));
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,'Apartamentos');
+    XLSX.writeFile(wb,filename);
+  }).catch(e=>alert('Excel export failed ('+e.message+'). The CSV export always works as a fallback.'));
+}
+document.getElementById('exportViewX').onclick=()=>{
+  const rows=currentRows();
+  if(!rows.length){ alert('Nothing in the current view to export.'); return; }
+  rowsToXLSX(rows,'listings-view.xlsx');
+};
+document.getElementById('exportSavedX').onclick=()=>{
+  const rows=Object.values(saved).sort((a,b)=>b.score-a.score);
+  if(!rows.length){ alert('No saved listings yet — tap ✓ Save on ones you like first.'); return; }
+  rowsToXLSX(rows,'saved-listings.xlsx');
+};
 // Build a shareable, forward-facing broker page (data rides in the URL; no backend)
 document.getElementById('shareBroker').onclick=()=>{
   const rows=Object.values(saved).sort((a,b)=>b.score-a.score);
