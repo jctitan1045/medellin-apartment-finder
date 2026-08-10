@@ -1,6 +1,7 @@
 """Shared HTTP fetch with browser-like headers, retries, and polite pacing."""
 from __future__ import annotations
 
+import socket
 import time
 import random
 import urllib.request
@@ -26,7 +27,8 @@ def get(url: str, retries: int = 3, timeout: int = 30) -> str | None:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 charset = resp.headers.get_content_charset() or "utf-8"
                 return resp.read().decode(charset, errors="ignore")
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+        except (urllib.error.HTTPError, urllib.error.URLError,
+                TimeoutError, socket.timeout, ConnectionError) as e:
             last_err = e
             # 404 on a pagination page just means we've run out — don't retry hard
             if isinstance(e, urllib.error.HTTPError) and e.code == 404:
