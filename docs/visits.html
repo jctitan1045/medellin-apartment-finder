@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Visit Scorecard — Medellín</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#12161c; --muted:#5b6673; --line:#e5e8ec;
+    --accent:#1f7a5a; --accent-ink:#fff; --warn:#c2410c; --chip:#eef1f4;
+    --yes:#1f7a5a; --no:#b91c1c; --shadow:0 1px 3px rgba(0,0,0,.08); --track:#dfe3e8;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0e1116;--card:#171b22;--ink:#e6e9ee;--muted:#9aa4b2;--line:#252b34;
+          --accent:#38b489;--accent-ink:#08130e;--warn:#fb923c;--chip:#222833;
+          --yes:#38b489;--no:#f87171;--shadow:0 1px 3px rgba(0,0,0,.4);--track:#2b323d;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg);color:var(--ink)}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+  header{padding:20px 0 8px}
+  h1{margin:0 0 2px;font-size:20px;letter-spacing:-.01em}
+  h2{font-size:15px;margin:22px 0 8px}
+  .sub{color:var(--muted);font-size:13px}
+  .sub b{color:var(--ink)}
+  a.back{color:var(--accent);text-decoration:none;font-weight:600;font-size:13px}
+  .bar{position:sticky;top:0;z-index:6;background:var(--bg);padding:10px 0;display:flex;gap:8px;
+       flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--line)}
+  select,button,input,textarea{font:inherit;color:var(--ink);background:var(--card);
+       border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+  button{cursor:pointer}
+  button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  .spacer{flex:1}
+  .link{background:none;border:none;color:var(--muted);text-decoration:underline;padding:7px 4px}
+  .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+  .seg button{border:none;border-radius:0;padding:7px 12px;background:none}
+  .seg button.on{background:var(--accent);color:var(--accent-ink)}
+
+  /* ---- ranked cards ---- */
+  .list{display:flex;flex-direction:column;gap:12px;padding:16px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+        display:flex;gap:14px;padding:13px;align-items:flex-start}
+  .card.dim{opacity:.5}
+  .card.win{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+  .rank{font-size:13px;color:var(--muted);font-weight:700;width:22px;flex:none;padding-top:16px;text-align:center}
+  .ring{width:62px;height:62px;flex:none;border-radius:50%;display:grid;place-items:center;
+        background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--track) 0)}
+  .ring i{width:48px;height:48px;border-radius:50%;background:var(--card);display:grid;place-items:center;
+          font-style:normal;font-weight:700;font-size:18px}
+  .ring.na{background:var(--track)}
+  .cbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+  .ctop{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .nm{font-weight:700;font-size:16px}
+  .where{color:var(--muted);font-size:13px}
+  .specs{font-size:14px}
+  .specs b{font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .chip{background:var(--chip);border-radius:20px;padding:3px 9px;font-size:11.5px;white-space:nowrap}
+  .chip.good{background:rgba(31,122,90,.14);color:var(--yes)}
+  .chip.bad{background:rgba(185,28,28,.13);color:var(--no)}
+  .chip.warn{background:rgba(194,65,12,.14);color:var(--warn)}
+  .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+  .acts button,.acts a{font-size:12.5px;padding:5px 9px;border-radius:8px;text-decoration:none;
+        border:1px solid var(--line);background:var(--card);color:var(--ink)}
+  .note{font-size:13px;color:var(--muted);white-space:pre-wrap}
+  details.bd summary{cursor:pointer;font-size:12.5px;color:var(--muted);list-style:none}
+  details.bd summary::-webkit-details-marker{display:none}
+  .bdrows{display:grid;grid-template-columns:130px 1fr 38px;gap:4px 8px;align-items:center;margin-top:8px}
+  .bdrows span{font-size:12px;color:var(--muted)}
+  .bdrows .v{font-size:12px;text-align:right;font-variant-numeric:tabular-nums}
+  .track{height:7px;background:var(--track);border-radius:4px;overflow:hidden}
+  .fill{height:100%;background:var(--accent);border-radius:4px}
+  .fill.lo{background:var(--no)} .fill.mid{background:var(--warn)}
+  .miss{color:var(--muted);font-size:11.5px}
+
+  /* ---- compare table ---- */
+  .tblwrap{overflow-x:auto;padding:16px 0}
+  table{border-collapse:collapse;font-size:13.5px;min-width:100%}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;white-space:nowrap}
+  th.rowh{position:sticky;left:0;background:var(--bg);z-index:2;font-weight:600;color:var(--muted)}
+  thead th{background:var(--card);font-weight:700}
+  td.best{background:rgba(31,122,90,.14);font-weight:700}
+  td.worst{color:var(--no)}
+  tr.sec th{background:var(--chip);font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---- settings ---- */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:16px 0;
+         box-shadow:var(--shadow)}
+  .wrow{display:grid;grid-template-columns:150px 1fr 30px;gap:10px;align-items:center;margin:7px 0}
+  .wrow label{font-size:13.5px}
+  .wrow input[type=range]{width:100%;accent-color:var(--accent)}
+  .wrow .wv{font-size:12.5px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .fld{display:flex;flex-direction:column;gap:4px;margin:6px 0}
+  .fld label{font-size:12.5px;color:var(--muted)}
+  .fld input,.fld select,.fld textarea{width:100%}
+  .inline{display:flex;align-items:center;gap:8px;font-size:13.5px;margin:6px 0}
+  .inline input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
+
+  /* ---- modal ---- */
+  dialog{border:none;border-radius:14px;padding:0;max-width:640px;width:calc(100% - 24px);
+         background:var(--card);color:var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+  dialog::backdrop{background:rgba(0,0,0,.45)}
+  .mhead{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;
+         position:sticky;top:0;background:var(--card);z-index:2}
+  .mhead h3{margin:0;font-size:16px;flex:1}
+  .mbody{padding:14px 16px;max-height:70vh;overflow:auto}
+  .mfoot{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:8px;
+         position:sticky;bottom:0;background:var(--card)}
+  .rate{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;margin:9px 0}
+  .rate .rl{font-size:13.5px}
+  .rate .rl small{display:block;color:var(--muted);font-size:11.5px}
+  .stars{display:flex;gap:4px}
+  .stars button{width:36px;height:34px;padding:0;border-radius:8px;font-size:13px;color:var(--muted)}
+  .stars button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+  .stars button.clr{width:28px;font-size:12px}
+  .empty{text-align:center;color:var(--muted);padding:50px 16px}
+  footer{padding:10px 0 44px;color:var(--muted);font-size:12px}
+  .hidden{display:none!important}
+  @media (max-width:640px){
+    .card{flex-wrap:wrap}
+    .bdrows{grid-template-columns:110px 1fr 34px}
+    .wrow{grid-template-columns:120px 1fr 28px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="back" href="index.html">← Apartment finder</a>
+  <h1>Visit Scorecard</h1>
+  <div class="sub" id="sub">No places yet.</div>
+</header>
+
+<div class="bar">
+  <div class="seg">
+    <button data-view="rank" class="on">Ranked</button>
+    <button data-view="table">Compare</button>
+    <button data-view="setup">Weights &amp; rules</button>
+  </div>
+  <button class="primary" id="addBtn">+ Add place</button>
+  <select id="sortBy" title="Sort">
+    <option value="score">Sort: score</option>
+    <option value="price">Sort: cheapest</option>
+    <option value="m2">Sort: biggest</option>
+    <option value="ppm">Sort: best $/m²</option>
+    <option value="gut">Sort: gut feel</option>
+    <option value="date">Sort: newest visit</option>
+  </select>
+  <label class="inline" style="margin:0"><input type="checkbox" id="hideOut"> Hide deal-breakers</label>
+  <div class="spacer"></div>
+  <button class="link" id="importFinder" title="Pull in listings you hearted on the finder">⬇ From saved</button>
+  <button class="link" id="expBtn">Export</button>
+  <button class="link" id="impBtn">Import</button>
+  <button class="link" id="shareBtn">Share link</button>
+</div>
+
+<!-- RANKED -->
+<div id="view-rank"><div class="list" id="list"></div></div>
+
+<!-- COMPARE -->
+<div id="view-table" class="hidden"><div class="tblwrap"><table id="tbl"></table></div>
+  <footer>Green = best in row. Blank = you haven't entered it yet.</footer>
+</div>
+
+<!-- SETTINGS -->
+<div id="view-setup" class="hidden">
+  <div class="panel">
+    <h2 style="margin-top:0">What matters, and how much</h2>
+    <div class="sub">Drag a weight to 0 to ignore a factor. Ranking updates live.</div>
+    <div id="weights"></div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+      <button id="wReset" class="link">Reset to defaults</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Scales</h2>
+    <div class="sub">Where a factor scores 0 and where it scores 100. Absolute, so scores don't
+      shuffle every time you add a place.</div>
+    <div class="grid2" id="scales"></div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Deal-breakers</h2>
+    <div class="sub">Places that fail these get flagged (and can be hidden from the list).</div>
+    <div class="grid2" id="rules"></div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Walk-to places</h2>
+    <div class="sub">The things you want to be near. Add an address and each apartment gets a
+      one-tap Google Maps walking-time link.</div>
+    <div id="anchors"></div>
+    <button id="addAnchor" style="margin-top:8px">+ Add destination</button>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin-top:0">Timeline</h2>
+    <div class="grid2">
+      <div class="fld"><label>Decide by</label><input type="date" id="decideBy"></div>
+      <div class="fld"><label>Need to be moved in by</label><input type="date" id="moveBy"></div>
+    </div>
+    <div style="margin-top:12px"><button class="link" id="wipe">Erase everything</button></div>
+  </div>
+</div>
+
+<footer id="foot"></footer>
+</div>
+
+<!-- ============ EDIT MODAL ============ -->
+<dialog id="dlg">
+  <form method="dialog" id="frm">
+    <div class="mhead"><h3 id="mtitle">Add a place</h3><button value="cancel" class="link">✕</button></div>
+    <div class="mbody">
+      <div class="grid2">
+        <div class="fld"><label>Name / nickname *</label><input id="f_name" required placeholder="e.g. Torre Verde 1402"></div>
+        <div class="fld"><label>Visit date</label><input type="date" id="f_date"></div>
+      </div>
+      <div class="grid2">
+        <div class="fld"><label>Address / building</label><input id="f_addr" placeholder="Cra 35 #8-40"></div>
+        <div class="fld"><label>Barrio</label><input id="f_barrio" placeholder="Laureles"></div>
+      </div>
+      <div class="grid2">
+        <div class="fld"><label>Area</label><select id="f_area">
+          <option value="">—</option><option>El Poblado</option><option>Laureles</option>
+          <option>Envigado</option><option>Ciudad del Río</option><option>Las Palmas</option>
+          <option>Other</option></select></div>
+        <div class="fld"><label>Status</label><select id="f_status">
+          <option value="visited">Visited</option><option value="scheduled">Scheduled</option>
+          <option value="shortlist">Shortlist</option><option value="applied">Applied</option>
+          <option value="gone">Gone / passed</option></select></div>
+      </div>
+
+      <h2>Money &amp; specs</h2>
+      <div class="grid2">
+        <div class="fld"><label>Rent (COP / month)</label><input id="f_rent" inputmode="numeric" placeholder="4.200.000"></div>
+        <div class="fld"><label>Administración (COP / month)</label><input id="f_admin" inputmode="numeric" placeholder="450.000"></div>
+      </div>
+      <div class="grid2">
+        <div class="fld"><label>Bedrooms</label><input id="f_beds" inputmode="numeric" placeholder="3"></div>
+        <div class="fld"><label>Bathrooms</label><input id="f_baths" inputmode="numeric" placeholder="2"></div>
+        <div class="fld"><label>Area (m²)</label><input id="f_m2" inputmode="decimal" placeholder="110"></div>
+        <div class="fld"><label>Floor</label><input id="f_floor" inputmode="numeric" placeholder="14"></div>
+      </div>
+      <div class="grid2">
+        <div class="fld"><label>Available from</label><input type="date" id="f_avail"></div>
+        <div class="fld"><label>Listing / photos URL</label><input id="f_url" placeholder="https://…"></div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <label class="inline"><input type="checkbox" id="f_pets"> Pet-friendly</label>
+        <label class="inline"><input type="checkbox" id="f_furn"> Furnished</label>
+        <label class="inline"><input type="checkbox" id="f_park"> Parking</label>
+      </div>
+
+      <h2>How it felt <span class="miss">(1 = bad, 5 = great — skip what you can't judge)</span></h2>
+      <div id="rateBox"></div>
+
+      <h2>Walking time <span class="miss">(minutes)</span></h2>
+      <div class="grid2" id="walkBox"></div>
+
+      <h2>Notes</h2>
+      <div class="fld"><textarea id="f_notes" rows="4" placeholder="What you'd remember in a week. Landlord, water pressure, the noise off the street, what needs fixing…"></textarea></div>
+      <div class="rate" style="margin-top:12px">
+        <div class="rl"><b>Gut feel</b><small>Ignore the math — would you sign it?</small></div>
+        <div class="stars" id="gutStars"></div>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button value="save" class="primary" id="saveBtn">Save</button>
+      <button value="cancel">Cancel</button>
+      <div class="spacer"></div>
+      <button value="delete" class="link" id="delBtn" style="color:var(--no)">Delete</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/* ------------------------------------------------------------------ model */
+const KEY='apt.visits.v1';
+
+const FACTORS=[
+  // objective
+  {k:'price',      lbl:'Price',            grp:'obj', w:8, hint:'total rent + admin'},
+  {k:'value',      lbl:'Value (COP/m²)',   grp:'obj', w:4},
+  {k:'size',       lbl:'Space (m²)',       grp:'obj', w:7},
+  {k:'bedrooms',   lbl:'Bedrooms',         grp:'obj', w:5},
+  {k:'bathrooms',  lbl:'Bathrooms',        grp:'obj', w:3},
+  {k:'proximity',  lbl:'Proximity',        grp:'obj', w:6, hint:'avg walk to your places'},
+  // subjective 1-5
+  {k:'vibe',       lbl:'Vibe',             grp:'sub', w:9, hint:'does it feel like home'},
+  {k:'light',      lbl:'Natural light',    grp:'sub', w:7},
+  {k:'quiet',      lbl:'Quiet',            grp:'sub', w:7, hint:'5 = silent'},
+  {k:'layout',     lbl:'Layout & flow',    grp:'sub', w:6},
+  {k:'kitchen',    lbl:'Kitchen & storage',grp:'sub', w:4},
+  {k:'building',   lbl:'Building & amenities',grp:'sub', w:4},
+  {k:'hood',       lbl:'Neighborhood',     grp:'sub', w:6, hint:'streets, walkability, feel'},
+  {k:'safety',     lbl:'Safety & security',grp:'sub', w:5},
+];
+const SUBS=FACTORS.filter(f=>f.grp==='sub');
+
+const DEF_SCALES={
+  price_best:3000000, price_worst:5500000,
+  ppm_best:28000,     ppm_worst:60000,
+  m2_worst:55,        m2_best:140,
+  beds_worst:1,       beds_best:3,
+  baths_worst:1,      baths_best:3,
+  walk_best:8,        walk_worst:35,
+};
+const SCALE_FIELDS=[
+  ['price_best','Price scores 100 at (COP)'],['price_worst','Price scores 0 at (COP)'],
+  ['m2_best','m² scores 100 at'],['m2_worst','m² scores 0 at'],
+  ['ppm_best','COP/m² scores 100 at'],['ppm_worst','COP/m² scores 0 at'],
+  ['beds_best','Bedrooms score 100 at'],['beds_worst','Bedrooms score 0 at'],
+  ['baths_best','Bathrooms score 100 at'],['baths_worst','Bathrooms score 0 at'],
+  ['walk_best','Walk mins score 100 at'],['walk_worst','Walk mins score 0 at'],
+];
+const DEF_RULES={maxTotal:4500000,minBeds:2,minBaths:1,minM2:60,needPets:true,noFurnished:true,availBy:'2026-09-05'};
+
+const DEF_ANCHORS=[
+  {id:'a1',name:'Gym',addr:''},
+  {id:'a2',name:'Grocery',addr:''},
+  {id:'a3',name:'Café / coworking',addr:''},
+  {id:'a4',name:'Metro or main road',addr:''},
+];
+
+const defState=()=>({
+  places:[],
+  weights:Object.fromEntries(FACTORS.map(f=>[f.k,f.w])),
+  scales:{...DEF_SCALES}, rules:{...DEF_RULES}, anchors:DEF_ANCHORS.map(a=>({...a})),
+  decideBy:'2026-08-21', moveBy:'2026-09-05', hideOut:false, sortBy:'score', view:'rank'
+});
+
+let S=load();
+function load(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(!raw) return defState();
+    const d=defState();
+    return {...d,...raw,weights:{...d.weights,...(raw.weights||{})},
+            scales:{...d.scales,...(raw.scales||{})},rules:{...d.rules,...(raw.rules||{})},
+            anchors:(raw.anchors&&raw.anchors.length)?raw.anchors:d.anchors};
+  }catch(e){ return defState(); }
+}
+function save(){ localStorage.setItem(KEY,JSON.stringify(S)); }
+
+/* ------------------------------------------------------------------ utils */
+const $=s=>document.querySelector(s);
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const num=v=>{ if(v===''||v===null||v===undefined) return null;
+  const n=parseFloat(String(v).replace(/[^\d.,-]/g,'').replace(/\.(?=\d{3}\b)/g,'').replace(',','.'));
+  return isFinite(n)?n:null; };
+const fmtCOP=n=>n==null?'—':n.toLocaleString('es-CO');
+const fmtM=n=>n==null?'—':(n>=1000000?(n/1000000).toFixed(n%1000000?1:0)+'M':n.toLocaleString('es-CO'));
+const uid=()=>'p'+Math.random().toString(36).slice(2,9);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const total=p=>p.rent==null&&p.admin==null?null:(p.rent||0)+(p.admin||0);
+const ppm=p=>{const t=total(p); return (t&&p.m2)?Math.round(t/p.m2):null;};
+const avgWalk=p=>{const v=S.anchors.map(a=>p.walk&&p.walk[a.id]).filter(x=>typeof x==='number'&&isFinite(x));
+  return v.length?v.reduce((a,b)=>a+b,0)/v.length:null;};
+
+function lerp(v,worst,best){ if(v==null) return null;
+  if(best===worst) return 50;
+  return clamp(100*(v-worst)/(best-worst),0,100); }
+
+/* ------------------------------------------------------------------ scoring */
+function factorScore(p,k){
+  const sc=S.scales;
+  switch(k){
+    case 'price':     return lerp(total(p), sc.price_worst, sc.price_best);
+    case 'value':     return lerp(ppm(p),   sc.ppm_worst,   sc.ppm_best);
+    case 'size':      return lerp(p.m2,     sc.m2_worst,    sc.m2_best);
+    case 'bedrooms':  return lerp(p.beds,   sc.beds_worst,  sc.beds_best);
+    case 'bathrooms': return lerp(p.baths,  sc.baths_worst, sc.baths_best);
+    case 'proximity': return lerp(avgWalk(p),sc.walk_worst, sc.walk_best);
+    default: { const r=p.r&&p.r[k]; return r?((r-1)/4)*100:null; }
+  }
+}
+function scoreOf(p){
+  let sum=0,wsum=0,missing=[];
+  for(const f of FACTORS){
+    const w=S.weights[f.k]||0; if(!w) continue;
+    const s=factorScore(p,f.k);
+    if(s==null){ missing.push(f.lbl); continue; }
+    sum+=w*s; wsum+=w;
+  }
+  const covered=wsum/FACTORS.reduce((a,f)=>a+(S.weights[f.k]||0),0);
+  return {score:wsum?Math.round(sum/wsum):null, missing, covered:isFinite(covered)?covered:0};
+}
+function breaks(p){
+  const r=S.rules,out=[],t=total(p);
+  if(r.maxTotal&&t!=null&&t>r.maxTotal) out.push('over budget ('+fmtM(t)+')');
+  if(r.minBeds&&p.beds!=null&&p.beds<r.minBeds) out.push(p.beds+'BR < '+r.minBeds);
+  if(r.minBaths&&p.baths!=null&&p.baths<r.minBaths) out.push(p.baths+'BA < '+r.minBaths);
+  if(r.minM2&&p.m2!=null&&p.m2<r.minM2) out.push(p.m2+'m² < '+r.minM2);
+  if(r.needPets&&p.pets===false) out.push('no pets');
+  if(r.noFurnished&&p.furnished===true) out.push('furnished');
+  if(r.availBy&&p.avail&&p.avail>r.availBy) out.push('available '+p.avail);
+  return out;
+}
+
+/* ------------------------------------------------------------------ render */
+function sorted(){
+  const rows=S.places.map(p=>({p,...scoreOf(p),brk:breaks(p)}))
+    .filter(r=>!(S.hideOut&&r.brk.length));
+  const by=S.sortBy;
+  rows.sort((a,b)=>{
+    const g=(x,f)=>{const v=f(x); return v==null?-Infinity:v;};
+    // in the decision view, anything failing a deal-breaker drops below everything clean
+    if(by==='score'&&(!!a.brk.length!==!!b.brk.length)) return a.brk.length?1:-1;
+    if(by==='price') return (total(a.p)??Infinity)-(total(b.p)??Infinity);
+    if(by==='m2')    return g(b,x=>x.p.m2)-g(a,x=>x.p.m2);
+    if(by==='ppm')   return (ppm(a.p)??Infinity)-(ppm(b.p)??Infinity);
+    if(by==='gut')   return g(b,x=>x.p.gut)-g(a,x=>x.p.gut);
+    if(by==='date')  return String(b.p.date||'').localeCompare(String(a.p.date||''));
+    return g(b,x=>x.score)-g(a,x=>x.score);
+  });
+  return rows;
+}
+
+function renderHeader(){
+  const n=S.places.length, vis=S.places.filter(p=>p.status==='visited').length;
+  let bits=[n+' place'+(n===1?'':'s'), vis+' visited'];
+  const d=daysTo(S.decideBy);
+  if(d!=null) bits.push('<b>'+(d<0?'decision date passed':d===0?'decide today':d+' day'+(d===1?'':'s')+' to decide')+'</b>');
+  $('#sub').innerHTML = n? bits.join(' · ') : 'No places yet — add the ones you saw today.';
+}
+function daysTo(iso){ if(!iso) return null;
+  const t=new Date(iso+'T12:00:00'), now=new Date();
+  return Math.round((t-now)/86400000); }
+
+function renderList(){
+  const rows=sorted(), el=$('#list');
+  if(!rows.length){ el.innerHTML='<div class="empty"><p>Nothing here yet.</p>'+
+    '<p><button class="primary" onclick="openEdit()">+ Add the first place</button></p></div>'; return; }
+  const topScore=Math.max(...rows.map(r=>r.score??-1));
+  el.innerHTML=rows.map((r,i)=>card(r,i,topScore)).join('');
+}
+
+function card(r,i,topScore){
+  const p=r.p, t=total(p), pm=ppm(p);
+  const specs=[p.beds!=null?p.beds+' BR':null,p.baths!=null?p.baths+' BA':null,
+               p.m2!=null?p.m2+' m²':null,p.floor!=null?'piso '+p.floor:null].filter(Boolean).join(' · ');
+  const st=[];
+  if(p.status&&p.status!=='visited') st.push('<span class="chip">'+esc(p.status)+'</span>');
+  if(p.pets) st.push('<span class="chip good">pets ok</span>');
+  if(p.furnished) st.push('<span class="chip warn">furnished</span>');
+  if(p.park) st.push('<span class="chip">parking</span>');
+  if(pm) st.push('<span class="chip">'+fmtCOP(pm)+' /m²</span>');
+  const aw=avgWalk(p); if(aw!=null) st.push('<span class="chip">~'+Math.round(aw)+' min walk avg</span>');
+  if(p.gut) st.push('<span class="chip">gut '+p.gut+'/5</span>');
+  if(r.missing.length) st.push('<span class="chip warn">'+r.missing.length+' unrated</span>');
+  const brk=r.brk.length?'<span class="chip bad">⚑ '+r.brk.map(esc).join(' · ')+'</span>':'';
+
+  // strengths / weaknesses among weighted factors with data
+  const scored=FACTORS.filter(f=>(S.weights[f.k]||0)>0).map(f=>({f,s:factorScore(p,f.k)}))
+                      .filter(x=>x.s!=null);
+  const byS=[...scored].sort((a,b)=>b.s-a.s);
+  const up=byS.slice(0,3).filter(x=>x.s>=60).map(x=>x.f.lbl).join(', ');
+  const dn=byS.slice(-3).reverse().filter(x=>x.s<45).map(x=>x.f.lbl).join(', ');
+
+  const bd=scored.length?('<details class="bd"><summary>▸ score breakdown</summary><div class="bdrows">'+
+      [...scored].sort((a,b)=>(S.weights[b.f.k]||0)-(S.weights[a.f.k]||0)).map(x=>{
+        const cls=x.s<40?'lo':x.s<65?'mid':'';
+        return '<span>'+esc(x.f.lbl)+' <small>×'+(S.weights[x.f.k])+'</small></span>'+
+               '<div class="track"><div class="fill '+cls+'" style="width:'+x.s.toFixed(0)+'%"></div></div>'+
+               '<span class="v">'+Math.round(x.s)+'</span>';
+      }).join('')+'</div>'+
+      (r.missing.length?'<div class="miss" style="margin-top:6px">not scored yet: '+r.missing.map(esc).join(', ')+'</div>':'')+
+      '</details>'):'';
+
+  const gm=p.addr?('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.addr+' Medellín')):null;
+  const acts='<div class="acts">'+
+    '<button onclick="openEdit(\''+p.id+'\')">Edit / rate</button>'+
+    (p.url?'<a href="'+esc(p.url)+'" target="_blank" rel="noopener">Listing ↗</a>':'')+
+    (gm?'<a href="'+gm+'" target="_blank" rel="noopener">Map ↗</a>':'')+
+    walkLinks(p)+'</div>';
+
+  const ring=r.score==null?'<div class="ring na"><i>–</i></div>'
+    :'<div class="ring" style="--p:'+r.score+'"><i>'+r.score+'</i></div>';
+
+  return '<div class="card'+(r.brk.length?' dim':'')+(r.score!=null&&r.score===topScore&&!r.brk.length?' win':'')+'">'+
+    '<div class="rank">'+(i+1)+'</div>'+ring+
+    '<div class="cbody">'+
+      '<div class="ctop"><span class="nm">'+esc(p.name)+'</span>'+
+        '<span class="where">'+[...new Set([p.barrio,p.area].filter(Boolean))].map(esc).join(' · ')+
+          (p.date?' · seen '+esc(p.date):'')+'</span></div>'+
+      '<div class="specs"><b>'+(t==null?'price —':'$'+fmtM(t)+'/mo')+'</b>'+
+        (p.rent!=null&&p.admin?' <span class="where">('+fmtM(p.rent)+' + '+fmtM(p.admin)+' admin)</span>':'')+
+        (specs?' &nbsp;·&nbsp; '+specs:'')+'</div>'+
+      '<div class="chips">'+brk+st.join('')+'</div>'+
+      (up?'<div class="note">Strong: '+esc(up)+(dn?' &nbsp;·&nbsp; Weak: '+esc(dn):'')+'</div>':'')+
+      (p.notes?'<div class="note">'+esc(p.notes)+'</div>':'')+
+      bd+acts+
+    '</div></div>';
+}
+function walkLinks(p){
+  if(!p.addr) return '';
+  return S.anchors.filter(a=>a.addr).map(a=>
+    '<a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=walking&origin='+
+    encodeURIComponent(p.addr+' Medellín')+'&destination='+encodeURIComponent(a.addr)+'">🚶 '+esc(a.name)+' ↗</a>').join('');
+}
+
+/* ---- compare table ---- */
+function renderTable(){
+  const rows=sorted(); const P=rows.map(r=>r.p);
+  if(!P.length){ $('#tbl').innerHTML='<tr><td>Add a place first.</td></tr>'; return; }
+  const cols=P.map((p,i)=>'<th>'+esc(p.name)+'</th>');
+  let html='<thead><tr><th class="rowh">#'+ '</th>'+rows.map((r,i)=>'<th>'+(i+1)+'</th>').join('')+'</tr>'+
+           '<tr><th class="rowh">Place</th>'+cols.join('')+'</tr></thead><tbody>';
+
+  const line=(label,vals,dir)=>{ // dir: 'hi' bigger better, 'lo' smaller better, null none
+    const nums=vals.map(v=>typeof v==='number'&&isFinite(v)?v:null).filter(v=>v!=null);
+    let best=null,worst=null;
+    if(dir&&nums.length>1){ best=dir==='hi'?Math.max(...nums):Math.min(...nums);
+                            worst=dir==='hi'?Math.min(...nums):Math.max(...nums); }
+    return '<tr><th class="rowh">'+esc(label)+'</th>'+vals.map(v=>{
+      const isN=typeof v==='number'&&isFinite(v);
+      const cls=isN&&best!=null&&v===best?'best':(isN&&worst!=null&&v===worst?'worst':'');
+      return '<td class="'+cls+'">'+(v==null||v===''?'<span class="miss">—</span>':(isN?fmtDisp(label,v):esc(v)))+'</td>';
+    }).join('')+'</tr>';
+  };
+  const fmtDisp=(label,v)=>{
+    if(/COP|Rent|Admin|Total|\$/i.test(label)) return fmtCOP(v);
+    if(/m²$/.test(label)) return v;
+    return Number.isInteger(v)?v:v.toFixed(1);
+  };
+
+  html+='<tr class="sec"><th class="rowh">Score</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Weighted score',rows.map(r=>r.score),'hi');
+  html+=line('Gut feel /5',P.map(p=>p.gut??null),'hi');
+  html+='<tr class="sec"><th class="rowh">Money</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Total /mo (COP)',P.map(p=>total(p)),'lo');
+  html+=line('Rent (COP)',P.map(p=>p.rent??null),'lo');
+  html+=line('Admin (COP)',P.map(p=>p.admin??null),'lo');
+  html+=line('COP per m²',P.map(p=>ppm(p)),'lo');
+  html+='<tr class="sec"><th class="rowh">Space</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Area m²',P.map(p=>p.m2??null),'hi');
+  html+=line('Bedrooms',P.map(p=>p.beds??null),'hi');
+  html+=line('Bathrooms',P.map(p=>p.baths??null),'hi');
+  html+=line('Floor',P.map(p=>p.floor??null),null);
+  html+='<tr class="sec"><th class="rowh">Place</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Barrio',P.map(p=>p.barrio||''),null);
+  html+=line('Area',P.map(p=>p.area||''),null);
+  html+=line('Avg walk (min)',P.map(p=>{const a=avgWalk(p);return a==null?null:Math.round(a);}),'lo');
+  S.anchors.forEach(a=>{ html+=line('→ '+a.name+' (min)',P.map(p=>(p.walk&&p.walk[a.id])??null),'lo'); });
+  html+='<tr class="sec"><th class="rowh">Feel</th><th colspan="'+P.length+'"></th></tr>';
+  SUBS.forEach(f=>{ html+=line(f.lbl+' /5',P.map(p=>(p.r&&p.r[f.k])??null),'hi'); });
+  html+='<tr class="sec"><th class="rowh">Flags</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Pets',P.map(p=>p.pets===true?'yes':p.pets===false?'NO':''),null);
+  html+=line('Furnished',P.map(p=>p.furnished?'yes':''),null);
+  html+=line('Available',P.map(p=>p.avail||''),null);
+  html+=line('Deal-breakers',rows.map(r=>r.brk.join('; ')),null);
+  html+='</tbody>';
+  $('#tbl').innerHTML=html;
+}
+
+/* ---- settings ---- */
+function renderSetup(){
+  $('#weights').innerHTML=FACTORS.map(f=>
+    '<div class="wrow"><label>'+esc(f.lbl)+(f.hint?'<br><span class="miss">'+esc(f.hint)+'</span>':'')+'</label>'+
+    '<input type="range" min="0" max="10" step="1" value="'+(S.weights[f.k]||0)+'" data-w="'+f.k+'">'+
+    '<span class="wv" id="wv_'+f.k+'">'+(S.weights[f.k]||0)+'</span></div>').join('');
+  $('#scales').innerHTML=SCALE_FIELDS.map(([k,l])=>
+    '<div class="fld"><label>'+esc(l)+'</label><input data-sc="'+k+'" value="'+S.scales[k]+'" inputmode="numeric"></div>').join('');
+  const r=S.rules;
+  $('#rules').innerHTML=
+    '<div class="fld"><label>Max total /mo (COP)</label><input data-r="maxTotal" value="'+(r.maxTotal||'')+'" inputmode="numeric"></div>'+
+    '<div class="fld"><label>Min bedrooms</label><input data-r="minBeds" value="'+(r.minBeds||'')+'" inputmode="numeric"></div>'+
+    '<div class="fld"><label>Min bathrooms</label><input data-r="minBaths" value="'+(r.minBaths||'')+'" inputmode="numeric"></div>'+
+    '<div class="fld"><label>Min m²</label><input data-r="minM2" value="'+(r.minM2||'')+'" inputmode="numeric"></div>'+
+    '<div class="fld"><label>Available on or before</label><input type="date" data-r="availBy" value="'+(r.availBy||'')+'"></div>'+
+    '<div><label class="inline"><input type="checkbox" data-rb="needPets" '+(r.needPets?'checked':'')+'> Must allow the dog</label>'+
+    '<label class="inline"><input type="checkbox" data-rb="noFurnished" '+(r.noFurnished?'checked':'')+'> Must be unfurnished</label></div>';
+  $('#anchors').innerHTML=S.anchors.map(a=>
+    '<div class="grid2" style="align-items:end"><div class="fld"><label>Name</label>'+
+    '<input data-an="name" data-id="'+a.id+'" value="'+esc(a.name)+'"></div>'+
+    '<div class="fld"><label>Address (optional — enables walk links)</label>'+
+    '<input data-an="addr" data-id="'+a.id+'" value="'+esc(a.addr||'')+'" placeholder="Parque Lleras, Medellín"></div>'+
+    '<div><button data-del-an="'+a.id+'" class="link" style="color:var(--no)">remove</button></div></div>').join('');
+  $('#decideBy').value=S.decideBy||''; $('#moveBy').value=S.moveBy||'';
+}
+
+/* ------------------------------------------------------------------ edit modal */
+let editing=null;
+function openEdit(id){
+  editing=id?S.places.find(p=>p.id===id):null;
+  const p=editing||{};
+  $('#mtitle').textContent=editing?'Edit place':'Add a place';
+  $('#delBtn').style.display=editing?'':'none';
+  $('#f_name').value=p.name||''; $('#f_date').value=p.date||todayISO();
+  $('#f_addr').value=p.addr||''; $('#f_barrio').value=p.barrio||'';
+  $('#f_area').value=p.area||''; $('#f_status').value=p.status||'visited';
+  $('#f_rent').value=p.rent!=null?fmtCOP(p.rent):''; $('#f_admin').value=p.admin!=null?fmtCOP(p.admin):'';
+  $('#f_beds').value=p.beds??''; $('#f_baths').value=p.baths??'';
+  $('#f_m2').value=p.m2??''; $('#f_floor').value=p.floor??'';
+  $('#f_avail').value=p.avail||''; $('#f_url').value=p.url||'';
+  $('#f_pets').checked=!!p.pets; $('#f_furn').checked=!!p.furnished; $('#f_park').checked=!!p.park;
+  $('#f_notes').value=p.notes||'';
+  tmpR={...(p.r||{})}; tmpW={...(p.walk||{})}; tmpGut=p.gut||0;
+  renderRates(); renderWalk(); renderGut();
+  $('#dlg').showModal();
+}
+let tmpR={},tmpW={},tmpGut=0;
+const todayISO=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+function starRow(cur,cb){
+  let h='<div class="stars">';
+  for(let i=1;i<=5;i++) h+='<button type="button" class="'+(cur===i?'on':'')+'" data-v="'+i+'">'+i+'</button>';
+  h+='<button type="button" class="clr" data-v="0" title="clear">✕</button></div>';
+  return h;
+}
+function renderRates(){
+  $('#rateBox').innerHTML=SUBS.map(f=>
+    '<div class="rate" data-rate="'+f.k+'"><div class="rl">'+esc(f.lbl)+
+    (f.hint?'<small>'+esc(f.hint)+'</small>':'')+'</div>'+starRow(tmpR[f.k]||0)+'</div>').join('');
+}
+function renderGut(){ $('#gutStars').outerHTML=starRow(tmpGut).replace('class="stars"','class="stars" id="gutStars"'); }
+function renderWalk(){
+  $('#walkBox').innerHTML=S.anchors.map(a=>
+    '<div class="fld"><label>'+esc(a.name)+'</label>'+
+    '<input inputmode="numeric" data-walk="'+a.id+'" value="'+(tmpW[a.id]??'')+'" placeholder="min"></div>').join('')
+    ||'<div class="miss">Add destinations under “Weights &amp; rules”.</div>';
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.stars button'); if(!b) return;
+  const v=+b.dataset.v, box=b.closest('.stars');
+  if(box.id==='gutStars'){ tmpGut=v; renderGut(); return; }
+  const row=b.closest('[data-rate]'); if(row){ tmpR[row.dataset.rate]=v||undefined; renderRates(); }
+});
+
+$('#frm').addEventListener('submit',e=>{
+  const act=e.submitter?e.submitter.value:'cancel';
+  if(act==='delete'){ if(editing&&confirm('Delete '+editing.name+'?')){ S.places=S.places.filter(x=>x!==editing); save(); renderAll(); } return; }
+  if(act!=='save') return;
+  const walk={}; document.querySelectorAll('[data-walk]').forEach(i=>{const v=num(i.value); if(v!=null) walk[i.dataset.walk]=v;});
+  const obj={
+    id:editing?editing.id:uid(),
+    name:$('#f_name').value.trim()||'Untitled', date:$('#f_date').value, addr:$('#f_addr').value.trim(),
+    barrio:$('#f_barrio').value.trim(), area:$('#f_area').value, status:$('#f_status').value,
+    rent:num($('#f_rent').value), admin:num($('#f_admin').value),
+    beds:num($('#f_beds').value), baths:num($('#f_baths').value),
+    m2:num($('#f_m2').value), floor:num($('#f_floor').value),
+    avail:$('#f_avail').value, url:$('#f_url').value.trim(),
+    pets:$('#f_pets').checked, furnished:$('#f_furn').checked, park:$('#f_park').checked,
+    notes:$('#f_notes').value, r:tmpR, walk, gut:tmpGut||null,
+  };
+  if(editing) Object.assign(editing,obj); else S.places.push(obj);
+  save(); renderAll();
+});
+
+/* ------------------------------------------------------------------ wiring */
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{
+  S.view=b.dataset.view; save(); renderAll();
+});
+$('#addBtn').onclick=()=>openEdit();
+$('#sortBy').onchange=e=>{S.sortBy=e.target.value;save();renderList();};
+$('#hideOut').onchange=e=>{S.hideOut=e.target.checked;save();renderAll();};
+
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.w!=null&&t.type==='range'){ S.weights[t.dataset.w]=+t.value;
+    document.getElementById('wv_'+t.dataset.w).textContent=t.value; save(); renderHeader(); return; }
+  if(t.dataset.sc){ const v=num(t.value); if(v!=null){S.scales[t.dataset.sc]=v; save();} return; }
+  if(t.dataset.r){ S.rules[t.dataset.r]=t.type==='date'?t.value:num(t.value); save(); return; }
+  if(t.dataset.an){ const a=S.anchors.find(x=>x.id===t.dataset.id); if(a){a[t.dataset.an]=t.value; save();} return; }
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.rb){ S.rules[t.dataset.rb]=t.checked; save(); }
+  if(t.id==='decideBy'){ S.decideBy=t.value; save(); renderHeader(); }
+  if(t.id==='moveBy'){ S.moveBy=t.value; save(); }
+});
+document.addEventListener('click',e=>{
+  const d=e.target.closest('[data-del-an]');
+  if(d){ S.anchors=S.anchors.filter(a=>a.id!==d.dataset.delAn); save(); renderSetup(); }
+});
+$('#addAnchor').onclick=()=>{ S.anchors.push({id:'a'+Math.random().toString(36).slice(2,6),name:'New place',addr:''}); save(); renderSetup(); };
+$('#wReset').onclick=()=>{ S.weights=Object.fromEntries(FACTORS.map(f=>[f.k,f.w])); save(); renderAll(); };
+$('#wipe').onclick=()=>{ if(confirm('Erase all places, weights and settings on this device?')){ localStorage.removeItem(KEY); S=defState(); renderAll(); } };
+
+/* export / import / share */
+$('#expBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='apartment-visits-'+todayISO()+'.json'; a.click();
+};
+$('#impBtn').onclick=()=>{
+  const i=document.createElement('input'); i.type='file'; i.accept='.json,application/json';
+  i.onchange=()=>{ const f=i.files[0]; if(!f) return; const rd=new FileReader();
+    rd.onload=()=>{ try{ const d=JSON.parse(rd.result);
+        if(!d.places) throw 0;
+        if(S.places.length&&!confirm('Replace the '+S.places.length+' place(s) on this device?')) return;
+        S={...defState(),...d}; save(); renderAll();
+      }catch(err){ alert('That file didn\'t look like a scorecard export.'); } };
+    rd.readAsText(f); };
+  i.click();
+};
+$('#shareBtn').onclick=()=>{
+  const b64=btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  const url=location.origin+location.pathname+'#d='+b64;
+  navigator.clipboard?.writeText(url).then(
+    ()=>alert('Link copied ('+Math.round(url.length/1024)+' KB).\nOpen it on your phone to load the same board.'),
+    ()=>prompt('Copy this link:',url));
+};
+/* import from the finder's saved listings (same origin localStorage) */
+$('#importFinder').onclick=()=>{
+  let saved={};
+  try{ saved=JSON.parse(localStorage.getItem('maf.saved')||'{}'); }catch(e){}
+  const items=Object.values(saved);
+  if(!items.length){ alert('No saved listings found in this browser.\nHeart a few on the finder page first, then come back.'); return; }
+  const have=new Set(S.places.map(p=>p.url).filter(Boolean));
+  let n=0;
+  items.forEach(l=>{
+    if(l.url&&have.has(l.url)) return;
+    S.places.push({id:uid(),name:(l.neighborhood||'Listing')+' · '+fmtM(l.price_total||l.price_rent),
+      date:'',addr:'',barrio:l.neighborhood||'',area:areaName(l.area_key),status:'scheduled',
+      rent:l.price_rent??null,admin:l.price_admin??null,beds:l.bedrooms??null,baths:l.bathrooms??null,
+      m2:l.area_m2??null,floor:l.floor??null,avail:'',url:l.url||'',pets:l.pets===true,
+      furnished:l.furnished===true,park:(l.garages||0)>0,notes:'',r:{},walk:{},gut:null});
+    n++;
+  });
+  save(); renderAll();
+  alert(n?('Added '+n+' listing'+(n===1?'':'s')+' as “scheduled”. Rate them after you visit.'):'Nothing new to add.');
+};
+const areaName=k=>({poblado:'El Poblado',laureles:'Laureles',envigado:'Envigado',
+  ciudad_del_rio:'Ciudad del Río',las_palmas:'Las Palmas'}[k]||'');
+
+/* share-link load */
+(function(){
+  const m=location.hash.match(/^#d=(.+)$/); if(!m) return;
+  try{
+    const d=JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+    if(d.places&&confirm('This link carries '+d.places.length+' place(s). Load it into this browser?'+
+        (S.places.length?'\n\nIt replaces the '+S.places.length+' already here.':''))){
+      S={...defState(),...d}; save();
+    }
+  }catch(e){}
+  history.replaceState(null,'',location.pathname);
+})();
+
+function renderAll(){
+  ['rank','table','setup'].forEach(v=>$('#view-'+v).classList.toggle('hidden',S.view!==v));
+  document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.view===S.view));
+  $('#sortBy').value=S.sortBy; $('#hideOut').checked=!!S.hideOut;
+  renderHeader();
+  if(S.view==='rank') renderList();
+  if(S.view==='table') renderTable();
+  if(S.view==='setup') renderSetup();
+  const d=daysTo(S.moveBy);
+  $('#foot').textContent = S.moveBy? ('Out of the current place by '+S.moveBy+(d!=null?' — '+d+' days.':'')+
+    ' Everything is stored in this browser only; use Export or Share link to move it.') :
+    'Stored in this browser only.';
+}
+renderAll();
+window.openEdit=openEdit;
+</script>
+</body>
+</html>
