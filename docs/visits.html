@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Visit Scorecard — Medellín</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root{
     --bg:#f6f7f9; --card:#fff; --ink:#12161c; --muted:#5b6673; --line:#e5e8ec;
@@ -120,6 +122,52 @@
   .empty{text-align:center;color:var(--muted);padding:50px 16px}
   footer{padding:10px 0 44px;color:var(--muted);font-size:12px}
   .hidden{display:none!important}
+
+  /* ---- detail view ---- */
+  .dhead{display:flex;gap:14px;align-items:flex-start;padding:16px 0 6px;flex-wrap:wrap}
+  .dhead .ring{width:70px;height:70px}
+  .dhead .ring i{width:55px;height:55px;font-size:21px}
+  .dtitle{flex:1;min-width:220px}
+  .dtitle h2{margin:0;font-size:21px}
+  .dnav{display:flex;gap:6px;flex-wrap:wrap;padding:4px 0 10px}
+  .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .thumbs .ph{aspect-ratio:4/3;border-radius:10px;background:var(--chip) center/cover no-repeat;
+       border:1px solid var(--line);position:relative;cursor:zoom-in}
+  .thumbs .ph button{position:absolute;top:5px;right:5px;width:24px;height:24px;padding:0;border-radius:50%;
+       background:rgba(0,0,0,.6);color:#fff;border:none;font-size:13px;line-height:1;cursor:pointer;opacity:0;transition:opacity .15s}
+  .thumbs .ph:hover button{opacity:1}
+  .addph{aspect-ratio:4/3;border:2px dashed var(--line);border-radius:10px;display:grid;place-items:center;
+       color:var(--muted);font-size:13px;cursor:pointer;text-align:center;padding:8px}
+  .addph:hover{border-color:var(--accent);color:var(--accent)}
+  #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:60;display:none;
+       align-items:center;justify-content:center}
+  #lightbox img{max-width:94vw;max-height:88vh;object-fit:contain;border-radius:6px}
+  #lightbox .lbnav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;
+       background:rgba(255,255,255,.16);color:#fff;border:none;font-size:22px;cursor:pointer}
+  #lightbox .lbprev{left:14px} #lightbox .lbnext{right:14px}
+  #lightbox .lbx{position:absolute;top:14px;right:16px;background:none;border:none;color:#fff;font-size:26px;cursor:pointer}
+  #lightbox .lbc{position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#fff;font-size:13px}
+  .dmap{height:340px;border-radius:12px;border:1px solid var(--line);z-index:1;background:var(--chip)}
+  .poirow{display:grid;grid-template-columns:118px 1fr 60px;gap:6px 10px;align-items:center;margin:6px 0}
+  .poirow .pl{font-size:13px;display:flex;align-items:center;gap:6px}
+  .poirow .pv{font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+  .amgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2px 10px}
+  .amgrid label{display:flex;align-items:center;gap:7px;font-size:13.5px;padding:4px 5px;border-radius:6px;cursor:pointer}
+  .amgrid label:hover{background:var(--chip)}
+  .amgrid input{width:16px;height:16px;accent-color:var(--accent)}
+  .amgrid label.has{color:var(--ink)} .amgrid label.hasnt{color:var(--muted)}
+  .amchips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .costtbl{width:100%;font-size:14px}
+  .costtbl td{border:none;padding:6px 4px;white-space:normal}
+  .costtbl td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  .costtbl tr.tot td{border-top:1px solid var(--line);font-size:16px;padding-top:10px}
+  .costtbl tr.sm td{font-size:12.5px;color:var(--muted);font-weight:400}
+  .warnbox{background:rgba(194,65,12,.12);border:1px solid var(--warn);color:var(--warn);
+       border-radius:10px;padding:10px 12px;font-size:13.5px;margin:10px 0}
+  .infobox{background:var(--chip);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--muted);margin:10px 0}
+  .busy{display:inline-block;width:13px;height:13px;border:2px solid var(--line);border-top-color:var(--accent);
+       border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:5px}
+  @keyframes spin{to{transform:rotate(360deg)}}
   @media (max-width:640px){
     .card{flex-wrap:wrap}
     .bdrows{grid-template-columns:110px 1fr 34px}
@@ -160,6 +208,9 @@
 
 <!-- RANKED -->
 <div id="view-rank"><div class="list" id="list"></div></div>
+
+<!-- DETAIL -->
+<div id="view-place" class="hidden"></div>
 
 <!-- COMPARE -->
 <div id="view-table" class="hidden"><div class="tblwrap"><table id="tbl"></table></div>
@@ -211,6 +262,14 @@
 <footer id="foot"></footer>
 </div>
 
+<div id="lightbox">
+  <button class="lbx">✕</button>
+  <button class="lbnav lbprev">‹</button>
+  <img id="lbimg" alt="">
+  <button class="lbnav lbnext">›</button>
+  <div class="lbc" id="lbc"></div>
+</div>
+
 <!-- ============ EDIT MODAL ============ -->
 <dialog id="dlg">
   <form method="dialog" id="frm">
@@ -250,11 +309,16 @@
         <div class="fld"><label>Available from</label><input type="date" id="f_avail"></div>
         <div class="fld"><label>Listing / photos URL</label><input id="f_url" placeholder="https://…"></div>
       </div>
-      <div style="display:flex;gap:16px;flex-wrap:wrap">
-        <label class="inline"><input type="checkbox" id="f_pets"> Pet-friendly</label>
-        <label class="inline"><input type="checkbox" id="f_furn"> Furnished</label>
-        <label class="inline"><input type="checkbox" id="f_park"> Parking</label>
+      <div class="grid2">
+        <div class="fld"><label>Pets allowed?</label><select id="f_pets">
+          <option value="">Haven't asked</option><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div class="fld"><label>Furnished?</label><select id="f_furn">
+          <option value="">Haven't asked</option><option value="no">No — unfurnished</option><option value="yes">Yes</option></select></div>
       </div>
+      <label class="inline"><input type="checkbox" id="f_park"> Parking included</label>
+
+      <h2>Amenities <span class="miss">(what it actually has)</span></h2>
+      <div class="amgrid" id="amBox"></div>
 
       <h2>How it felt <span class="miss">(1 = bad, 5 = great — skip what you can't judge)</span></h2>
       <div id="rateBox"></div>
@@ -290,6 +354,8 @@ const FACTORS=[
   {k:'bedrooms',   lbl:'Bedrooms',         grp:'obj', w:5},
   {k:'bathrooms',  lbl:'Bathrooms',        grp:'obj', w:3},
   {k:'proximity',  lbl:'Proximity',        grp:'obj', w:6, hint:'avg walk to your places'},
+  {k:'walkability',lbl:'Walkability',      grp:'obj', w:7, hint:'what OSM finds within 1 km'},
+  {k:'amenities',  lbl:'Amenities',        grp:'obj', w:5, hint:'from the checklist, weighted'},
   // subjective 1-5
   {k:'vibe',       lbl:'Vibe',             grp:'sub', w:9, hint:'does it feel like home'},
   {k:'light',      lbl:'Natural light',    grp:'sub', w:7},
@@ -301,6 +367,45 @@ const FACTORS=[
   {k:'safety',     lbl:'Safety & security',grp:'sub', w:5},
 ];
 const SUBS=FACTORS.filter(f=>f.grp==='sub');
+
+/* Building + unit amenities. w = how much it's worth toward the amenity score. */
+const AMENITIES=[
+  {k:'terrace',  lbl:'Terrace / big balcony', w:9,  grp:'unit'},
+  {k:'view',     lbl:'Real view',             w:8,  grp:'unit'},
+  {k:'study',    lbl:'Study / office room',   w:9,  grp:'unit'},
+  {k:'laundry',  lbl:'Zona de ropas',         w:7,  grp:'unit'},
+  {k:'storage',  lbl:'Cuarto útil / depósito',w:8,  grp:'unit'},
+  {k:'closets',  lbl:'Vestier / good closets',w:6,  grp:'unit'},
+  {k:'gas',      lbl:'Natural gas + calentador',w:5,grp:'unit'},
+  {k:'aircon',   lbl:'Air conditioning',      w:2,  grp:'unit'},
+  {k:'gym',      lbl:'Gym',                   w:8,  grp:'bldg'},
+  {k:'pool',     lbl:'Pool',                  w:5,  grp:'bldg'},
+  {k:'heatpool', lbl:'Pool is heated',        w:3,  grp:'bldg'},
+  {k:'sauna',    lbl:'Sauna',                 w:4,  grp:'bldg'},
+  {k:'turco',    lbl:'Turco / steam',         w:4,  grp:'bldg'},
+  {k:'jacuzzi',  lbl:'Jacuzzi',               w:2,  grp:'bldg'},
+  {k:'sports',   lbl:'Sports court / squash', w:4,  grp:'bldg'},
+  {k:'bbq',      lbl:'BBQ zone',              w:3,  grp:'bldg'},
+  {k:'social',   lbl:'Salón social',          w:2,  grp:'bldg'},
+  {k:'trails',   lbl:'Trails / green space',  w:5,  grp:'bldg'},
+  {k:'coworkish',lbl:'Coworking / meeting rm',w:5,  grp:'bldg'},
+  {k:'security', lbl:'24h security',          w:6,  grp:'bldg'},
+  {k:'cctv',     lbl:'CCTV',                  w:2,  grp:'bldg'},
+  {k:'elevator', lbl:'Elevator',              w:4,  grp:'bldg'},
+  {k:'visitpark',lbl:'Visitor parking',       w:2,  grp:'bldg'},
+];
+const AM_TOTAL=AMENITIES.reduce((a,x)=>a+x.w,0);
+
+/* Walkability: what counts, how much, and how many is "enough" within the radius. */
+const POI_CATS=[
+  {k:'grocery',  lbl:'Groceries',    icon:'🛒', w:24, target:3,  color:'#0d9488'},
+  {k:'food',     lbl:'Restaurants',  icon:'🍽', w:20, target:15, color:'#c2410c'},
+  {k:'gym',      lbl:'Gyms',         icon:'🏋', w:16, target:2,  color:'#6d28d9'},
+  {k:'park',     lbl:'Parks / green',icon:'🌳', w:15, target:2,  color:'#16a34a'},
+  {k:'transit',  lbl:'Transit',      icon:'🚇', w:15, target:4,  color:'#0369a1'},
+  {k:'culture',  lbl:'Attractions',  icon:'🎭', w:10, target:3,  color:'#db2777'},
+];
+const WALK_RADIUS=1000;   // metres ≈ 12 min on the flat
 
 const DEF_SCALES={
   price_best:3000000, price_worst:5500000,
@@ -331,7 +436,8 @@ const defState=()=>({
   places:[],
   weights:Object.fromEntries(FACTORS.map(f=>[f.k,f.w])),
   scales:{...DEF_SCALES}, rules:{...DEF_RULES}, anchors:DEF_ANCHORS.map(a=>({...a})),
-  decideBy:'2026-08-21', moveBy:'2026-09-05', hideOut:false, sortBy:'score', view:'rank'
+  decideBy:'2026-08-21', moveBy:'2026-09-05', hideOut:false, sortBy:'score', view:'rank',
+  usdRate:4000, openId:null
 });
 
 let S=load();
@@ -345,7 +451,11 @@ function load(){
             anchors:(raw.anchors&&raw.anchors.length)?raw.anchors:d.anchors};
   }catch(e){ return defState(); }
 }
-function save(){ localStorage.setItem(KEY,JSON.stringify(S)); }
+function save(){
+  try{ localStorage.setItem(KEY,JSON.stringify(S)); return true; }
+  catch(e){ console.warn('save failed',e); return false; }
+}
+function bytes(){ try{ return JSON.stringify(S).length; }catch(e){ return 0; } }
 
 /* ------------------------------------------------------------------ utils */
 const $=s=>document.querySelector(s);
@@ -366,6 +476,27 @@ function lerp(v,worst,best){ if(v==null) return null;
   if(best===worst) return 50;
   return clamp(100*(v-worst)/(best-worst),0,100); }
 
+/* ---- amenity score: share of the weighted catalog this place actually has ---- */
+function amenityScore(p){
+  if(!p.am||!Object.keys(p.am).length) return null;
+  const got=AMENITIES.reduce((a,x)=>a+(p.am[x.k]?x.w:0),0);
+  return clamp(100*got/AM_TOTAL,0,100);
+}
+/* ---- walkability: per-category counts within WALK_RADIUS, weighted, capped at target ---- */
+function walkParts(p){
+  if(!p.poi) return null;
+  return POI_CATS.map(c=>{
+    const n=(p.poi.counts&&p.poi.counts[c.k])||0;
+    return {c, n, near:(p.poi.nearest&&p.poi.nearest[c.k])??null,
+            s:clamp(100*n/c.target,0,100)};
+  });
+}
+function walkScore(p){
+  const parts=walkParts(p); if(!parts) return null;
+  const w=parts.reduce((a,x)=>a+x.c.w,0);
+  return clamp(parts.reduce((a,x)=>a+x.c.w*x.s,0)/w,0,100);
+}
+
 /* ------------------------------------------------------------------ scoring */
 function factorScore(p,k){
   const sc=S.scales;
@@ -376,6 +507,8 @@ function factorScore(p,k){
     case 'bedrooms':  return lerp(p.beds,   sc.beds_worst,  sc.beds_best);
     case 'bathrooms': return lerp(p.baths,  sc.baths_worst, sc.baths_best);
     case 'proximity': return lerp(avgWalk(p),sc.walk_worst, sc.walk_best);
+    case 'walkability': return walkScore(p);
+    case 'amenities':   return amenityScore(p);
     default: { const r=p.r&&p.r[k]; return r?((r-1)/4)*100:null; }
   }
 }
@@ -401,6 +534,204 @@ function breaks(p){
   if(r.availBy&&p.avail&&p.avail>r.availBy) out.push('available '+p.avail);
   return out;
 }
+
+/* ============================================================ location + POIs */
+const MDE=[6.2442,-75.5812];
+function haversine(a,b,c,d){
+  const R=6371000,r=Math.PI/180, dp=(c-a)*r, dl=(d-b)*r;
+  const x=Math.sin(dp/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(dl/2)**2;
+  return 2*R*Math.asin(Math.sqrt(x));
+}
+function cityOf(p){
+  const a=(p.area||'')+' '+(p.barrio||'');
+  if(/envigado/i.test(a)) return 'Envigado, Antioquia, Colombia';
+  if(/sabaneta/i.test(a)) return 'Sabaneta, Antioquia, Colombia';
+  if(/itagü|itagui/i.test(a)) return 'Itagüí, Antioquia, Colombia';
+  return 'Medellín, Antioquia, Colombia';
+}
+async function nomi(q){
+  const u='https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=co&q='+encodeURIComponent(q);
+  const r=await fetch(u,{headers:{'Accept':'application/json'}});
+  if(!r.ok) throw new Error('geocoder returned '+r.status);
+  const j=await r.json();
+  return j.length?{lat:+j[0].lat,lng:+j[0].lon,label:j[0].display_name,via:q}:null;
+}
+/* Colombian street addresses geocode badly. Try progressively vaguer queries and
+   report which one actually hit, so a barrio-level pin is never mistaken for a door-level one. */
+async function geocode(p){
+  const city=cityOf(p);
+  const tries=[
+    p.addr?[p.addr,city].join(', '):null,
+    (p.addr&&p.barrio)?[p.addr,p.barrio,city].join(', '):null,
+    p.barrio?[p.barrio,city].join(', '):null,
+    (p.area&&p.area!=='Other')?[p.area,city].join(', '):null,
+    city,
+  ].filter(Boolean);
+  for(let i=0;i<tries.length;i++){
+    try{
+      const hit=await nomi(tries[i]);
+      if(hit) return {...hit, exact:i<=1};
+    }catch(e){ if(i===tries.length-1) throw e; }
+    await new Promise(r=>setTimeout(r,1100));   // Nominatim asks for ≤1 req/sec
+  }
+  throw new Error('Could not place that address. Use “Drop the pin myself” and tap the map.');
+}
+function poiCat(t){
+  if(!t) return null;
+  const shop=t.shop, am=t.amenity, le=t.leisure, to=t.tourism;
+  if(shop&&/^(supermarket|convenience|greengrocer|bakery|butcher|mall|department_store)$/.test(shop)) return 'grocery';
+  if(am&&/^(restaurant|cafe|fast_food|bar|pub|ice_cream)$/.test(am)) return 'food';
+  if(le&&/^(fitness_centre|sports_centre|swimming_pool|fitness_station)$/.test(le)) return 'gym';
+  if(am==='gym') return 'gym';
+  if(le&&/^(park|garden|pitch|playground|nature_reserve)$/.test(le)) return 'park';
+  if(t.highway==='bus_stop'||t.public_transport==='station'||
+     (t.railway&&/^(station|tram_stop|subway_entrance|halt)$/.test(t.railway))) return 'transit';
+  if(to&&/^(attraction|museum|viewpoint|zoo|artwork|gallery|theme_park)$/.test(to)) return 'culture';
+  if(am&&/^(cinema|theatre|marketplace|arts_centre|library)$/.test(am)) return 'culture';
+  if(am==='pharmacy') return 'grocery';
+  return null;
+}
+const OVERPASS='https://overpass-api.de/api/interpreter';
+async function fetchPOIs(lat,lng){
+  const around='(around:'+WALK_RADIUS+','+lat+','+lng+')';
+  const q='[out:json][timeout:30];('+
+    'nwr'+around+'["shop"~"^(supermarket|convenience|greengrocer|bakery|butcher|mall|department_store)$"];'+
+    'nwr'+around+'["amenity"~"^(restaurant|cafe|fast_food|bar|pub|ice_cream|cinema|theatre|marketplace|arts_centre|library|pharmacy|gym)$"];'+
+    'nwr'+around+'["leisure"~"^(fitness_centre|sports_centre|swimming_pool|fitness_station|park|garden|pitch|playground|nature_reserve)$"];'+
+    'nwr'+around+'["tourism"~"^(attraction|museum|viewpoint|zoo|artwork|gallery|theme_park)$"];'+
+    'node'+around+'["highway"="bus_stop"];'+
+    'nwr'+around+'["railway"~"^(station|tram_stop|subway_entrance|halt)$"];'+
+    ');out center tags 400;';
+  const r=await fetch(OVERPASS,{method:'POST',body:'data='+encodeURIComponent(q),
+        headers:{'Content-Type':'application/x-www-form-urlencoded'}});
+  if(!r.ok) throw new Error('Overpass returned '+r.status+(r.status===429?' (rate-limited, wait a minute)':''));
+  const j=await r.json();
+  const items=[],counts={},nearest={};
+  (j.elements||[]).forEach(e=>{
+    const cat=poiCat(e.tags); if(!cat) return;
+    const la=e.lat??(e.center&&e.center.lat), ln=e.lon??(e.center&&e.center.lon);
+    if(la==null||ln==null) return;
+    const d=Math.round(haversine(lat,lng,la,ln));
+    if(d>WALK_RADIUS) return;
+    const nm=(e.tags.name||'').trim();
+    items.push({c:cat,n:nm,d,la,ln});
+    counts[cat]=(counts[cat]||0)+1;
+    if(nearest[cat]==null||d<nearest[cat]) nearest[cat]=d;
+  });
+  items.sort((a,b)=>a.d-b.d);
+  return {counts,nearest,items:items.slice(0,220),at:todayISO(),radius:WALK_RADIUS};
+}
+async function locateAndScan(id,doScan){
+  const p=S.places.find(x=>x.id===id); if(!p) return;
+  const set=m=>{ const el=document.getElementById('locmsg'); if(el) el.innerHTML=m; };
+  try{
+    if(p.lat==null||p.lng==null){
+      if(!p.addr&&!p.barrio&&!p.area){ set('<span style="color:var(--no)">Add an address or barrio first (Edit / rate).</span>'); return; }
+      set('<span class="busy"></span>Looking up the address…');
+      const g=await geocode(p);
+      p.lat=g.lat; p.lng=g.lng; p.geoLabel=g.label; p.geoExact=!!g.exact; p.geoVia=g.via; save();
+    }
+    if(doScan){
+      set('<span class="busy"></span>Scanning what\'s within '+WALK_RADIUS+' m…');
+      p.poi=await fetchPOIs(p.lat,p.lng); save();
+    }
+    set('');
+    renderPlace(id);
+  }catch(e){ set('<span style="color:var(--no)">'+esc(e.message)+'</span>'); }
+}
+window.locateAndScan=locateAndScan;
+let pinMode=false;
+function dropPin(id){
+  pinMode=!pinMode;
+  const el=document.getElementById('locmsg');
+  if(el) el.innerHTML=pinMode
+    ? '<b>Tap the building on the map.</b> Zoom in first if you want it precise.'
+    : '';
+  const box=document.getElementById('dmap');
+  if(box) box.style.cursor=pinMode?'crosshair':'';
+  const btn=document.getElementById('pinBtn');
+  if(btn) btn.classList.toggle('on',pinMode);
+}
+window.dropPin=dropPin;
+function setPin(id,lat,lng){
+  const p=S.places.find(x=>x.id===id); if(!p) return;
+  p.lat=lat; p.lng=lng; p.geoExact=true;
+  p.geoLabel='pin you dropped ('+lat.toFixed(5)+', '+lng.toFixed(5)+')';
+  p.poi=null;                       // the old scan described a different spot
+  pinMode=false; save(); renderPlace(id);
+  const el=document.getElementById('locmsg');
+  if(el) el.innerHTML='Pin moved. Hit <b>Scan the area</b> to re-read what\'s nearby.';
+}
+
+/* ============================================================ photos */
+function shrink(file,maxPx,quality){
+  return new Promise((res,rej)=>{
+    const img=new Image(), rd=new FileReader();
+    rd.onload=()=>{ img.onload=()=>{
+        let {width:w,height:h}=img;
+        const sc=Math.min(1,maxPx/Math.max(w,h)); w=Math.round(w*sc); h=Math.round(h*sc);
+        const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        res(cv.toDataURL('image/jpeg',quality));
+      };
+      img.onerror=()=>rej(new Error('could not read that image')); img.src=rd.result; };
+    rd.onerror=()=>rej(new Error('could not read that file'));
+    rd.readAsDataURL(file);
+  });
+}
+const MAX_PHOTOS=14;
+function addPhotos(id){
+  const p=S.places.find(x=>x.id===id); if(!p) return;
+  const i=document.createElement('input'); i.type='file'; i.accept='image/*'; i.multiple=true;
+  i.onchange=async()=>{
+    const files=[...i.files]; if(!files.length) return;
+    p.photos=p.photos||[];
+    const room=MAX_PHOTOS-p.photos.length;
+    if(room<=0){ alert('That place already has '+MAX_PHOTOS+' photos. Delete some first.'); return; }
+    const msg=document.getElementById('phmsg'); if(msg) msg.innerHTML='<span class="busy"></span>Shrinking photos…';
+    let added=0;
+    for(const f of files.slice(0,room)){
+      try{
+        const d=await shrink(f,1280,.72);
+        p.photos.push(d);
+        if(!save()){ p.photos.pop();
+          alert('Out of browser storage after '+added+' photo'+(added===1?'':'s')+'. '+
+                'Export your board, then delete a few photos to make room.');
+          break; }
+        added++;
+      }catch(e){ /* unreadable file, skip */ }
+    }
+    if(msg) msg.innerHTML=''; renderPlace(id);
+  };
+  i.click();
+}
+window.addPhotos=addPhotos;
+function delPhoto(id,idx){
+  const p=S.places.find(x=>x.id===id); if(!p||!p.photos) return;
+  p.photos.splice(idx,1); save(); renderPlace(id);
+}
+window.delPhoto=delPhoto;
+
+/* lightbox */
+let lbList=[],lbIdx=0;
+function openLb(id,idx){
+  const p=S.places.find(x=>x.id===id); if(!p||!p.photos) return;
+  lbList=p.photos; lbIdx=idx; paintLb(); $('#lightbox').style.display='flex';
+}
+window.openLb=openLb;
+function paintLb(){ $('#lbimg').src=lbList[lbIdx]||''; $('#lbc').textContent=(lbIdx+1)+' / '+lbList.length; }
+function stepLb(d){ if(!lbList.length) return; lbIdx=(lbIdx+d+lbList.length)%lbList.length; paintLb(); }
+$('#lightbox').addEventListener('click',e=>{
+  if(e.target.classList.contains('lbnext')) return stepLb(1);
+  if(e.target.classList.contains('lbprev')) return stepLb(-1);
+  if(e.target.id!=='lbimg') $('#lightbox').style.display='none';
+});
+document.addEventListener('keydown',e=>{
+  if($('#lightbox').style.display!=='flex') return;
+  if(e.key==='Escape') $('#lightbox').style.display='none';
+  if(e.key==='ArrowRight') stepLb(1);
+  if(e.key==='ArrowLeft') stepLb(-1);
+});
 
 /* ------------------------------------------------------------------ render */
 function sorted(){
@@ -446,11 +777,16 @@ function card(r,i,topScore){
                p.m2!=null?p.m2+' m²':null,p.floor!=null?'piso '+p.floor:null].filter(Boolean).join(' · ');
   const st=[];
   if(p.status&&p.status!=='visited') st.push('<span class="chip">'+esc(p.status)+'</span>');
-  if(p.pets) st.push('<span class="chip good">pets ok</span>');
-  if(p.furnished) st.push('<span class="chip warn">furnished</span>');
+  if(p.pets===true) st.push('<span class="chip good">pets ok</span>');
+  else if(p.pets===false) st.push('<span class="chip bad">no pets</span>');
+  else st.push('<span class="chip warn">pets?</span>');
+  if(p.furnished===true) st.push('<span class="chip warn">furnished</span>');
   if(p.park) st.push('<span class="chip">parking</span>');
   if(pm) st.push('<span class="chip">'+fmtCOP(pm)+' /m²</span>');
   const aw=avgWalk(p); if(aw!=null) st.push('<span class="chip">~'+Math.round(aw)+' min walk avg</span>');
+  const ws=walkScore(p); if(ws!=null) st.push('<span class="chip">walk '+Math.round(ws)+'/100</span>');
+  const as=amenityScore(p); if(as!=null) st.push('<span class="chip">amenities '+Math.round(as)+'/100</span>');
+  if((p.photos||[]).length) st.push('<span class="chip">'+p.photos.length+' 📷</span>');
   if(p.gut) st.push('<span class="chip">gut '+p.gut+'/5</span>');
   if(r.missing.length) st.push('<span class="chip warn">'+r.missing.length+' unrated</span>');
   const brk=r.brk.length?'<span class="chip bad">⚑ '+r.brk.map(esc).join(' · ')+'</span>':'';
@@ -474,6 +810,7 @@ function card(r,i,topScore){
 
   const gm=p.addr?('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.addr+' Medellín')):null;
   const acts='<div class="acts">'+
+    '<button class="primary" style="font-weight:600" onclick="openPlace(\''+p.id+'\')">Open ›</button>'+
     '<button onclick="openEdit(\''+p.id+'\')">Edit / rate</button>'+
     (p.url?'<a href="'+esc(p.url)+'" target="_blank" rel="noopener">Listing ↗</a>':'')+
     (gm?'<a href="'+gm+'" target="_blank" rel="noopener">Map ↗</a>':'')+
@@ -485,7 +822,7 @@ function card(r,i,topScore){
   return '<div class="card'+(r.brk.length?' dim':'')+(r.score!=null&&r.score===topScore&&!r.brk.length?' win':'')+'">'+
     '<div class="rank">'+(i+1)+'</div>'+ring+
     '<div class="cbody">'+
-      '<div class="ctop"><span class="nm">'+esc(p.name)+'</span>'+
+      '<div class="ctop"><span class="nm" style="cursor:pointer" onclick="openPlace(\''+p.id+'\')">'+esc(p.name)+'</span>'+
         '<span class="where">'+[...new Set([p.barrio,p.area].filter(Boolean))].map(esc).join(' · ')+
           (p.date?' · seen '+esc(p.date):'')+'</span></div>'+
       '<div class="specs"><b>'+(t==null?'price —':'$'+fmtM(t)+'/mo')+'</b>'+
@@ -503,6 +840,175 @@ function walkLinks(p){
     '<a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=walking&origin='+
     encodeURIComponent(p.addr+' Medellín')+'&destination='+encodeURIComponent(a.addr)+'">🚶 '+esc(a.name)+' ↗</a>').join('');
 }
+
+/* ---- detail view ---- */
+let dmap=null,dlayer=null;
+function renderPlace(id){
+  const p=S.places.find(x=>x.id===id);
+  if(!p){ S.view='rank'; S.openId=null; save(); renderAll(); return; }
+  const r={...scoreOf(p),brk:breaks(p)}, t=total(p), pm=ppm(p);
+  const el=$('#view-place');
+  const ring=r.score==null?'<div class="ring na"><i>–</i></div>'
+    :'<div class="ring" style="--p:'+r.score+'"><i>'+r.score+'</i></div>';
+
+  /* --- photos --- */
+  const ph=(p.photos||[]);
+  const gallery='<div class="thumbs">'+
+    ph.map((src,i)=>'<div class="ph" style="background-image:url('+src+')" onclick="openLb(\''+p.id+'\','+i+')">'+
+       '<button onclick="event.stopPropagation();delPhoto(\''+p.id+'\','+i+')" title="Remove">✕</button></div>').join('')+
+    (ph.length<MAX_PHOTOS?'<div class="addph" onclick="addPhotos(\''+p.id+'\')">＋<br>Add photos<br>'+
+       '<span class="miss">'+ph.length+'/'+MAX_PHOTOS+'</span></div>':'')+
+    '</div><div class="miss" id="phmsg" style="margin-top:6px"></div>';
+
+  /* --- walkability --- */
+  const parts=walkParts(p), ws=walkScore(p);
+  let walkHtml;
+  if(!parts){
+    walkHtml='<div class="infobox">Nothing scanned yet. '+
+      (p.addr?'Hit “Scan the area” and it looks up the address, then asks OpenStreetMap what sits within '+WALK_RADIUS+' m.'
+             :'Add an address under Edit / rate first.')+'</div>';
+  }else{
+    walkHtml=parts.map(x=>
+      '<div class="poirow"><span class="pl">'+x.c.icon+' '+esc(x.c.lbl)+'</span>'+
+      '<div class="track"><div class="fill '+(x.s<40?'lo':x.s<65?'mid':'')+'" style="width:'+x.s.toFixed(0)+'%"></div></div>'+
+      '<span class="pv">'+x.n+(x.near!=null?' · '+x.near+'m':'')+'</span></div>').join('')+
+      '<div class="miss" style="margin-top:8px">Counted within '+(p.poi.radius||WALK_RADIUS)+
+      ' m, scanned '+esc(p.poi.at||'')+'. Each bar fills at '+
+      parts.map(x=>x.c.target+' '+x.c.lbl.toLowerCase()).join(', ')+'.</div>'+
+      '<div class="infobox">OpenStreetMap coverage in Medellín is good for shops and transit, thinner for '+
+      'gyms and small restaurants — treat a low bar as “check it yourself”, not “nothing there”. '+
+      'It also measures flat distance: on Loma del Indio or Loma del Escobero, 800 m downhill is not '+
+      '800 m back up.</div>';
+  }
+
+  /* --- nearest named places --- */
+  let nearHtml='';
+  if(p.poi&&p.poi.items&&p.poi.items.length){
+    const named=p.poi.items.filter(i=>i.n).slice(0,18);
+    if(named.length) nearHtml='<div class="chips" style="margin-top:10px">'+named.map(i=>{
+      const c=POI_CATS.find(c=>c.k===i.c);
+      return '<span class="chip">'+(c?c.icon:'')+' '+esc(i.n)+' · '+i.d+'m</span>';
+    }).join('')+'</div>';
+  }
+
+  /* --- amenities --- */
+  const am=p.am||{};
+  const has=AMENITIES.filter(a=>am[a.k]), hasnt=AMENITIES.filter(a=>!am[a.k]);
+  const as=amenityScore(p);
+  const amHtml=(Object.keys(am).length
+    ? '<div class="amchips">'+has.sort((a,b)=>b.w-a.w).map(a=>'<span class="chip good">'+esc(a.lbl)+'</span>').join('')+'</div>'+
+      '<div class="amchips" style="margin-top:6px">'+hasnt.sort((a,b)=>b.w-a.w).slice(0,8).map(a=>
+        '<span class="chip">✕ '+esc(a.lbl)+'</span>').join('')+'</div>'+
+      '<div class="miss" style="margin-top:8px">'+has.length+' of '+AMENITIES.length+
+      ' ticked · weighted score '+Math.round(as)+'/100. Weighted by what you\'d actually use — '+
+      'a study or a dog-friendly building counts for more than a jacuzzi.</div>'
+    : '<div class="infobox">No amenities ticked yet. Open Edit / rate and check what it has.</div>');
+
+  /* --- cost --- */
+  const rate=S.usdRate||4000;
+  const usd=n=>n==null?'—':'$'+Math.round(n/rate).toLocaleString('en-US');
+  const cap=S.rules.maxTotal;
+  const allTotals=S.places.map(total).filter(v=>v!=null);
+  const cheapest=allTotals.length>1?Math.min(...allTotals):null;
+  let costRows='<tr><td>Rent</td><td>'+fmtCOP(p.rent)+'</td></tr>'+
+    '<tr><td>Administración'+(p.admin==null?' <span class="miss">(unknown)</span>':'')+'</td><td>'+
+      (p.admin==null?'—':fmtCOP(p.admin))+'</td></tr>'+
+    '<tr class="tot"><td>Total per month</td><td>'+(t==null?'—':fmtCOP(t))+'</td></tr>'+
+    '<tr class="sm"><td>In USD at '+rate.toLocaleString('es-CO')+' COP/USD</td><td>'+usd(t)+'</td></tr>'+
+    (pm?'<tr class="sm"><td>Per m² ('+p.m2+' m²)</td><td>'+fmtCOP(pm)+'</td></tr>':'')+
+    (t!=null?'<tr class="sm"><td>Over 12 months</td><td>'+fmtCOP(t*12)+' · '+usd(t*12)+'</td></tr>':'')+
+    (t!=null&&cap?'<tr class="sm"><td>Against your '+fmtM(cap)+' cap</td><td style="color:'+
+      (t>cap?'var(--no)':'var(--yes)')+'">'+(t>cap?'+'+fmtCOP(t-cap)+' over':fmtCOP(cap-t)+' under')+'</td></tr>':'')+
+    (t!=null&&cheapest!=null?(t===cheapest
+      ?'<tr class="sm"><td>Vs the others on your board</td><td style="color:var(--yes)">cheapest one</td></tr>'
+      :'<tr class="sm"><td>Vs the cheapest on your board</td><td>+'+fmtCOP(t-cheapest)+' /mo · +'+
+        fmtCOP((t-cheapest)*12)+' /yr</td></tr>'):'');
+  const costWarn=(p.rent!=null&&p.admin==null)
+    ? '<div class="warnbox">Administración is still unknown, so this total is a floor, not a price. '+
+      'In a building with a pool and sauna it is often 400k–1M more, which is the difference between '+
+      'clearing your cap and blowing through it. Ask before you sign anything.</div>' : '';
+
+  /* --- breakdown --- */
+  const scored=FACTORS.filter(f=>(S.weights[f.k]||0)>0).map(f=>({f,s:factorScore(p,f.k)})).filter(x=>x.s!=null);
+  const bdHtml=scored.length?('<div class="bdrows">'+
+      [...scored].sort((a,b)=>(S.weights[b.f.k]||0)-(S.weights[a.f.k]||0)).map(x=>{
+        const cls=x.s<40?'lo':x.s<65?'mid':'';
+        return '<span>'+esc(x.f.lbl)+' <small>×'+(S.weights[x.f.k])+'</small></span>'+
+               '<div class="track"><div class="fill '+cls+'" style="width:'+x.s.toFixed(0)+'%"></div></div>'+
+               '<span class="v">'+Math.round(x.s)+'</span>';}).join('')+'</div>'+
+      (r.missing.length?'<div class="miss" style="margin-top:8px">Not scored yet: '+r.missing.map(esc).join(', ')+'</div>':''))
+    :'<div class="infobox">Nothing scored yet.</div>';
+
+  const specs=[p.beds!=null?p.beds+' BR':null,p.baths!=null?p.baths+' BA':null,
+               p.m2!=null?p.m2+' m²':null,p.floor!=null?'piso '+p.floor:null].filter(Boolean).join(' · ');
+
+  el.innerHTML=
+    '<div class="dnav"><button onclick="closePlace()">← Back to the list</button>'+
+      '<button onclick="openEdit(\''+p.id+'\')">Edit / rate</button>'+
+      (p.url?'<a class="acts" style="padding:5px 9px;border:1px solid var(--line);border-radius:8px" href="'+esc(p.url)+'" target="_blank" rel="noopener">Listing ↗</a>':'')+
+    '</div>'+
+    '<div class="dhead">'+ring+'<div class="dtitle"><h2>'+esc(p.name)+'</h2>'+
+      '<div class="where">'+[...new Set([p.barrio,p.area].filter(Boolean))].map(esc).join(' · ')+
+        (p.date?' · seen '+esc(p.date):'')+'</div>'+
+      '<div class="specs" style="margin-top:4px"><b>'+(t==null?'price —':'$'+fmtM(t)+'/mo')+'</b>'+
+        (specs?' &nbsp;·&nbsp; '+specs:'')+'</div>'+
+      (r.brk.length?'<div class="chips" style="margin-top:6px"><span class="chip bad">⚑ '+r.brk.map(esc).join(' · ')+'</span></div>':'')+
+    '</div></div>'+
+
+    '<div class="panel"><h2 style="margin-top:0">Photos</h2>'+gallery+'</div>'+
+
+    '<div class="panel"><h2 style="margin-top:0">What\'s around it'+
+      (ws!=null?' <span class="chip good">walkability '+Math.round(ws)+'/100</span>':'')+'</h2>'+
+      '<div class="dnav">'+
+        '<button onclick="locateAndScan(\''+p.id+'\',true)">'+(p.poi?'Re-scan the area':'Scan the area')+'</button>'+
+        '<button id="pinBtn" onclick="dropPin(\''+p.id+'\')">📍 Drop the pin myself</button>'+
+        (p.lat!=null?'<a class="acts" style="padding:5px 9px;border:1px solid var(--line);border-radius:8px" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query='+p.lat+','+p.lng+'">Open in Google Maps ↗</a>':'')+
+      '</div>'+
+      '<div class="miss" id="locmsg" style="margin:2px 0 8px"></div>'+
+      '<div class="dmap" id="dmap"></div>'+
+      (p.geoLabel?'<div class="'+(p.geoExact?'miss':'warnbox')+'" style="margin-top:6px">'+
+        (p.geoExact?'Pinned at: ':'⚠ Rough pin only — the geocoder fell back to ')+esc(p.geoLabel)+
+        (p.geoExact?'. Wrong? Use “Drop the pin myself”.'
+                  :'. Everything below describes that area, not the building. Use “Drop the pin myself” and tap the exact spot, then re-scan.')+
+        '</div>':'')+
+      nearHtml+'<div style="margin-top:14px">'+walkHtml+'</div></div>'+
+
+    '<div class="panel"><h2 style="margin-top:0">Amenities'+
+      (as!=null?' <span class="chip good">'+Math.round(as)+'/100</span>':'')+'</h2>'+amHtml+'</div>'+
+
+    '<div class="panel"><h2 style="margin-top:0">What it costs</h2>'+costWarn+
+      '<table class="costtbl"><tbody>'+costRows+'</tbody></table>'+
+      '<div class="fld" style="max-width:220px;margin-top:10px"><label>COP per USD (edit if it moved)</label>'+
+      '<input id="usdRate" inputmode="numeric" value="'+rate+'"></div></div>'+
+
+    '<div class="panel"><h2 style="margin-top:0">Score breakdown</h2>'+bdHtml+'</div>'+
+
+    (p.notes?'<div class="panel"><h2 style="margin-top:0">Notes</h2><div class="note">'+esc(p.notes)+'</div></div>':'');
+
+  drawMap(p);
+}
+function drawMap(p){
+  const box=document.getElementById('dmap'); if(!box||!window.L) return;
+  if(dmap){ dmap.remove(); dmap=null; }
+  const c=(p.lat!=null&&p.lng!=null)?[p.lat,p.lng]:MDE;
+  dmap=L.map(box,{scrollWheelZoom:false}).setView(c,(p.lat!=null)?16:12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {maxZoom:19,attribution:'© OpenStreetMap'}).addTo(dmap);
+  dmap.on('click',e=>{ if(pinMode) setPin(p.id,e.latlng.lat,e.latlng.lng); });
+  if(p.lat==null) return;
+  L.circle(c,{radius:WALK_RADIUS,color:'#1f7a5a',weight:1,fillOpacity:.05}).addTo(dmap);
+  L.circleMarker(c,{radius:9,color:'#fff',weight:2,fillColor:'#12161c',fillOpacity:1})
+    .addTo(dmap).bindPopup('<b>'+esc(p.name)+'</b>');
+  (p.poi&&p.poi.items||[]).forEach(i=>{
+    const cat=POI_CATS.find(c=>c.k===i.c); if(!cat) return;
+    L.circleMarker([i.la,i.ln],{radius:5,color:cat.color,weight:1,fillColor:cat.color,fillOpacity:.8})
+      .addTo(dmap).bindPopup('<b>'+cat.icon+' '+esc(i.n||cat.lbl)+'</b><br>'+i.d+' m away');
+  });
+  setTimeout(()=>dmap&&dmap.invalidateSize(),80);
+}
+function openPlace(id){ S.view='place'; S.openId=id; save(); renderAll(); window.scrollTo(0,0); }
+function closePlace(){ S.view='rank'; S.openId=null; save(); renderAll(); }
+window.openPlace=openPlace; window.closePlace=closePlace;
 
 /* ---- compare table ---- */
 function renderTable(){
@@ -547,6 +1053,13 @@ function renderTable(){
   html+=line('Area',P.map(p=>p.area||''),null);
   html+=line('Avg walk (min)',P.map(p=>{const a=avgWalk(p);return a==null?null:Math.round(a);}),'lo');
   S.anchors.forEach(a=>{ html+=line('→ '+a.name+' (min)',P.map(p=>(p.walk&&p.walk[a.id])??null),'lo'); });
+  html+='<tr class="sec"><th class="rowh">Walkability</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Walk score /100',P.map(p=>{const w=walkScore(p);return w==null?null:Math.round(w);}),'hi');
+  POI_CATS.forEach(c=>{ html+=line(c.icon+' '+c.lbl+' ≤1km',
+    P.map(p=>p.poi?((p.poi.counts&&p.poi.counts[c.k])||0):null),'hi'); });
+  html+='<tr class="sec"><th class="rowh">Amenities</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Amenity score /100',P.map(p=>{const a=amenityScore(p);return a==null?null:Math.round(a);}),'hi');
+  AMENITIES.forEach(a=>{ html+=line(a.lbl,P.map(p=>p.am&&Object.keys(p.am).length?(p.am[a.k]?'✓':'·'):''),null); });
   html+='<tr class="sec"><th class="rowh">Feel</th><th colspan="'+P.length+'"></th></tr>';
   SUBS.forEach(f=>{ html+=line(f.lbl+' /5',P.map(p=>(p.r&&p.r[f.k])??null),'hi'); });
   html+='<tr class="sec"><th class="rowh">Flags</th><th colspan="'+P.length+'"></th></tr>';
@@ -598,14 +1111,21 @@ function openEdit(id){
   $('#f_beds').value=p.beds??''; $('#f_baths').value=p.baths??'';
   $('#f_m2').value=p.m2??''; $('#f_floor').value=p.floor??'';
   $('#f_avail').value=p.avail||''; $('#f_url').value=p.url||'';
-  $('#f_pets').checked=!!p.pets; $('#f_furn').checked=!!p.furnished; $('#f_park').checked=!!p.park;
+  const tri=v=>v===true?'yes':v===false?'no':'';
+  $('#f_pets').value=tri(p.pets); $('#f_furn').value=tri(p.furnished); $('#f_park').checked=!!p.park;
   $('#f_notes').value=p.notes||'';
-  tmpR={...(p.r||{})}; tmpW={...(p.walk||{})}; tmpGut=p.gut||0;
-  renderRates(); renderWalk(); renderGut();
+  tmpR={...(p.r||{})}; tmpW={...(p.walk||{})}; tmpGut=p.gut||0; tmpAm={...(p.am||{})};
+  renderRates(); renderWalk(); renderGut(); renderAm();
   $('#dlg').showModal();
 }
-let tmpR={},tmpW={},tmpGut=0;
+let tmpR={},tmpW={},tmpGut=0,tmpAm={};
+function renderAm(){
+  $('#amBox').innerHTML=AMENITIES.map(a=>
+    '<label class="'+(tmpAm[a.k]?'has':'hasnt')+'"><input type="checkbox" data-am="'+a.k+'"'+
+    (tmpAm[a.k]?' checked':'')+'> '+esc(a.lbl)+'</label>').join('');
+}
 const todayISO=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+const untri=v=>v==='yes'?true:v==='no'?false:null;
 
 function starRow(cur,cb){
   let h='<div class="stars">';
@@ -645,11 +1165,22 @@ $('#frm').addEventListener('submit',e=>{
     beds:num($('#f_beds').value), baths:num($('#f_baths').value),
     m2:num($('#f_m2').value), floor:num($('#f_floor').value),
     avail:$('#f_avail').value, url:$('#f_url').value.trim(),
-    pets:$('#f_pets').checked, furnished:$('#f_furn').checked, park:$('#f_park').checked,
-    notes:$('#f_notes').value, r:tmpR, walk, gut:tmpGut||null,
+    pets:untri($('#f_pets').value), furnished:untri($('#f_furn').value), park:$('#f_park').checked,
+    notes:$('#f_notes').value, r:tmpR, walk, gut:tmpGut||null, am:tmpAm,
   };
-  if(editing) Object.assign(editing,obj); else S.places.push(obj);
+  if(editing){
+    // address changed → the old pin and area scan no longer describe this place
+    if(editing.addr!==obj.addr){ obj.lat=null; obj.lng=null; obj.geoLabel=null; obj.poi=null; }
+    else { obj.lat=editing.lat; obj.lng=editing.lng; obj.geoLabel=editing.geoLabel; obj.poi=editing.poi; }
+    obj.photos=editing.photos;
+    Object.assign(editing,obj);
+  } else S.places.push(obj);
   save(); renderAll();
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.am){ if(t.checked) tmpAm[t.dataset.am]=true; else delete tmpAm[t.dataset.am];
+    t.closest('label').className=t.checked?'has':'hasnt'; }
 });
 
 /* ------------------------------------------------------------------ wiring */
@@ -673,6 +1204,8 @@ document.addEventListener('change',e=>{
   if(t.dataset.rb){ S.rules[t.dataset.rb]=t.checked; save(); }
   if(t.id==='decideBy'){ S.decideBy=t.value; save(); renderHeader(); }
   if(t.id==='moveBy'){ S.moveBy=t.value; save(); }
+  if(t.id==='usdRate'){ const v=num(t.value);
+    if(v&&v>100){ S.usdRate=v; save(); if(S.view==='place'&&S.openId) renderPlace(S.openId); } }
 });
 document.addEventListener('click',e=>{
   const d=e.target.closest('[data-del-an]');
@@ -700,11 +1233,15 @@ $('#impBtn').onclick=()=>{
   i.click();
 };
 $('#shareBtn').onclick=()=>{
-  const b64=btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  // photos are megabytes of data URLs — they go via Export, never the URL
+  const slim={...S,openId:null,places:S.places.map(p=>{const q={...p}; delete q.photos; return q;})};
+  const nPh=S.places.reduce((a,p)=>a+((p.photos||[]).length),0);
+  const b64=btoa(unescape(encodeURIComponent(JSON.stringify(slim))));
   const url=location.origin+location.pathname+'#d='+b64;
-  navigator.clipboard?.writeText(url).then(
-    ()=>alert('Link copied ('+Math.round(url.length/1024)+' KB).\nOpen it on your phone to load the same board.'),
-    ()=>prompt('Copy this link:',url));
+  if(url.length>28000){ alert('Too much data for a link ('+Math.round(url.length/1024)+' KB). Use Export instead.'); return; }
+  const msg='Link copied ('+Math.round(url.length/1024)+' KB). Open it on your phone to load the same board.'+
+    (nPh?'\n\n'+nPh+' photo'+(nPh===1?'':'s')+' left out — links can\'t carry them. Use Export/Import for those.':'');
+  navigator.clipboard?.writeText(url).then(()=>alert(msg),()=>prompt('Copy this link:',url));
 };
 /* import from the finder's saved listings (same origin localStorage) */
 $('#importFinder').onclick=()=>{
@@ -719,8 +1256,10 @@ $('#importFinder').onclick=()=>{
     S.places.push({id:uid(),name:(l.neighborhood||'Listing')+' · '+fmtM(l.price_total||l.price_rent),
       date:'',addr:'',barrio:l.neighborhood||'',area:areaName(l.area_key),status:'scheduled',
       rent:l.price_rent??null,admin:l.price_admin??null,beds:l.bedrooms??null,baths:l.bathrooms??null,
-      m2:l.area_m2??null,floor:l.floor??null,avail:'',url:l.url||'',pets:l.pets===true,
-      furnished:l.furnished===true,park:(l.garages||0)>0,notes:'',r:{},walk:{},gut:null});
+      m2:l.area_m2??null,floor:l.floor??null,avail:'',url:l.url||'',
+      pets:l.pets===true?true:(l.pets===false?false:null),
+      furnished:l.furnished===true?true:(l.furnished===false?false:null),
+      park:(l.garages||0)>0,notes:'',r:{},walk:{},gut:null,am:{}});
     n++;
   });
   save(); renderAll();
@@ -743,13 +1282,14 @@ const areaName=k=>({poblado:'El Poblado',laureles:'Laureles',envigado:'Envigado'
 })();
 
 function renderAll(){
-  ['rank','table','setup'].forEach(v=>$('#view-'+v).classList.toggle('hidden',S.view!==v));
+  ['rank','table','setup','place'].forEach(v=>$('#view-'+v).classList.toggle('hidden',S.view!==v));
   document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.view===S.view));
   $('#sortBy').value=S.sortBy; $('#hideOut').checked=!!S.hideOut;
   renderHeader();
   if(S.view==='rank') renderList();
   if(S.view==='table') renderTable();
   if(S.view==='setup') renderSetup();
+  if(S.view==='place') renderPlace(S.openId);
   const d=daysTo(S.moveBy);
   $('#foot').textContent = S.moveBy? ('Out of the current place by '+S.moveBy+(d!=null?' — '+d+' days.':'')+
     ' Everything is stored in this browser only; use Export or Share link to move it.') :
