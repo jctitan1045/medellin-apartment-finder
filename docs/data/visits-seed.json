@@ -19,7 +19,7 @@
       "pets": true,
       "furnished": null,
       "park": true,
-      "notes": "Agency: A&B Inmobiliaria. Urbanización Saltamonte, Loma del Escobero (near City Plaza / Euro del Escobero / Hospital Uribe Angel). Estrato 5.\n\n110 m2, 3 alcobas, 2 banos, TWO parking spaces, piso 1. Ground floor of the tower, but the building sits on the Escobero hillside, so the listing photos still show a LARGE brick-paved terrace with a full valley view — correcting my earlier assumption that piso 1 meant no view. And no elevator wait every time the dog needs out. Sala-comedor, cocina integral WITH DISHWASHER, estudio, zona de ropas, master with ensuite + vestier. Wood laminate in the bedrooms, delivered empty and freshly painted.\n\nBuilding: 24h security, visitor parking, salon social, pool, sauna, turco, elevator, gym, sports zone, playground, green areas, and PET ZONES — the listing says so explicitly, which is why this one is marked pets-ok and the Poblado one is not.\n\nCONFIRMED 15 Aug: 4.6M INCLUDES administracion, and dogs are allowed. That puts it just 100k over the 4.5M cap — effectively on budget.\n\nSTILL ASK A&B: furnished or not, and the available date.\n\nWALKABILITY, for contrast: Supermercado La Paz 248m and only ~30m below. Envigado's plaza de mercado and La Vaquita are ~915m away and only ~25m below - essentially flat. City Plaza mall (Cinepolis, Bodytech) is 681m but ~59m ABOVE, so you climb going and come back down carrying. This is the one that actually walks.",
+      "notes": "Agency: A&B Inmobiliaria. Urbanización Saltamonte, lower Loma del Escobero, near City Plaza / Euro del Escobero / Hospital Uribe Angel. Estrato 5.\n\n110 m2, 3 alcobas, 2 banos, TWO parking spaces, piso 1. Ground floor of the tower, but the building sits on the hillside, so the photos still show a LARGE brick-paved terrace with a full valley view. And no elevator wait every time the dog needs out. Sala-comedor, cocina integral WITH DISHWASHER, estudio, zona de ropas, master with ensuite + vestier. Wood laminate in the bedrooms, delivered empty and freshly painted.\n\nBuilding: 24h security, visitor parking, salon social, pool, sauna, turco, elevator, gym, sports zone, playground, green areas, and PET ZONES.\n\nCONFIRMED 15 Aug: 4.6M INCLUDES administracion, and dogs are allowed. 100k over the 4.5M cap, so effectively on budget. At 1609 m it is the LOWEST of the Escobero options, and Envigado centro is 918 m away at only 25 m below - the one genuinely flat walk on this board.\n\nSTILL ASK A&B: furnished or not, and the available date.",
       "r": {
         "light": 4,
         "quiet": 3,
@@ -88,7 +88,7 @@
           "food": 591
         },
         "home": 1609,
-        "at": "2026-08-14",
+        "at": "2026-08-16",
         "radius": 1000,
         "items": [
           {
@@ -870,7 +870,7 @@
       "pets": true,
       "furnished": false,
       "park": false,
-      "notes": "5.000.000/mo ALL IN — Jordan confirmed 15 Aug that this includes administracion, and that dogs are allowed. So 5.0M is the real number, 500k over the 4.5M cap.\n\nFrom the photos: big wraparound terrace with a real valley view, floor-to-ceiling sliders off the living room, proper zona de ropas (Bosch gas heater + sink), compact black-granite kitchen with gas cooktop, oven and a slatted island bar, master bath with double vanity + glass shower, second bath smaller. Interior is heavily styled: 3D geometric wallpaper on several walls, faux-stone accent wall, crystal chandeliers, mirrored wall. Not neutral — you'd be living inside someone's taste.\n\n98 m2 with a terrace that big means the indoor half is tight for 3BR+2BA. Bedrooms in the photos are modest.\n\nAmenities: heated adult + kids pool, sauna, turco, kids park + game room, sports field, walking trails, salon social.\n\nWHAT'S ACTUALLY WALKABLE (re-scanned 15 Aug from a corrected pin): Minimercado Espana 158m, Mall El Indio / D1 / Maxioferta ~340-370m, Origin Cafe 393m, Crepes & Waffles 820m, BFit 892m, Premium Plaza + Jumbo + Bodytech ~940-970m. So there IS a cluster.\n\nTHE CATCH IS VERTICAL. The building sits at ~1626m and everything is BELOW it: D1 and Mall El Indio are ~80-95m down, Jumbo/Premium Plaza ~145m down. Coming back from the D1 with bags is roughly a 25-story climb; from Jumbo it's ~145m of ascent over 950m, about a 15% grade. Elevation cross-checked against two datasets (ASTER30m and SRTM30m).",
+      "notes": "5.000.000/mo ALL IN - confirmed 15 Aug that this includes administracion and that dogs are allowed. 500k over the 4.5M cap.\n\nBig wraparound terrace with a real valley view, floor-to-ceiling sliders, proper zona de ropas (Bosch gas heater + sink), compact black-granite kitchen with gas cooktop, oven and a slatted island bar, master bath with double vanity. Interior is heavily styled: 3D geometric wallpaper, faux-stone accent wall, crystal chandeliers, mirrored wall.\n\n98 m2 including a terrace that big leaves a tight interior for 3BR + 2BA.\n\nWALKABILITY: better than it looks on paper. Cafes at 100 m, bus stop 157 m, Minimercado Espana 158 m, gyms ~180 m. But the real supermarkets (D1, Maxioferta, Mall El Indio) are ~350 m out and ~90 m DOWN, and Jumbo / Premium Plaza / Bodytech are ~940 m and ~145 m down. Hill-adjusted walkability 89 vs 97 flat - the biggest drop of the two originals.\n\nJordan called it a no-go on 15 Aug: needing a car defeats the point. Kept on the board rather than deleted, because the pin is barrio-level (±200 m) and the numbers do not actually show it as unwalkable - drop the exact pin and re-scan before writing it off.",
       "r": {
         "light": 5,
         "quiet": 5,
@@ -935,7 +935,7 @@
           "culture": 524
         },
         "home": 1626,
-        "at": "2026-08-14",
+        "at": "2026-08-16",
         "radius": 1000,
         "items": [
           {
@@ -1719,6 +1719,506 @@
       ],
       "rAssumed": {},
       "rWhy": {}
+    },
+    {
+      "id": "p_esc46",
+      "name": "El Escobero 9946",
+      "date": "2026-08-16",
+      "addr": "Loma del Escobero, Envigado",
+      "barrio": "Loma del Escobero",
+      "area": "Envigado",
+      "status": "visited",
+      "rent": 4300000,
+      "admin": null,
+      "beds": 2,
+      "baths": 3,
+      "m2": 80,
+      "floor": null,
+      "avail": "",
+      "url": "https://spicol.co/es/properties/9946",
+      "pets": null,
+      "furnished": null,
+      "park": true,
+      "notes": "Seen 16 Aug. Spicol cod 9946, Loma del Escobero, Envigado. Estrato 5, built 2021, 2 linear parking spaces.\n\n80 m2, 2 alcobas (both ensuite) + bano social = 3 banos, vestier, closet, sala-comedor, zona de ropas, cocina integral con gas, balcon, 1 cuarto util, 2 parqueaderos. Listing says SIN AMOBLAR, but the photos show it fully furnished - confirm which you'd be getting.\n\nBuilding: pool, sauna, turco, gym, SQUASH, basketball court, synthetic pitch, BBQ, salon social, meeting rooms, kids area, elevator, 24h vigilancia, CCTV, motion sensors, visitor + moto parking. The best amenity set of anything you've seen.\n\nTHE PROBLEM IS THE LOCATION. This sits at 1744 m - 135 m higher than Saltamonte and 118 m higher than Loma del Indio, the highest of everything on this board. Only 13 things of any kind inside 1 km (Saltamonte has 81, Loma del Indio 84), and exactly ONE restaurant. Nearest grocery is City Plaza at 540 m with a 76 m climb home. Hill-adjusted walkability 36 vs Saltamonte's 90.\n\nASK: does 4.3M include administracion, pets, available date, furnished or not, and which floor.\n\nSAME BUILDING AND SAME SPEC AS 9945 - the only stated difference is that this one's two parking spaces are linear (one behind the other) rather than independent.",
+      "r": {
+        "light": 5,
+        "quiet": 4,
+        "layout": 4,
+        "kitchen": 4,
+        "building": 5,
+        "hood": 1,
+        "safety": 5
+      },
+      "walk": {},
+      "gut": null,
+      "am": {
+        "view": true,
+        "laundry": true,
+        "storage": true,
+        "closets": true,
+        "gas": true,
+        "pool": true,
+        "sauna": true,
+        "turco": true,
+        "gym": true,
+        "sports": true,
+        "bbq": true,
+        "social": true,
+        "coworkish": true,
+        "trails": true,
+        "security": true,
+        "cctv": true,
+        "elevator": true,
+        "visitpark": true
+      },
+      "lat": 6.158598951283,
+      "lng": -75.573099176407,
+      "geoExact": true,
+      "geoLabel": "Loma del Escobero conjunto (coords from the Spicol map embed)",
+      "poi": {
+        "counts": {
+          "gym": 4,
+          "park": 3,
+          "grocery": 2,
+          "culture": 1,
+          "food": 1,
+          "transit": 2
+        },
+        "countsAdj": {
+          "gym": 1,
+          "park": 2,
+          "grocery": 1,
+          "food": 1,
+          "transit": 1
+        },
+        "nearest": {
+          "gym": 351,
+          "park": 495,
+          "grocery": 540,
+          "culture": 555,
+          "food": 598,
+          "transit": 600
+        },
+        "nearestAdj": {
+          "gym": 663,
+          "park": 855,
+          "grocery": 996,
+          "food": 904,
+          "transit": 870
+        },
+        "home": 1744,
+        "at": "2026-08-16",
+        "radius": 1000,
+        "items": [
+          {
+            "c": "gym",
+            "n": "",
+            "d": 351,
+            "la": 6.159411,
+            "ln": -75.576168,
+            "up": 52,
+            "de": 663
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 495,
+            "la": 6.163006,
+            "ln": -75.572495,
+            "up": 60,
+            "de": 855
+          },
+          {
+            "c": "grocery",
+            "n": "City Plaza",
+            "d": 540,
+            "la": 6.163445,
+            "ln": -75.573484,
+            "up": 76,
+            "de": 996
+          },
+          {
+            "c": "culture",
+            "n": "Cinépolis",
+            "d": 555,
+            "la": 6.163558,
+            "ln": -75.573661,
+            "up": 78,
+            "de": 1023
+          },
+          {
+            "c": "grocery",
+            "n": "Farmacias Pasteur - Montevento",
+            "d": 571,
+            "la": 6.157282,
+            "ln": -75.578091,
+            "up": 105,
+            "de": 1201
+          },
+          {
+            "c": "gym",
+            "n": "Bodytech City plaza",
+            "d": 581,
+            "la": 6.16377,
+            "ln": -75.573873,
+            "up": 83,
+            "de": 1079
+          },
+          {
+            "c": "food",
+            "n": "Bancon´s Burger",
+            "d": 598,
+            "la": 6.15362,
+            "ln": -75.575134,
+            "up": 51,
+            "de": 904
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 600,
+            "la": 6.153456,
+            "ln": -75.574749,
+            "up": 45,
+            "de": 870
+          },
+          {
+            "c": "park",
+            "n": "Parque Urbano El Chinguí",
+            "d": 602,
+            "la": 6.154017,
+            "ln": -75.576,
+            "up": 61,
+            "de": 968
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 701,
+            "la": 6.153985,
+            "ln": -75.577426,
+            "up": 88,
+            "de": 1229
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 784,
+            "la": 6.153912,
+            "ln": -75.5784,
+            "up": 94,
+            "de": 1348
+          },
+          {
+            "c": "gym",
+            "n": "Piscina Residencial Alquerías de San Isidro",
+            "d": 817,
+            "la": 6.164242,
+            "ln": -75.577827,
+            "up": 101,
+            "de": 1423
+          },
+          {
+            "c": "gym",
+            "n": "",
+            "d": 996,
+            "la": 6.161658,
+            "ln": -75.581565,
+            "up": 137,
+            "de": 1818
+          }
+        ]
+      },
+      "photoUrls": [
+        "photos/esc9946/05.jpg",
+        "photos/esc9946/01.jpg",
+        "photos/esc9946/02.jpg",
+        "photos/esc9946/03.jpg",
+        "photos/esc9946/04.jpg",
+        "photos/esc9946/06.jpg",
+        "photos/esc9946/07.jpg",
+        "photos/esc9946/08.jpg",
+        "photos/esc9946/09.jpg",
+        "photos/esc9946/10.jpg",
+        "photos/esc9946/11.jpg",
+        "photos/esc9946/12.jpg",
+        "photos/esc9946/13.jpg",
+        "photos/esc9946/14.jpg",
+        "photos/esc9946/15.jpg",
+        "photos/esc9946/16.jpg",
+        "photos/esc9946/17.jpg",
+        "photos/esc9946/18.jpg",
+        "photos/esc9946/19.jpg",
+        "photos/esc9946/20.jpg",
+        "photos/esc9946/21.jpg"
+      ],
+      "rAssumed": {
+        "light": true,
+        "quiet": true,
+        "layout": true,
+        "kitchen": true,
+        "building": true,
+        "hood": true,
+        "safety": true
+      },
+      "rWhy": {
+        "light": "Built 2021 with floor-to-ceiling glazing across the living room and a long balcony onto green hillside. Every photo is bright.",
+        "quiet": "Gated conjunto set among trees high up the Escobero, away from the lower traffic. Guess - you were there, correct me.",
+        "layout": "Open-plan kitchen/living with an island, but it is 80 m2 carrying THREE bathrooms, so the living space pays for them.",
+        "kitchen": "Modern cocina integral with island, gas and calentador, plus cuarto util and zona de ropas for storage.",
+        "building": "Pool, sauna, turco, gym, squash, basketball, synthetic pitch, BBQ, salon social, meeting rooms, 24h, CCTV. The strongest amenity set on the board.",
+        "hood": "Only 13 things of any kind within 1 km and exactly one restaurant, at 1744 m with everything below you. You rated Loma del Indio a 2 with 84 things nearby, so on your own scale this has to be lower.",
+        "safety": "Estrato 5 conjunto cerrado, 24h vigilancia, CCTV, motion sensors, emergency stair."
+      }
+    },
+    {
+      "id": "p_esc45",
+      "name": "El Escobero 9945",
+      "date": "2026-08-16",
+      "addr": "Loma del Escobero, Envigado",
+      "barrio": "Loma del Escobero",
+      "area": "Envigado",
+      "status": "visited",
+      "rent": 4300000,
+      "admin": null,
+      "beds": 2,
+      "baths": 3,
+      "m2": 80,
+      "floor": null,
+      "avail": "",
+      "url": "https://spicol.co/es/properties/9945",
+      "pets": null,
+      "furnished": null,
+      "park": true,
+      "notes": "Seen 16 Aug. Spicol cod 9945, Loma del Escobero, Envigado. Estrato 5, built 2021, 2 INDEPENDENT parking spaces.\n\n80 m2, 2 alcobas (both ensuite) + bano social = 3 banos, vestier, closet, sala-comedor, zona de ropas, cocina integral con gas, balcon, 1 cuarto util, 2 parqueaderos. Listing says SIN AMOBLAR, but the photos show it fully furnished - confirm which you'd be getting.\n\nBuilding: pool, sauna, turco, gym, SQUASH, basketball court, synthetic pitch, BBQ, salon social, meeting rooms, kids area, elevator, 24h vigilancia, CCTV, motion sensors, visitor + moto parking. The best amenity set of anything you've seen.\n\nTHE PROBLEM IS THE LOCATION. This sits at 1744 m - 135 m higher than Saltamonte and 118 m higher than Loma del Indio, the highest of everything on this board. Only 13 things of any kind inside 1 km (Saltamonte has 81, Loma del Indio 84), and exactly ONE restaurant. Nearest grocery is City Plaza at 540 m with a 76 m climb home. Hill-adjusted walkability 36 vs Saltamonte's 90.\n\nASK: does 4.3M include administracion, pets, available date, furnished or not, and which floor.\n\nSAME BUILDING AND SAME SPEC AS 9946. This one's two parking spaces are independent (park and leave separately), which is the better arrangement of the two.",
+      "r": {
+        "light": 5,
+        "quiet": 4,
+        "layout": 4,
+        "kitchen": 4,
+        "building": 5,
+        "hood": 1,
+        "safety": 5
+      },
+      "walk": {},
+      "gut": null,
+      "am": {
+        "view": true,
+        "laundry": true,
+        "storage": true,
+        "closets": true,
+        "gas": true,
+        "pool": true,
+        "sauna": true,
+        "turco": true,
+        "gym": true,
+        "sports": true,
+        "bbq": true,
+        "social": true,
+        "coworkish": true,
+        "trails": true,
+        "security": true,
+        "cctv": true,
+        "elevator": true,
+        "visitpark": true
+      },
+      "lat": 6.158598951283,
+      "lng": -75.573099176407,
+      "geoExact": true,
+      "geoLabel": "Loma del Escobero conjunto (coords from the Spicol map embed)",
+      "poi": {
+        "counts": {
+          "gym": 4,
+          "park": 3,
+          "grocery": 2,
+          "culture": 1,
+          "food": 1,
+          "transit": 2
+        },
+        "countsAdj": {
+          "gym": 1,
+          "park": 2,
+          "grocery": 1,
+          "food": 1,
+          "transit": 1
+        },
+        "nearest": {
+          "gym": 351,
+          "park": 495,
+          "grocery": 540,
+          "culture": 555,
+          "food": 598,
+          "transit": 600
+        },
+        "nearestAdj": {
+          "gym": 663,
+          "park": 855,
+          "grocery": 996,
+          "food": 904,
+          "transit": 870
+        },
+        "home": 1744,
+        "at": "2026-08-16",
+        "radius": 1000,
+        "items": [
+          {
+            "c": "gym",
+            "n": "",
+            "d": 351,
+            "la": 6.159411,
+            "ln": -75.576168,
+            "up": 52,
+            "de": 663
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 495,
+            "la": 6.163006,
+            "ln": -75.572495,
+            "up": 60,
+            "de": 855
+          },
+          {
+            "c": "grocery",
+            "n": "City Plaza",
+            "d": 540,
+            "la": 6.163445,
+            "ln": -75.573484,
+            "up": 76,
+            "de": 996
+          },
+          {
+            "c": "culture",
+            "n": "Cinépolis",
+            "d": 555,
+            "la": 6.163558,
+            "ln": -75.573661,
+            "up": 78,
+            "de": 1023
+          },
+          {
+            "c": "grocery",
+            "n": "Farmacias Pasteur - Montevento",
+            "d": 571,
+            "la": 6.157282,
+            "ln": -75.578091,
+            "up": 105,
+            "de": 1201
+          },
+          {
+            "c": "gym",
+            "n": "Bodytech City plaza",
+            "d": 581,
+            "la": 6.16377,
+            "ln": -75.573873,
+            "up": 83,
+            "de": 1079
+          },
+          {
+            "c": "food",
+            "n": "Bancon´s Burger",
+            "d": 598,
+            "la": 6.15362,
+            "ln": -75.575134,
+            "up": 51,
+            "de": 904
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 600,
+            "la": 6.153456,
+            "ln": -75.574749,
+            "up": 45,
+            "de": 870
+          },
+          {
+            "c": "park",
+            "n": "Parque Urbano El Chinguí",
+            "d": 602,
+            "la": 6.154017,
+            "ln": -75.576,
+            "up": 61,
+            "de": 968
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 701,
+            "la": 6.153985,
+            "ln": -75.577426,
+            "up": 88,
+            "de": 1229
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 784,
+            "la": 6.153912,
+            "ln": -75.5784,
+            "up": 94,
+            "de": 1348
+          },
+          {
+            "c": "gym",
+            "n": "Piscina Residencial Alquerías de San Isidro",
+            "d": 817,
+            "la": 6.164242,
+            "ln": -75.577827,
+            "up": 101,
+            "de": 1423
+          },
+          {
+            "c": "gym",
+            "n": "",
+            "d": 996,
+            "la": 6.161658,
+            "ln": -75.581565,
+            "up": 137,
+            "de": 1818
+          }
+        ]
+      },
+      "photoUrls": [
+        "photos/esc9945/01.jpg",
+        "photos/esc9945/02.jpg",
+        "photos/esc9945/03.jpg",
+        "photos/esc9945/04.jpg",
+        "photos/esc9945/05.jpg",
+        "photos/esc9945/06.jpg",
+        "photos/esc9945/07.jpg",
+        "photos/esc9945/08.jpg",
+        "photos/esc9945/09.jpg",
+        "photos/esc9945/10.jpg",
+        "photos/esc9945/11.jpg",
+        "photos/esc9945/12.jpg",
+        "photos/esc9945/13.jpg",
+        "photos/esc9945/14.jpg",
+        "photos/esc9945/15.jpg",
+        "photos/esc9945/16.jpg",
+        "photos/esc9945/17.jpg",
+        "photos/esc9945/18.jpg",
+        "photos/esc9945/19.jpg"
+      ],
+      "rAssumed": {
+        "light": true,
+        "quiet": true,
+        "layout": true,
+        "kitchen": true,
+        "building": true,
+        "hood": true,
+        "safety": true
+      },
+      "rWhy": {
+        "light": "Built 2021 with floor-to-ceiling glazing across the living room and a long balcony onto green hillside. Every photo is bright.",
+        "quiet": "Gated conjunto set among trees high up the Escobero, away from the lower traffic. Guess - you were there, correct me.",
+        "layout": "Open-plan kitchen/living with an island, but it is 80 m2 carrying THREE bathrooms, so the living space pays for them.",
+        "kitchen": "Modern cocina integral with island, gas and calentador, plus cuarto util and zona de ropas for storage.",
+        "building": "Pool, sauna, turco, gym, squash, basketball, synthetic pitch, BBQ, salon social, meeting rooms, 24h, CCTV. The strongest amenity set on the board.",
+        "hood": "Only 13 things of any kind within 1 km and exactly one restaurant, at 1744 m with everything below you. You rated Loma del Indio a 2 with 84 things nearby, so on your own scale this has to be lower.",
+        "safety": "Estrato 5 conjunto cerrado, 24h vigilancia, CCTV, motion sensors, emergency stair."
+      }
     }
   ],
   "weights": {

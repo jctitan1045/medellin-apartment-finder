@@ -545,6 +545,9 @@ function scoreOf(p){
 }
 function breaks(p){
   const r=S.rules,out=[],t=total(p);
+  // an unknown administración is not a clean bill of health — the total is a floor, so a place
+  // with no admin figure must not outrank one whose real, higher total is actually known
+  if(p.rent!=null&&p.admin==null) out.push('admin unknown, ' + fmtM(p.rent) + ' is a floor');
   if(r.maxTotal&&t!=null&&t>r.maxTotal) out.push('over budget ('+fmtM(t)+')');
   if(r.minBeds&&p.beds!=null&&p.beds<r.minBeds) out.push(p.beds+'BR < '+r.minBeds);
   if(r.minBaths&&p.baths!=null&&p.baths<r.minBaths) out.push(p.baths+'BA < '+r.minBaths);
