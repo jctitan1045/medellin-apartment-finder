@@ -19,7 +19,7 @@
       "pets": true,
       "furnished": null,
       "park": true,
-      "notes": "Agency: A&B Inmobiliaria. Urbanización Saltamonte, Loma del Escobero (near City Plaza / Euro del Escobero / Hospital Uribe Angel). Estrato 5.\n\n110 m2, 3 alcobas, 2 banos, TWO parking spaces, piso 1. Ground floor of the tower, but the building sits on the Escobero hillside, so the listing photos still show a LARGE brick-paved terrace with a full valley view — correcting my earlier assumption that piso 1 meant no view. And no elevator wait every time the dog needs out. Sala-comedor, cocina integral WITH DISHWASHER, estudio, zona de ropas, master with ensuite + vestier. Wood laminate in the bedrooms, delivered empty and freshly painted.\n\nBuilding: 24h security, visitor parking, salon social, pool, sauna, turco, elevator, gym, sports zone, playground, green areas, and PET ZONES — the listing says so explicitly, which is why this one is marked pets-ok and the Poblado one is not.\n\nCONFIRMED 15 Aug: 4.6M INCLUDES administracion, and dogs are allowed. That puts it just 100k over the 4.5M cap — effectively on budget.\n\nSTILL ASK A&B: furnished or not, and the available date.",
+      "notes": "Agency: A&B Inmobiliaria. Urbanización Saltamonte, Loma del Escobero (near City Plaza / Euro del Escobero / Hospital Uribe Angel). Estrato 5.\n\n110 m2, 3 alcobas, 2 banos, TWO parking spaces, piso 1. Ground floor of the tower, but the building sits on the Escobero hillside, so the listing photos still show a LARGE brick-paved terrace with a full valley view — correcting my earlier assumption that piso 1 meant no view. And no elevator wait every time the dog needs out. Sala-comedor, cocina integral WITH DISHWASHER, estudio, zona de ropas, master with ensuite + vestier. Wood laminate in the bedrooms, delivered empty and freshly painted.\n\nBuilding: 24h security, visitor parking, salon social, pool, sauna, turco, elevator, gym, sports zone, playground, green areas, and PET ZONES — the listing says so explicitly, which is why this one is marked pets-ok and the Poblado one is not.\n\nCONFIRMED 15 Aug: 4.6M INCLUDES administracion, and dogs are allowed. That puts it just 100k over the 4.5M cap — effectively on budget.\n\nSTILL ASK A&B: furnished or not, and the available date.\n\nWALKABILITY, for contrast: Supermercado La Paz 248m and only ~30m below. Envigado's plaza de mercado and La Vaquita are ~915m away and only ~25m below - essentially flat. City Plaza mall (Cinepolis, Bodytech) is 681m but ~59m ABOVE, so you climb going and come back down carrying. This is the one that actually walks.",
       "r": {
         "light": 4,
         "quiet": 3,
@@ -257,7 +257,7 @@
       "pets": true,
       "furnished": false,
       "park": false,
-      "notes": "5.000.000/mo ALL IN — Jordan confirmed 15 Aug that this includes administracion, and that dogs are allowed. So 5.0M is the real number, 500k over the 4.5M cap.\n\nFrom the photos: big wraparound terrace with a real valley view, floor-to-ceiling sliders off the living room, proper zona de ropas (Bosch gas heater + sink), compact black-granite kitchen with gas cooktop, oven and a slatted island bar, master bath with double vanity + glass shower, second bath smaller. Interior is heavily styled: 3D geometric wallpaper on several walls, faux-stone accent wall, crystal chandeliers, mirrored wall. Not neutral — you'd be living inside someone's taste.\n\n98 m2 with a terrace that big means the indoor half is tight for 3BR+2BA. Bedrooms in the photos are modest.\n\nAmenities: heated adult + kids pool, sauna, turco, kids park + game room, sports field, walking trails, salon social.",
+      "notes": "5.000.000/mo ALL IN — Jordan confirmed 15 Aug that this includes administracion, and that dogs are allowed. So 5.0M is the real number, 500k over the 4.5M cap.\n\nFrom the photos: big wraparound terrace with a real valley view, floor-to-ceiling sliders off the living room, proper zona de ropas (Bosch gas heater + sink), compact black-granite kitchen with gas cooktop, oven and a slatted island bar, master bath with double vanity + glass shower, second bath smaller. Interior is heavily styled: 3D geometric wallpaper on several walls, faux-stone accent wall, crystal chandeliers, mirrored wall. Not neutral — you'd be living inside someone's taste.\n\n98 m2 with a terrace that big means the indoor half is tight for 3BR+2BA. Bedrooms in the photos are modest.\n\nAmenities: heated adult + kids pool, sauna, turco, kids park + game room, sports field, walking trails, salon social.\n\nWHAT'S ACTUALLY WALKABLE (re-scanned 15 Aug from a corrected pin): Minimercado Espana 158m, Mall El Indio / D1 / Maxioferta ~340-370m, Origin Cafe 393m, Crepes & Waffles 820m, BFit 892m, Premium Plaza + Jumbo + Bodytech ~940-970m. So there IS a cluster.\n\nTHE CATCH IS VERTICAL. The building sits at ~1626m and everything is BELOW it: D1 and Mall El Indio are ~80-95m down, Jumbo/Premium Plaza ~145m down. Coming back from the D1 with bags is roughly a 25-story climb; from Jumbo it's ~145m of ascent over 950m, about a 15% grade. Elevation cross-checked against two datasets (ASTER30m and SRTM30m).",
       "r": {
         "light": 5,
         "quiet": 5,
@@ -284,155 +284,176 @@
         "social": true,
         "elevator": true
       },
-      "lat": 6.2248092,
-      "lng": -75.5606365,
+      "lat": 6.226651,
+      "lng": -75.562637,
       "geoExact": false,
-      "geoLabel": "Loma del Indio / La Asomadera (barrio-level, not the building)",
+      "geoLabel": "Loma del Indio, centroid of 13 real listings in the barrio (better than the old pin, still not your building)",
       "poi": {
         "counts": {
           "grocery": 8,
-          "food": 12,
-          "culture": 2,
-          "gym": 23,
-          "transit": 8,
-          "park": 26
+          "food": 13,
+          "culture": 4,
+          "gym": 18,
+          "transit": 12,
+          "park": 29
         },
         "nearest": {
-          "grocery": 432,
-          "food": 248,
-          "culture": 273,
-          "gym": 455,
-          "transit": 148,
-          "park": 338
+          "grocery": 158,
+          "food": 100,
+          "culture": 524,
+          "gym": 181,
+          "transit": 157,
+          "park": 150
         },
         "at": "2026-08-14",
         "radius": 1000,
         "items": [
           {
-            "c": "transit",
-            "n": "Bosques de Sandiego",
-            "d": 148,
-            "la": 6.2260145,
-            "ln": -75.5612103
-          },
-          {
-            "c": "food",
-            "n": "Café (unnamed)",
-            "d": 248,
-            "la": 6.225693,
-            "ln": -75.562697
-          },
-          {
-            "c": "culture",
-            "n": "Mirador de Loreto",
-            "d": 273,
-            "la": 6.2223588,
-            "ln": -75.5606726
-          },
-          {
-            "c": "food",
-            "n": "La Magía de Os",
-            "d": 314,
-            "la": 6.2219855,
-            "ln": -75.5606635
-          },
-          {
             "c": "park",
             "n": "Cancha de fútbol La Marquetalia",
-            "d": 338,
-            "la": 6.2276545,
-            "ln": -75.5617236
+            "d": 150,
+            "la": 6.227654,
+            "ln": -75.561724
           },
           {
             "c": "transit",
             "n": "Calle 29 Av. Las Palmas",
-            "d": 430,
-            "la": 6.2266463,
-            "ln": -75.5640571
+            "d": 157,
+            "la": 6.226646,
+            "ln": -75.564057
           },
           {
             "c": "grocery",
             "n": "Minimercado España",
-            "d": 432,
-            "la": 6.2266821,
-            "ln": -75.5640628
+            "d": 158,
+            "la": 6.226682,
+            "ln": -75.564063
           },
           {
-            "c": "food",
-            "n": "Origin Cafe 777",
-            "d": 530,
-            "la": 6.2244494,
-            "ln": -75.5654205
+            "c": "transit",
+            "n": "Carrera 33 Calle 29C",
+            "d": 171,
+            "la": 6.228165,
+            "ln": -75.56289
           },
           {
-            "c": "food",
-            "n": "Bora Bora",
-            "d": 539,
-            "la": 6.2224599,
-            "ln": -75.5649016
+            "c": "transit",
+            "n": "Bosques de Sandiego",
+            "d": 173,
+            "la": 6.226014,
+            "ln": -75.56121
           },
           {
-            "c": "food",
-            "n": "Restaurante Country Club",
-            "d": 603,
-            "la": 6.2193961,
-            "ln": -75.560889
+            "c": "transit",
+            "n": "Carrera 34",
+            "d": 278,
+            "la": 6.227743,
+            "ln": -75.564898
           },
           {
             "c": "grocery",
             "n": "Supermercado Maxioferta Palmas",
-            "d": 611,
-            "la": 6.2270097,
-            "ln": -75.5656969
+            "d": 341,
+            "la": 6.22701,
+            "ln": -75.565697
           },
           {
             "c": "grocery",
             "n": "Mall El Indio",
-            "d": 641,
+            "d": 361,
             "la": 6.227411,
-            "ln": -75.5658105
+            "ln": -75.56581
           },
           {
             "c": "grocery",
             "n": "D1",
-            "d": 643,
-            "la": 6.2273024,
-            "ln": -75.5658832
+            "d": 366,
+            "la": 6.227302,
+            "ln": -75.565883
           },
           {
             "c": "food",
-            "n": "Crepes & Waffles",
-            "d": 821,
-            "la": 6.2204296,
-            "ln": -75.5666135
+            "n": "Origin Cafe 777",
+            "d": 393,
+            "la": 6.224449,
+            "ln": -75.565421
+          },
+          {
+            "c": "culture",
+            "n": "Mirador de Loreto",
+            "d": 524,
+            "la": 6.222359,
+            "ln": -75.560673
+          },
+          {
+            "c": "food",
+            "n": "Bora Bora",
+            "d": 529,
+            "la": 6.22246,
+            "ln": -75.564902
           },
           {
             "c": "park",
             "n": "Parque Puntepiedra",
-            "d": 829,
-            "la": 6.2277959,
-            "ln": -75.5675033
+            "d": 553,
+            "la": 6.227796,
+            "ln": -75.567503
+          },
+          {
+            "c": "gym",
+            "n": "Piscina Punta de Piedra",
+            "d": 610,
+            "la": 6.22788,
+            "ln": -75.568015
+          },
+          {
+            "c": "food",
+            "n": "Crepes and Waffles",
+            "d": 820,
+            "la": 6.22043,
+            "ln": -75.566614
           },
           {
             "c": "gym",
             "n": "BFit",
-            "d": 872,
-            "la": 6.2196622,
-            "ln": -75.5665897
+            "d": 892,
+            "la": 6.219662,
+            "ln": -75.56659
+          },
+          {
+            "c": "culture",
+            "n": "Royal Films",
+            "d": 906,
+            "la": 6.229455,
+            "ln": -75.570605
           },
           {
             "c": "grocery",
-            "n": "Carulla Las Palmas",
-            "d": 948,
-            "la": 6.217629,
-            "ln": -75.5652672
+            "n": "Premium Plaza",
+            "d": 934,
+            "la": 6.229455,
+            "ln": -75.570605
           },
           {
             "c": "grocery",
-            "n": "Mall Palms Avenue",
-            "d": 949,
-            "la": 6.2175047,
-            "ln": -75.5650705
+            "n": "Jumbo",
+            "d": 943,
+            "la": 6.229287,
+            "ln": -75.570748
+          },
+          {
+            "c": "gym",
+            "n": "Bodytech",
+            "d": 968,
+            "la": 6.230169,
+            "ln": -75.570644
+          },
+          {
+            "c": "food",
+            "n": "Angus Brangus",
+            "d": 970,
+            "la": 6.233715,
+            "ln": -75.567784
           }
         ]
       },
