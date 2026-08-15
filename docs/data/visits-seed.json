@@ -9,7 +9,7 @@
       "area": "Envigado",
       "status": "visited",
       "rent": 4600000,
-      "admin": null,
+      "admin": 0,
       "beds": 3,
       "baths": 2,
       "m2": 110,
@@ -19,7 +19,7 @@
       "pets": true,
       "furnished": null,
       "park": true,
-      "notes": "Agency: A&B Inmobiliaria. Urbanización Saltamonte, Loma del Escobero (near City Plaza / Euro del Escobero / Hospital Uribe Angel). Estrato 5.\n\n110 m2, 3 alcobas, 2 banos, TWO parking spaces, piso 1. Ground floor of the tower, but the building sits on the Escobero hillside, so the listing photos still show a LARGE brick-paved terrace with a full valley view — correcting my earlier assumption that piso 1 meant no view. And no elevator wait every time the dog needs out. Sala-comedor, cocina integral WITH DISHWASHER, estudio, zona de ropas, master with ensuite + vestier. Wood laminate in the bedrooms, delivered empty and freshly painted.\n\nBuilding: 24h security, visitor parking, salon social, pool, sauna, turco, elevator, gym, sports zone, playground, green areas, and PET ZONES — the listing says so explicitly, which is why this one is marked pets-ok and the Poblado one is not.\n\nASK A&B: administracion (not published), furnished or not, available date, and whether the ground floor gets noise off the shared areas.",
+      "notes": "Agency: A&B Inmobiliaria. Urbanización Saltamonte, Loma del Escobero (near City Plaza / Euro del Escobero / Hospital Uribe Angel). Estrato 5.\n\n110 m2, 3 alcobas, 2 banos, TWO parking spaces, piso 1. Ground floor of the tower, but the building sits on the Escobero hillside, so the listing photos still show a LARGE brick-paved terrace with a full valley view — correcting my earlier assumption that piso 1 meant no view. And no elevator wait every time the dog needs out. Sala-comedor, cocina integral WITH DISHWASHER, estudio, zona de ropas, master with ensuite + vestier. Wood laminate in the bedrooms, delivered empty and freshly painted.\n\nBuilding: 24h security, visitor parking, salon social, pool, sauna, turco, elevator, gym, sports zone, playground, green areas, and PET ZONES — the listing says so explicitly, which is why this one is marked pets-ok and the Poblado one is not.\n\nCONFIRMED 15 Aug: 4.6M INCLUDES administracion, and dogs are allowed. That puts it just 100k over the 4.5M cap — effectively on budget.\n\nSTILL ASK A&B: furnished or not, and the available date.",
       "r": {
         "light": 4,
         "quiet": 3,
@@ -27,7 +27,8 @@
         "kitchen": 4,
         "building": 5,
         "hood": 4,
-        "safety": 5
+        "safety": 5,
+        "vibe": 3
       },
       "walk": {},
       "gut": null,
@@ -246,17 +247,17 @@
       "area": "El Poblado",
       "status": "visited",
       "rent": 5000000,
-      "admin": null,
+      "admin": 0,
       "beds": 3,
       "baths": 2,
       "m2": 98,
       "floor": 22,
       "avail": "",
       "url": "",
-      "pets": null,
+      "pets": true,
       "furnished": false,
       "park": false,
-      "notes": "5.000.000/mo as quoted. UNCONFIRMED whether that includes administracion — in a tower with heated pool + sauna + turco, admin is often 700k-1M more. Ask.\n\nFrom the photos: big wraparound terrace with a real valley view, floor-to-ceiling sliders off the living room, proper zona de ropas (Bosch gas heater + sink), compact black-granite kitchen with gas cooktop, oven and a slatted island bar, master bath with double vanity + glass shower, second bath smaller. Interior is heavily styled: 3D geometric wallpaper on several walls, faux-stone accent wall, crystal chandeliers, mirrored wall. Not neutral — you'd be living inside someone's taste.\n\n98 m2 with a terrace that big means the indoor half is tight for 3BR+2BA. Bedrooms in the photos are modest.\n\nAmenities: heated adult + kids pool, sauna, turco, kids park + game room, sports field, walking trails, salon social.",
+      "notes": "5.000.000/mo ALL IN — Jordan confirmed 15 Aug that this includes administracion, and that dogs are allowed. So 5.0M is the real number, 500k over the 4.5M cap.\n\nFrom the photos: big wraparound terrace with a real valley view, floor-to-ceiling sliders off the living room, proper zona de ropas (Bosch gas heater + sink), compact black-granite kitchen with gas cooktop, oven and a slatted island bar, master bath with double vanity + glass shower, second bath smaller. Interior is heavily styled: 3D geometric wallpaper on several walls, faux-stone accent wall, crystal chandeliers, mirrored wall. Not neutral — you'd be living inside someone's taste.\n\n98 m2 with a terrace that big means the indoor half is tight for 3BR+2BA. Bedrooms in the photos are modest.\n\nAmenities: heated adult + kids pool, sauna, turco, kids park + game room, sports field, walking trails, salon social.",
       "r": {
         "light": 5,
         "quiet": 5,
@@ -264,7 +265,8 @@
         "kitchen": 3,
         "building": 5,
         "hood": 2,
-        "safety": 5
+        "safety": 5,
+        "vibe": 5
       },
       "walk": {},
       "gut": null,
