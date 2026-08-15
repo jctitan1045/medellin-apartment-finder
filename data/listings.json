@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-15T05:36:17.804195+00:00",
-  "count": 53,
+  "generated_at": "2026-08-15T13:07:19.311915+00:00",
+  "count": 51,
   "listings": [
     {
       "source": "fincaraiz",
@@ -376,7 +376,7 @@
       "notes": [
         "furnished status unknown — verify"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "fincaraiz:194119503",
       "price_usd": 1037
     },
@@ -609,7 +609,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:19259-M6604064",
       "price_usd": 1086
     },
@@ -875,7 +875,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "fincaraiz:193796361",
       "price_usd": 1086
     },
@@ -942,7 +942,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:16120-M6899673",
       "price_usd": 1086
     },
@@ -1458,7 +1458,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:18777-M6804402",
       "price_usd": 1086
     },
@@ -2178,75 +2178,8 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
-      "uid": "metrocuadrado:23056-M6954498",
-      "price_usd": 1037
-    },
-    {
-      "source": "ciencuadras",
-      "source_id": "965939-9947625",
-      "url": "https://www.ciencuadras.com/inmueble/casa-en-arriendo-en-zona-centro-envigado-3706557",
-      "title": "Casa en Zona Centro, Envigado",
-      "area_key": "envigado",
-      "neighborhood": "Zona Centro",
-      "city": "Envigado",
-      "price_rent": 4200000,
-      "price_admin": 0,
-      "price_total": 4200000,
-      "admin_known": false,
-      "bedrooms": 6,
-      "bathrooms": 2,
-      "area_m2": 160.0,
-      "stratum": 4,
-      "floor": null,
-      "garages": 0,
-      "property_type": "casa",
-      "is_penthouse": false,
-      "has_office": false,
-      "furnished": null,
-      "pets": null,
-      "amenities": [
-        "No tiene",
-        "Independiente"
-      ],
-      "description": "Casa en arriendo ubicada frente al parque principal de Envigado, en una de las zonas más estratégicas del municipio, con fácil acceso a comercio, transporte y todo tipo de servicios.\n\nCon 160 m² de área total, la propiedad ofrece una excelente distribución y espacios amplios, ideales tanto para vivienda como para uso comercial. Cuenta con 6 habitaciones bien iluminadas, 2 baños, amplia sala-comedor, cocina integral, terraza, 2 patios que garantizan ventilación y luz natural, y zona de ropas independiente.\n\nValor del arriendo: ? Uso residencial: $4.200.000 ? Uso comercial: $6.000.000\n\nUna oportunidad versátil en una ubicación inmejorable.\n",
-      "lat": 6.169609,
-      "lng": -75.586751,
-      "image": "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/abfd__178097486090_plana.jpeg",
-      "images": [
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/abfd__178097486090_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acf__178097486088_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acf__1780974860100_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acd__178097486042_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acccf__17809748605_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acd__178097486015_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acda__178097486087_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acc__178097486055_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/ac__178097486055_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/accb__178097486070_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acefe__178097486124_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3706557/acfe__178097486153_plana.jpeg"
-      ],
-      "contact_name": "ACA propiedad raíz",
-      "contact_phone": "3194464543",
-      "contact_whatsapp": "573194464543",
-      "contact_email": "comercial@acapropiedadraiz.com",
-      "created_at": "2026-04-24T15:03:04.000Z",
-      "updated_at": "",
-      "score": 31,
-      "score_flags": [
-        "Balcony/terrace",
-        "Near park/nature",
-        "High natural light",
-        "Spacious (120m²+)"
-      ],
-      "hard_fails": [],
-      "notes": [
-        "furnished status unknown — verify",
-        "administración unknown — total may be higher"
-      ],
       "is_new": false,
-      "uid": "ciencuadras:965939-9947625",
+      "uid": "metrocuadrado:23056-M6954498",
       "price_usd": 1037
     },
     {
@@ -2689,6 +2622,70 @@
       "price_usd": 716
     },
     {
+      "source": "ciencuadras",
+      "source_id": "1057447-3767272",
+      "url": "https://www.ciencuadras.com/inmueble/casa-en-arriendo-en-el-tesoro-medellin-3767272",
+      "title": "Casa en EL TESORO, Medellín",
+      "area_key": "poblado",
+      "neighborhood": "EL TESORO",
+      "city": "Medellín",
+      "price_rent": 4000000,
+      "price_admin": 0,
+      "price_total": 4000000,
+      "admin_known": false,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area_m2": 120.0,
+      "stratum": 5,
+      "floor": null,
+      "garages": 1,
+      "property_type": "casa",
+      "is_penthouse": false,
+      "has_office": false,
+      "furnished": null,
+      "pets": null,
+      "amenities": [],
+      "description": "Se arrienda amplia casa en segundo piso tipo dúplex, ideal para vivienda, negocio o uso comercial (incluyendo estudios webcam). Ubicada en una zona estratégica, con excelente combinación entre sector residencial y comercial, cerca al Centro Comercial El Tesoro. El inmueble cuenta con 3 habitaciones, 2 baños, espacios bien distribuidos, buena iluminación natural y ventilación. Su diseño tipo dúplex brinda mayor amplitud y privacidad entre las áreas. Gracias a su ubicación, ofrece fácil acceso a transporte, comercio, servicios y zonas de alto flujo, lo que la convierte en una excelente opción tanto para vivir como para desarrollar actividades comerciales.",
+      "lat": 6.200253,
+      "lng": -75.563497,
+      "image": "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afec_178163404671_plana.jpeg",
+      "images": [
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afec_178163404671_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afeddbe_178163404628_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afeeff_178163404691_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afecbbb_17816340464_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afef_178163404628_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afeded_178163404661_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afdfb_178163404541_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afdda_178163404592_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afdde_178163404546_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afdde_178163404558_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afdefad_178163404646_plana.jpeg",
+        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3767272/afdeda_178163404523_plana.jpeg"
+      ],
+      "contact_name": "Juliana Sanchez",
+      "contact_phone": "3225331645",
+      "contact_whatsapp": "573126478231",
+      "contact_email": "",
+      "created_at": "2026-08-14T12:21:39.000Z",
+      "updated_at": "",
+      "score": 28,
+      "score_flags": [
+        "Penthouse/top floor",
+        "Office/study",
+        "High natural light",
+        "Spacious (120m²+)"
+      ],
+      "hard_fails": [],
+      "notes": [
+        "furnished status unknown — verify",
+        "administración unknown — total may be higher"
+      ],
+      "is_new": true,
+      "uid": "ciencuadras:1057447-3767272",
+      "price_usd": 988
+    },
+    {
       "source": "fincaraiz",
       "source_id": "193490613",
       "url": "https://www.fincaraiz.com.co/casa-en-arriendo-en-conquistadores-medellin/193490613",
@@ -2779,72 +2776,6 @@
       "price_usd": 988
     },
     {
-      "source": "ciencuadras",
-      "source_id": "15278-12521",
-      "url": "https://www.ciencuadras.com/inmueble/casa-en-arriendo-en-la-mesa-envigado-3785377",
-      "title": "Casa en La Mesa, Envigado",
-      "area_key": "envigado",
-      "neighborhood": "La Mesa",
-      "city": "Envigado",
-      "price_rent": 3600000,
-      "price_admin": 0,
-      "price_total": 3600000,
-      "admin_known": false,
-      "bedrooms": 4,
-      "bathrooms": 3,
-      "area_m2": 176.0,
-      "stratum": 4,
-      "floor": null,
-      "garages": 0,
-      "property_type": "casa",
-      "is_penthouse": false,
-      "has_office": false,
-      "furnished": null,
-      "pets": null,
-      "amenities": [
-        "No tiene",
-        "Zona lavanderia"
-      ],
-      "description": "Casa en arriendo – Envigado CentroAmplia y cómoda casa de 176 m² ubicada en el sector Envigado Centro, una excelente opción para familias o para quienes buscan espacios generosos en una ubicación estratégica.La propiedad cuenta con 4 alcobas, 4 clósets, 3 baños (uno con cabina), amplia sala, balcón, patio, cocina integral con red de gas, zona de ropas y agua caliente, ofreciendo comodidad y funcionalidad para el día a día.Ubicada en un sector residencial con fácil acceso a todos los servicios, se encuentra cerca de parques, supermercados, transporte público y una amplia zona comercial, lo que facilita la movilidad y el acceso a todo lo que necesitas.Canon de arrendamiento: $3.600.000 -USO COMERCIAL 4.300.000Área: 176 m²Estrato: 4¡Contáctanos para conocer más información y agendar tu visita!",
-      "lat": 6.166208,
-      "lng": -75.583559,
-      "image": "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/ab__178593985859_plana.jpeg",
-      "images": [
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/ab__178593985859_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/ab__178593985884_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/aee__178593985869_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/ad__178593985851_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/abfd__178593985879_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/ab__178593986096_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/aaa__178593986039_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/a__178593986081_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/acb__178593986050_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/aaea__178593986098_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/adc__178593986260_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3785377/aa__178593986279_plana.jpeg"
-      ],
-      "contact_name": "ABACO  ARRENDAMIENTOS",
-      "contact_phone": "3183540430",
-      "contact_whatsapp": "573183540430",
-      "contact_email": "",
-      "created_at": "2026-06-30T15:50:26.000Z",
-      "updated_at": "",
-      "score": 27,
-      "score_flags": [
-        "Balcony/terrace",
-        "Near park/nature",
-        "Spacious (120m²+)"
-      ],
-      "hard_fails": [],
-      "notes": [
-        "furnished status unknown — verify",
-        "administración unknown — total may be higher"
-      ],
-      "is_new": false,
-      "uid": "ciencuadras:15278-12521",
-      "price_usd": 889
-    },
-    {
       "source": "metrocuadrado",
       "source_id": "15245-M6906806",
       "url": "https://www.metrocuadrado.com/inmueble/arriendo-apartamento-envigado-la-frontera-3-habitaciones-2-banos-1-garajes/15245-M6906806",
@@ -2903,7 +2834,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:15245-M6906806",
       "price_usd": 1086
     },
@@ -2968,7 +2899,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:687-M4464148",
       "price_usd": 914
     },
@@ -3099,7 +3030,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:98-M6858969",
       "price_usd": 914
     },
@@ -3226,7 +3157,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:17024-M6019878",
       "price_usd": 1111
     },
@@ -3359,7 +3290,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:12257-M6134419",
       "price_usd": 975
     },
@@ -3422,7 +3353,7 @@
         "furnished status unknown — verify",
         "administración unknown — total may be higher"
       ],
-      "is_new": true,
+      "is_new": false,
       "uid": "metrocuadrado:19259-M6603897",
       "price_usd": 914
     },
@@ -3818,68 +3749,6 @@
       "is_new": false,
       "uid": "metrocuadrado:23054-M6942342",
       "price_usd": 1037
-    },
-    {
-      "source": "ciencuadras",
-      "source_id": "14831-871",
-      "url": "https://www.ciencuadras.com/inmueble/apartamento-en-arriendo-en-obrero-envigado-3813529",
-      "title": "Apartamento en Obrero, Envigado",
-      "area_key": "envigado",
-      "neighborhood": "Obrero",
-      "city": "Envigado",
-      "price_rent": 2900000,
-      "price_admin": 0,
-      "price_total": 2900000,
-      "admin_known": false,
-      "bedrooms": 4,
-      "bathrooms": 2,
-      "area_m2": 115.0,
-      "stratum": 5,
-      "floor": null,
-      "garages": 0,
-      "property_type": "apartamento",
-      "is_penthouse": false,
-      "has_office": false,
-      "furnished": null,
-      "pets": null,
-      "amenities": [
-        "No tiene",
-        "Zona lavanderia"
-      ],
-      "description": "¡Vive el Lujo y la Comodidad en el Corazón de Envigado!\nDescubre este impresionante apartamento de 115 m², ubicado en el exclusivo barrio de La Magnolia, Envigado. Con 4 amplias alcobas, 3 espaciosos closets y una cocina integral, este hogar te brindará todo lo que necesitas para disfrutar de una vida llena de confort y estilo.",
-      "lat": 6.172236,
-      "lng": -75.582582,
-      "image": "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/aa__178595570273_plana.jpeg",
-      "images": [
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/aa__178595570273_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/abad__178595570172_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/acab__178595570136_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/ada__178595570273_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/aea__178595570185_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/aa__178595570261_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/a__178595570290_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/aab__178595570278_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/ac__178595570284_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/ae__178595570264_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/abaa__178595570240_plana.jpeg",
-        "https://www-img-cc.s3.amazonaws.com/inmuebles/images/3813529/acee__178595570248_plana.jpeg"
-      ],
-      "contact_name": "PEREZ SEBASTIAN",
-      "contact_phone": "3103675054",
-      "contact_whatsapp": "573103675054",
-      "contact_email": "",
-      "created_at": "2026-07-24T16:58:19.000Z",
-      "updated_at": "",
-      "score": 0,
-      "score_flags": [],
-      "hard_fails": [],
-      "notes": [
-        "furnished status unknown — verify",
-        "administración unknown — total may be higher"
-      ],
-      "is_new": false,
-      "uid": "ciencuadras:14831-871",
-      "price_usd": 716
     }
   ]
 }
