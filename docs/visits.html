@@ -292,7 +292,11 @@
         <div class="fld"><label>Visit date</label><input type="date" id="f_date"></div>
       </div>
       <div class="grid2">
-        <div class="fld"><label>Address / building</label><input id="f_addr" placeholder="Cra 35 #8-40"></div>
+        <div class="fld"><label>Building / unidad</label><input id="f_building" placeholder="Urbanización Saltamonte"></div>
+        <div class="fld"><label>Apartment / torre</label><input id="f_unit" placeholder="Torre 3, Apto 106"></div>
+      </div>
+      <div class="grid2">
+        <div class="fld"><label>Street address</label><input id="f_addr" placeholder="Cra 27G #35 Sur - 175"></div>
         <div class="fld"><label>Barrio</label><input id="f_barrio" placeholder="Laureles"></div>
       </div>
       <div class="grid2">
@@ -585,6 +589,7 @@ async function geocode(p){
   const city=cityOf(p);
   const tries=[
     p.addr?[p.addr,city].join(', '):null,
+    p.building?[p.building,p.barrio,city].filter(Boolean).join(', '):null,
     (p.addr&&p.barrio)?[p.addr,p.barrio,city].join(', '):null,
     p.barrio?[p.barrio,city].join(', '):null,
     (p.area&&p.area!=='Other')?[p.area,city].join(', '):null,
@@ -864,6 +869,11 @@ function card(r,i,topScore){
       '<div class="ctop"><span class="nm" style="cursor:pointer" onclick="openPlace(\''+p.id+'\')">'+esc(p.name)+'</span>'+
         '<span class="where">'+[...new Set([p.barrio,p.area].filter(Boolean))].map(esc).join(' · ')+
           (p.date?' · seen '+esc(p.date):'')+'</span></div>'+
+      '<div class="where">'+
+        [p.building?'<b style="color:var(--ink)">'+esc(p.building)+'</b>':'',
+         p.unit?esc(p.unit):'', p.addr?esc(p.addr):''].filter(Boolean).join(' · ')+
+        (p.building?'':'<span style="color:var(--warn)">'+(p.unit||p.addr?' · ':'')+
+          'building name missing</span>')+'</div>'+
       '<div class="specs"><b>'+(t==null?'price —':'$'+fmtM(t)+'/mo')+'</b>'+
         (p.rent!=null&&p.admin?' <span class="where">('+fmtM(p.rent)+' + '+fmtM(p.admin)+' admin)</span>':'')+
         (specs?' &nbsp;·&nbsp; '+specs:'')+'</div>'+
@@ -993,7 +1003,11 @@ function renderPlace(id){
       (p.url?'<a class="acts" style="padding:5px 9px;border:1px solid var(--line);border-radius:8px" href="'+esc(p.url)+'" target="_blank" rel="noopener">Listing ↗</a>':'')+
     '</div>'+
     '<div class="dhead">'+ring+'<div class="dtitle"><h2>'+esc(p.name)+'</h2>'+
-      '<div class="where">'+[...new Set([p.barrio,p.area].filter(Boolean))].map(esc).join(' · ')+
+      (p.building?'<div style="font-weight:700;margin-top:2px">'+esc(p.building)+
+        (p.unit?' <span class="where" style="font-weight:400">· '+esc(p.unit)+'</span>':'')+'</div>':
+        '<div class="where" style="color:var(--warn)">No building name yet — add it under Edit / rate</div>')+
+      '<div class="where">'+(p.addr?esc(p.addr)+' · ':'')+
+        [...new Set([p.barrio,p.area].filter(Boolean))].map(esc).join(' · ')+
         (p.date?' · seen '+esc(p.date):'')+'</div>'+
       '<div class="specs" style="margin-top:4px"><b>'+(t==null?'price —':'$'+fmtM(t)+'/mo')+'</b>'+
         (specs?' &nbsp;·&nbsp; '+specs:'')+'</div>'+
@@ -1104,6 +1118,9 @@ function renderTable(){
   html+=line('Bathrooms',P.map(p=>p.baths??null),'hi');
   html+=line('Floor',P.map(p=>p.floor??null),null);
   html+='<tr class="sec"><th class="rowh">Place</th><th colspan="'+P.length+'"></th></tr>';
+  html+=line('Building',P.map(p=>p.building||''),null);
+  html+=line('Unit',P.map(p=>p.unit||''),null);
+  html+=line('Address',P.map(p=>p.addr||''),null);
   html+=line('Barrio',P.map(p=>p.barrio||''),null);
   html+=line('Area',P.map(p=>p.area||''),null);
   html+=line('Avg walk (min)',P.map(p=>{const a=avgWalk(p);return a==null?null:Math.round(a);}),'lo');
@@ -1164,6 +1181,7 @@ function openEdit(id){
   $('#delBtn').style.display=editing?'':'none';
   $('#f_name').value=p.name||''; $('#f_date').value=p.date||todayISO();
   $('#f_addr').value=p.addr||''; $('#f_barrio').value=p.barrio||'';
+  $('#f_building').value=p.building||''; $('#f_unit').value=p.unit||'';
   $('#f_area').value=p.area||''; $('#f_status').value=p.status||'visited';
   $('#f_rent').value=p.rent!=null?fmtCOP(p.rent):''; $('#f_admin').value=p.admin!=null?fmtCOP(p.admin):'';
   $('#f_beds').value=p.beds??''; $('#f_baths').value=p.baths??'';
@@ -1229,6 +1247,7 @@ $('#frm').addEventListener('submit',e=>{
   const obj={
     id:editing?editing.id:uid(),
     name:$('#f_name').value.trim()||'Untitled', date:$('#f_date').value, addr:$('#f_addr').value.trim(),
+    building:$('#f_building').value.trim(), unit:$('#f_unit').value.trim(),
     barrio:$('#f_barrio').value.trim(), area:$('#f_area').value, status:$('#f_status').value,
     rent:num($('#f_rent').value), admin:num($('#f_admin').value),
     beds:num($('#f_beds').value), baths:num($('#f_baths').value),
