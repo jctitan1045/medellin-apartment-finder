@@ -11,6 +11,7 @@ hard:
   min_bedrooms: 2               # default floor (Poblado, Laureles, Ciudad del Río, Las Palmas)
   min_bedrooms_by_area:         # per-area overrides
     envigado: 3                 # Envigado needs 3BR minimum
+    frontera: 3                 # La Frontera needs 3BR minimum
   min_bathrooms: 2              # restored to 2 (was lowered only for 1BR, now gone)
   min_area_m2: 80                # default área construida floor — solo + dog + stuff, wants space
   min_area_by_beds:              # per-bedroom overrides (roomy 1BRs are rare, so a lower bar)
