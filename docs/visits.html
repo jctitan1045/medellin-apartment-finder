@@ -495,19 +495,27 @@ function amenityScore(p){
   return clamp(100*got/AM_TOTAL,0,100);
 }
 /* ---- walkability: per-category counts within WALK_RADIUS, weighted, capped at target ---- */
-function walkParts(p){
+/* Flat distance flatters a hillside: a shop 350 m away and 90 m below is a walk down
+   and a climb back. When elevation is on hand we count only what's still reachable
+   once the climb home is priced in (Naismith: 100 m up ≈ 600 m of extra flat walking). */
+function walkParts(p,adjusted){
   if(!p.poi) return null;
+  const useAdj=adjusted&&p.poi.countsAdj;
+  const counts=useAdj?p.poi.countsAdj:p.poi.counts;
+  const near=useAdj?p.poi.nearestAdj:p.poi.nearest;
   return POI_CATS.map(c=>{
-    const n=(p.poi.counts&&p.poi.counts[c.k])||0;
-    return {c, n, near:(p.poi.nearest&&p.poi.nearest[c.k])??null,
-            s:clamp(100*n/c.target,0,100)};
+    const n=(counts&&counts[c.k])||0;
+    return {c, n, near:(near&&near[c.k])??null, s:clamp(100*n/c.target,0,100)};
   });
 }
-function walkScore(p){
-  const parts=walkParts(p); if(!parts) return null;
+const hasHills=p=>!!(p.poi&&p.poi.countsAdj);
+function walkScore(p,adjusted){
+  const parts=walkParts(p,adjusted); if(!parts) return null;
   const w=parts.reduce((a,x)=>a+x.c.w,0);
   return clamp(parts.reduce((a,x)=>a+x.c.w*x.s,0)/w,0,100);
 }
+/* the score that feeds the ranking uses the hill-adjusted figure when we have it */
+const walkFinal=p=>walkScore(p,hasHills(p));
 
 /* ------------------------------------------------------------------ scoring */
 function factorScore(p,k){
@@ -519,7 +527,7 @@ function factorScore(p,k){
     case 'bedrooms':  return lerp(p.beds,   sc.beds_worst,  sc.beds_best);
     case 'bathrooms': return lerp(p.baths,  sc.baths_worst, sc.baths_best);
     case 'proximity': return lerp(avgWalk(p),sc.walk_worst, sc.walk_best);
-    case 'walkability': return walkScore(p);
+    case 'walkability': return walkFinal(p);
     case 'amenities':   return amenityScore(p);
     default: { const r=p.r&&p.r[k]; return r?((r-1)/4)*100:null; }
   }
@@ -804,7 +812,7 @@ function card(r,i,topScore){
   if(p.park) st.push('<span class="chip">parking</span>');
   if(pm) st.push('<span class="chip">'+fmtCOP(pm)+' /m²</span>');
   const aw=avgWalk(p); if(aw!=null) st.push('<span class="chip">~'+Math.round(aw)+' min walk avg</span>');
-  const ws=walkScore(p); if(ws!=null) st.push('<span class="chip">walk '+Math.round(ws)+'/100</span>');
+  const ws=walkFinal(p); if(ws!=null) st.push('<span class="chip">walk '+Math.round(ws)+'/100'+(hasHills(p)?' ⛰':'')+'</span>');
   const as=amenityScore(p); if(as!=null) st.push('<span class="chip">amenities '+Math.round(as)+'/100</span>');
   if(p.gut) st.push('<span class="chip">gut '+p.gut+'/5</span>');
   if(r.missing.length) st.push('<span class="chip warn">'+r.missing.length+' unrated</span>');
@@ -889,7 +897,7 @@ function renderPlace(id){
     '</div><div class="miss" id="phmsg" style="margin-top:6px"></div>';
 
   /* --- walkability --- */
-  const parts=walkParts(p), ws=walkScore(p);
+  const parts=walkParts(p,hasHills(p)), ws=walkFinal(p);
   let walkHtml;
   if(!parts){
     walkHtml='<div class="infobox">Nothing scanned yet. '+
@@ -903,10 +911,16 @@ function renderPlace(id){
       '<div class="miss" style="margin-top:8px">Counted within '+(p.poi.radius||WALK_RADIUS)+
       ' m, scanned '+esc(p.poi.at||'')+'. Each bar fills at '+
       parts.map(x=>x.c.target+' '+x.c.lbl.toLowerCase()).join(', ')+'.</div>'+
-      '<div class="infobox">OpenStreetMap coverage in Medellín is good for shops and transit, thinner for '+
-      'gyms and small restaurants — treat a low bar as “check it yourself”, not “nothing there”. '+
-      'It also measures flat distance: on Loma del Indio or Loma del Escobero, 800 m downhill is not '+
-      '800 m back up.</div>';
+      (hasHills(p)
+        ? '<div class="infobox">⛰ <b>Hill-adjusted.</b> This building sits at '+p.poi.home+' m. Anything '+
+          'below it costs a climb on the way home, priced at 100 m up ≈ 600 m of extra flat walking, and '+
+          'only what still lands inside '+WALK_RADIUS+' m counts. Flat, it would score '+
+          Math.round(walkScore(p,false))+'.</div>'
+        : '<div class="infobox">Flat distance only — no elevation for this one yet, so a shop 300 m away '+
+          'and 90 m below still reads as 300 m.</div>')+
+      '<div class="infobox">OpenStreetMap under-reports small restaurants and gyms in Medellín, so treat '+
+      'a low bar as “go look yourself”, not “nothing there”. And the pin matters: at ±200 m on a hillside '+
+      'these numbers move a lot.</div>';
   }
 
   /* --- nearest named places --- */
@@ -1092,9 +1106,12 @@ function renderTable(){
   html+=line('Avg walk (min)',P.map(p=>{const a=avgWalk(p);return a==null?null:Math.round(a);}),'lo');
   S.anchors.forEach(a=>{ html+=line('→ '+a.name+' (min)',P.map(p=>(p.walk&&p.walk[a.id])??null),'lo'); });
   html+='<tr class="sec"><th class="rowh">Walkability</th><th colspan="'+P.length+'"></th></tr>';
-  html+=line('Walk score /100',P.map(p=>{const w=walkScore(p);return w==null?null:Math.round(w);}),'hi');
+  html+=line('Walk score /100',P.map(p=>{const w=walkFinal(p);return w==null?null:Math.round(w);}),'hi');
+  html+=line('Walk score, flat /100',P.map(p=>{const w=walkScore(p,false);return w==null?null:Math.round(w);}),'hi');
+  html+=line('Metres you climb home',P.map(p=>{if(!p.poi||!p.poi.items)return null;
+    const g=p.poi.items.filter(i=>i.c==='grocery').sort((a,b)=>a.d-b.d)[0];return g?(g.up??null):null;}),'lo');
   POI_CATS.forEach(c=>{ html+=line(c.icon+' '+c.lbl+' ≤1km',
-    P.map(p=>p.poi?((p.poi.counts&&p.poi.counts[c.k])||0):null),'hi'); });
+    P.map(p=>p.poi?(((hasHills(p)?p.poi.countsAdj:p.poi.counts)||{})[c.k]||0):null),'hi'); });
   html+='<tr class="sec"><th class="rowh">Amenities</th><th colspan="'+P.length+'"></th></tr>';
   html+=line('Amenity score /100',P.map(p=>{const a=amenityScore(p);return a==null?null:Math.round(a);}),'hi');
   AMENITIES.forEach(a=>{ html+=line(a.lbl,P.map(p=>p.am&&Object.keys(p.am).length?(p.am[a.k]?'✓':'·'):''),null); });
