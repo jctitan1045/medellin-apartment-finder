@@ -48,6 +48,13 @@
   .card.dim{opacity:.5}
   .card.win{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
   .rank{font-size:13px;color:var(--muted);font-weight:700;width:22px;flex:none;padding-top:16px;text-align:center}
+  .cthumb{width:150px;height:112px;flex:none;border-radius:10px;border:1px solid var(--line);
+       background:var(--chip) center/cover no-repeat;cursor:pointer;position:relative;overflow:hidden}
+  .cthumb .n{position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.6);color:#fff;
+       font-size:10.5px;padding:1px 6px;border-radius:9px}
+  .cthumb.none{display:grid;place-items:center;color:var(--muted);font-size:11.5px;text-align:center;
+       border-style:dashed;padding:6px;line-height:1.35}
+  @media (max-width:640px){ .cthumb{width:100%;height:170px;order:-1} }
   .ring{width:62px;height:62px;flex:none;border-radius:50%;display:grid;place-items:center;
         background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--track) 0)}
   .ring i{width:48px;height:48px;border-radius:50%;background:var(--card);display:grid;place-items:center;
@@ -679,14 +686,17 @@ function shrink(file,maxPx,quality){
     rd.readAsDataURL(file);
   });
 }
-const MAX_PHOTOS=14;
+/* Two photo sources: photoUrls are remote (pulled from the listing, tiny to store and
+   safe to put in a share link); photos are data URLs you uploaded from your own camera roll. */
+const allPhotos=p=>[...(p.photoUrls||[]),...(p.photos||[])];
+const MAX_PHOTOS=24;
 function addPhotos(id){
   const p=S.places.find(x=>x.id===id); if(!p) return;
   const i=document.createElement('input'); i.type='file'; i.accept='image/*'; i.multiple=true;
   i.onchange=async()=>{
     const files=[...i.files]; if(!files.length) return;
     p.photos=p.photos||[];
-    const room=MAX_PHOTOS-p.photos.length;
+    const room=MAX_PHOTOS-allPhotos(p).length;
     if(room<=0){ alert('That place already has '+MAX_PHOTOS+' photos. Delete some first.'); return; }
     const msg=document.getElementById('phmsg'); if(msg) msg.innerHTML='<span class="busy"></span>Shrinking photos…';
     let added=0;
@@ -706,17 +716,22 @@ function addPhotos(id){
   i.click();
 }
 window.addPhotos=addPhotos;
+/* idx indexes the combined list, so route the delete to whichever array it came from */
 function delPhoto(id,idx){
-  const p=S.places.find(x=>x.id===id); if(!p||!p.photos) return;
-  p.photos.splice(idx,1); save(); renderPlace(id);
+  const p=S.places.find(x=>x.id===id); if(!p) return;
+  const nUrl=(p.photoUrls||[]).length;
+  if(idx<nUrl) p.photoUrls.splice(idx,1);
+  else if(p.photos) p.photos.splice(idx-nUrl,1);
+  save(); renderPlace(id);
 }
 window.delPhoto=delPhoto;
 
 /* lightbox */
 let lbList=[],lbIdx=0;
 function openLb(id,idx){
-  const p=S.places.find(x=>x.id===id); if(!p||!p.photos) return;
-  lbList=p.photos; lbIdx=idx; paintLb(); $('#lightbox').style.display='flex';
+  const p=S.places.find(x=>x.id===id); if(!p) return;
+  lbList=allPhotos(p); if(!lbList.length) return;
+  lbIdx=idx; paintLb(); $('#lightbox').style.display='flex';
 }
 window.openLb=openLb;
 function paintLb(){ $('#lbimg').src=lbList[lbIdx]||''; $('#lbc').textContent=(lbIdx+1)+' / '+lbList.length; }
@@ -786,7 +801,6 @@ function card(r,i,topScore){
   const aw=avgWalk(p); if(aw!=null) st.push('<span class="chip">~'+Math.round(aw)+' min walk avg</span>');
   const ws=walkScore(p); if(ws!=null) st.push('<span class="chip">walk '+Math.round(ws)+'/100</span>');
   const as=amenityScore(p); if(as!=null) st.push('<span class="chip">amenities '+Math.round(as)+'/100</span>');
-  if((p.photos||[]).length) st.push('<span class="chip">'+p.photos.length+' 📷</span>');
   if(p.gut) st.push('<span class="chip">gut '+p.gut+'/5</span>');
   if(r.missing.length) st.push('<span class="chip warn">'+r.missing.length+' unrated</span>');
   const brk=r.brk.length?'<span class="chip bad">⚑ '+r.brk.map(esc).join(' · ')+'</span>':'';
@@ -819,8 +833,15 @@ function card(r,i,topScore){
   const ring=r.score==null?'<div class="ring na"><i>–</i></div>'
     :'<div class="ring" style="--p:'+r.score+'"><i>'+r.score+'</i></div>';
 
+  const ph=allPhotos(p);
+  const thumb=ph.length
+    ? '<div class="cthumb" style="background-image:url('+ph[0].replace(/([()])/g,'\\$1')+')" '+
+      'onclick="openLb(\''+p.id+'\',0)" title="Open the photos">'+
+      (ph.length>1?'<span class="n">'+ph.length+' photos</span>':'')+'</div>'
+    : '<div class="cthumb none" onclick="openPlace(\''+p.id+'\')">no photos yet<br>tap to add</div>';
+
   return '<div class="card'+(r.brk.length?' dim':'')+(r.score!=null&&r.score===topScore&&!r.brk.length?' win':'')+'">'+
-    '<div class="rank">'+(i+1)+'</div>'+ring+
+    '<div class="rank">'+(i+1)+'</div>'+thumb+ring+
     '<div class="cbody">'+
       '<div class="ctop"><span class="nm" style="cursor:pointer" onclick="openPlace(\''+p.id+'\')">'+esc(p.name)+'</span>'+
         '<span class="where">'+[...new Set([p.barrio,p.area].filter(Boolean))].map(esc).join(' · ')+
@@ -852,7 +873,7 @@ function renderPlace(id){
     :'<div class="ring" style="--p:'+r.score+'"><i>'+r.score+'</i></div>';
 
   /* --- photos --- */
-  const ph=(p.photos||[]);
+  const ph=allPhotos(p);
   const gallery='<div class="thumbs">'+
     ph.map((src,i)=>'<div class="ph" style="background-image:url('+src+')" onclick="openLb(\''+p.id+'\','+i+')">'+
        '<button onclick="event.stopPropagation();delPhoto(\''+p.id+'\','+i+')" title="Remove">✕</button></div>').join('')+
