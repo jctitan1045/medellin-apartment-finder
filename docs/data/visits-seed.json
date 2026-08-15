@@ -234,24 +234,8 @@
         "photos/salta/23.jpg",
         "photos/salta/24.jpg"
       ],
-      "rAssumed": {
-        "light": true,
-        "quiet": true,
-        "layout": true,
-        "kitchen": true,
-        "building": true,
-        "hood": true,
-        "safety": true
-      },
-      "rWhy": {
-        "light": "Photos show a full-width living-room window, a big terrace and daylight in every bedroom, but it's the ground floor on a hillside so trees and the slope cut some of it.",
-        "quiet": "Loma del Escobero is a busy arterial up the hill with constant bus and car traffic, and piso 1 sits closest to both the road and the pool/playground areas.",
-        "layout": "110 m2 laid out conventionally: sala-comedor, separate estudio, 3 alcobas, master with ensuite and vestier. Rooms look well proportioned and squared off in the photos.",
-        "kitchen": "Cocina integral with a dishwasher, which is genuinely uncommon at this price in Medellin. Storage is helped by the vestier and closets.",
-        "building": "Pool, sauna, turco, jacuzzi, gym, squash, sports zone, salon social, game room, playground, 24h security, visitor parking. About as complete as an Envigado conjunto gets.",
-        "hood": "The 1 km scan found 31 grocery points, 19 restaurants, City Plaza at 680 m and Envigado's plaza de mercado at 918 m. Real town amenities, but on a hill you drive more than you'd like.",
-        "safety": "Estrato 5 gated conjunto with 24h vigilancia and CCTV, in Envigado, which is consistently among the safest municipalities in the metro area."
-      }
+      "rAssumed": {},
+      "rWhy": {}
     },
     {
       "id": "p_indio",
@@ -276,10 +260,10 @@
       "r": {
         "light": 5,
         "quiet": 5,
-        "layout": 3,
+        "layout": 4,
         "kitchen": 3,
         "building": 5,
-        "hood": 3,
+        "hood": 2,
         "safety": 5
       },
       "walk": {},
@@ -471,24 +455,8 @@
         "photos/indio/18.jpg",
         "photos/indio/19.jpg"
       ],
-      "rAssumed": {
-        "light": true,
-        "quiet": true,
-        "layout": true,
-        "kitchen": true,
-        "building": true,
-        "hood": true,
-        "safety": true
-      },
-      "rWhy": {
-        "light": "Piso 22 with floor-to-ceiling sliders onto a wraparound terrace and nothing blocking the valley. Photos show hard sunlight reaching deep into the rooms.",
-        "quiet": "22 floors up, set back in forest off the Las Palmas hillside and well away from Provenza and Lleras. Expect wind rather than street noise.",
-        "layout": "98 m2 including a terrace that large leaves a tight interior for 3 bedrooms plus 2 baths. Photos show a long narrow living strip and modest bedrooms.",
-        "kitchen": "Compact, semi-enclosed, with a gas cooktop, oven and island bar. It looks good but there's little counter or pantry space, and no cuarto util is mentioned.",
-        "building": "Heated adult and kids pools, sauna, turco, sports field, walking trails, game room, salon social. Strong amenity set for a Poblado tower.",
-        "hood": "The scan found 8 grocery points inside 1 km with the nearest at 432 m, versus 31 at Saltamonte. Mall El Indio is 641 m away and downhill. This is a car-dependent hillside, not walkable Poblado.",
-        "safety": "Estrato 6 tower cluster with porteria and controlled access, on a hillside pocket with no through traffic."
-      }
+      "rAssumed": {},
+      "rWhy": {}
     }
   ],
   "weights": {
