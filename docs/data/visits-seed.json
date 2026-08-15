@@ -2227,6 +2227,576 @@
         "hood": "Only 13 things of any kind within 1 km and exactly one restaurant, at 1744 m with everything below you. You rated Loma del Indio a 2 with 84 things nearby, so on your own scale this has to be lower.",
         "safety": "Estrato 5 conjunto cerrado, 24h vigilancia, CCTV, motion sensors, emergency stair."
       }
+    },
+    {
+      "id": "p_bio",
+      "name": "Biocity Grand · 9856",
+      "date": "2026-08-16",
+      "building": "Urbanización Biocity Grand",
+      "unit": "",
+      "addr": "Calle 37 Sur #27-90, Colina Campestre",
+      "barrio": "Loma de las Brujas",
+      "area": "Envigado",
+      "status": "visited",
+      "rent": 4850000,
+      "admin": null,
+      "beds": 2,
+      "baths": 2,
+      "m2": 86,
+      "floor": null,
+      "avail": "",
+      "url": "https://spicol.co/es/properties/9856",
+      "pets": null,
+      "furnished": false,
+      "park": true,
+      "notes": "MATCHED FROM YOUR MAP PIN. Google put you at Urbanizacion Biocity Grand, Cl. 37 Sur #27-90, Colina Campestre. Spicol 9856's own map pin sits 82 m from that building, well inside GPS noise, so this is the listing. Agency: Su Propiedad Inmobiliaria (Spicol).\n\n86 m2, 2 alcobas, 2 banos, 1 VESTIER, 2 closets, ESTUDIO INDEPENDIENTE, sala comedor, zona de ropas, cocina integral con gas, amplio balcon with panoramic view, ceramic floors. 1 parqueadero + 1 cuarto util. Estrato 5, built 2020. Sin amoblar.\n\nBuilding: 24h vigilancia, CCTV, elevator, salon social, pool, gym, SQUASH + placa, JACUZZI, SPA AND MASSAGE ROOM, BBQ zone, kids park, green areas, visitor parking. Near City Plaza, Euro Supermercado Guadalcanal, La Vaquita.\n\nWALKABILITY: 1743 m up the hill. Only 13 things of any kind inside 1 km. Nearest grocery is City Plaza at 388 m with a 75 m climb home; nearest restaurant 841 m. Flat 67, hill-adjusted 35 - the same wall as the other Escobero places.\n\nASK: does 4.85M include administracion, pets, available date, which floor.",
+      "r": {
+        "light": 4,
+        "quiet": 4,
+        "layout": 4,
+        "kitchen": 3,
+        "building": 5,
+        "hood": 1,
+        "safety": 5
+      },
+      "walk": {},
+      "gut": null,
+      "am": {
+        "view": true,
+        "study": true,
+        "laundry": true,
+        "storage": true,
+        "closets": true,
+        "gas": true,
+        "pool": true,
+        "gym": true,
+        "sports": true,
+        "jacuzzi": true,
+        "bbq": true,
+        "social": true,
+        "trails": true,
+        "security": true,
+        "cctv": true,
+        "elevator": true,
+        "visitpark": true
+      },
+      "lat": 6.1604002,
+      "lng": -75.5717659,
+      "geoExact": true,
+      "geoLabel": "Urbanización Biocity Grand (exact coords from Google Maps)",
+      "poi": {
+        "counts": {
+          "park": 3,
+          "grocery": 3,
+          "culture": 1,
+          "gym": 3,
+          "transit": 2,
+          "food": 1
+        },
+        "countsAdj": {
+          "park": 1,
+          "grocery": 1,
+          "culture": 1,
+          "gym": 2
+        },
+        "nearest": {
+          "park": 301,
+          "grocery": 388,
+          "culture": 409,
+          "gym": 441,
+          "transit": 840,
+          "food": 841
+        },
+        "nearestAdj": {
+          "park": 655,
+          "grocery": 838,
+          "culture": 871,
+          "gym": 805
+        },
+        "home": 1743,
+        "at": "2026-08-16",
+        "radius": 1000,
+        "items": [
+          {
+            "c": "park",
+            "n": "",
+            "d": 301,
+            "la": 6.163006,
+            "ln": -75.572495,
+            "up": 59,
+            "de": 655
+          },
+          {
+            "c": "grocery",
+            "n": "City Plaza",
+            "d": 388,
+            "la": 6.163445,
+            "ln": -75.573484,
+            "up": 75,
+            "de": 838
+          },
+          {
+            "c": "culture",
+            "n": "Cinépolis",
+            "d": 409,
+            "la": 6.163558,
+            "ln": -75.573661,
+            "up": 77,
+            "de": 871
+          },
+          {
+            "c": "gym",
+            "n": "Bodytech City plaza",
+            "d": 441,
+            "la": 6.16377,
+            "ln": -75.573873,
+            "up": 82,
+            "de": 933
+          },
+          {
+            "c": "gym",
+            "n": "",
+            "d": 499,
+            "la": 6.159411,
+            "ln": -75.576168,
+            "up": 51,
+            "de": 805
+          },
+          {
+            "c": "grocery",
+            "n": "Farmacias Pasteur - Montevento",
+            "d": 781,
+            "la": 6.157282,
+            "ln": -75.578091,
+            "up": 104,
+            "de": 1405
+          },
+          {
+            "c": "gym",
+            "n": "Piscina Residencial Alquerías de San Isidro",
+            "d": 795,
+            "la": 6.164242,
+            "ln": -75.577827,
+            "up": 100,
+            "de": 1395
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 840,
+            "la": 6.153456,
+            "ln": -75.574749,
+            "up": 44,
+            "de": 1104
+          },
+          {
+            "c": "food",
+            "n": "Bancon´s Burger",
+            "d": 841,
+            "la": 6.15362,
+            "ln": -75.575134,
+            "up": 50,
+            "de": 1141
+          },
+          {
+            "c": "park",
+            "n": "Parque Urbano El Chinguí",
+            "d": 850,
+            "la": 6.154017,
+            "ln": -75.576,
+            "up": 60,
+            "de": 1210
+          },
+          {
+            "c": "grocery",
+            "n": "Terracina Plaza",
+            "d": 869,
+            "la": 6.16768,
+            "ln": -75.568902,
+            "up": 33,
+            "de": 1067
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 934,
+            "la": 6.168784,
+            "ln": -75.571253,
+            "up": 69,
+            "de": 1348
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 949,
+            "la": 6.153985,
+            "ln": -75.577426,
+            "up": 87,
+            "de": 1471
+          }
+        ]
+      },
+      "photoUrls": [
+        "photos/bio9856/01.jpg",
+        "photos/bio9856/02.jpg",
+        "photos/bio9856/03.jpg",
+        "photos/bio9856/04.jpg",
+        "photos/bio9856/05.jpg",
+        "photos/bio9856/06.jpg",
+        "photos/bio9856/07.jpg",
+        "photos/bio9856/08.jpg",
+        "photos/bio9856/09.jpg",
+        "photos/bio9856/10.jpg",
+        "photos/bio9856/11.jpg",
+        "photos/bio9856/12.jpg",
+        "photos/bio9856/13.jpg",
+        "photos/bio9856/14.jpg",
+        "photos/bio9856/15.jpg",
+        "photos/bio9856/16.jpg",
+        "photos/bio9856/17.jpg",
+        "photos/bio9856/18.jpg",
+        "photos/bio9856/19.jpg"
+      ],
+      "rAssumed": {
+        "light": true,
+        "quiet": true,
+        "layout": true,
+        "kitchen": true,
+        "building": true,
+        "hood": true,
+        "safety": true
+      },
+      "rWhy": {
+        "light": "Built 2020. Balcon with panoramic view and natural light listed; check which way it faces.",
+        "quiet": "Gated conjunto up the Escobero away from through traffic. Guess - you were there.",
+        "layout": "86 m2 with 2 alcobas, a separate estudio, vestier and 2 closets - well divided for the size.",
+        "kitchen": "Cocina integral with gas and calentador, plus cuarto util and zona de ropas.",
+        "building": "Pool, gym, squash, placa, JACUZZI, SPA and massage room, BBQ, salon social, kids park, 24h, elevator.",
+        "hood": "1740 m up the hill with only 13 things inside 1 km and City Plaza the nearest grocery at a 75 m climb. Same problem as the other Escobero places.",
+        "safety": "Estrato 5 conjunto cerrado with 24h vigilancia and CCTV."
+      }
+    },
+    {
+      "id": "p_art",
+      "name": "Ártiko · 9609",
+      "date": "2026-08-16",
+      "building": "Conjunto Residencial Ártiko",
+      "unit": "",
+      "addr": "Calle 37 Sur #27-200, La Pradera",
+      "barrio": "Loma del Escobero",
+      "area": "Envigado",
+      "status": "visited",
+      "rent": 5000000,
+      "admin": null,
+      "beds": 3,
+      "baths": 2,
+      "m2": 90,
+      "floor": null,
+      "avail": "",
+      "url": "https://spicol.co/es/properties/9609",
+      "pets": true,
+      "furnished": false,
+      "park": true,
+      "notes": "PROBABLE MATCH, NOT CONFIRMED. Your second pin is Conjunto Residencial Artiko, Cl. 37 Sur #27-200, La Pradera. Spicol 9609 is the closest listing in the batch at 418 m, and its description mentions a ZONA PARA MASCOTAS while Google separately flags Artiko as 'Se permiten perros' - the two corroborate. But 418 m is not proof. Open the listing photos and tell me if it is the place; if not, the flat you saw is not in this batch.\n\n90 m2, 3 HABITACIONES (the only 3-bedroom of today's two), 2 banos, sala comedor con balcon, cocina integral CON HORNO, zona de ropas, porcelanato + laminated wood, vestier. 2 covered linear parking + cuarto util. Estrato 5, built 2010. Sin amoblar.\n\nBuilding: elevator with entry on BOTH sides, porteria 24h, gym, salon comunal, meeting rooms, sauna/turco, jacuzzi, ZONA PARA MASCOTAS, ecological trails, sprinklers, motion sensors, visitor parking. Near Terracina Plaza, City Plaza, San Lucas Plaza.\n\nWALKABILITY: 1740 m. 21 things inside 1 km. Nearest grocery City Plaza 229 m but a 72 m climb home; nearest restaurant 904 m. Flat 67, hill-adjusted 35.\n\nASK: does 5M include administracion, available date, which floor.",
+      "r": {
+        "light": 4,
+        "quiet": 4,
+        "layout": 4,
+        "kitchen": 3,
+        "building": 5,
+        "hood": 1,
+        "safety": 5
+      },
+      "walk": {},
+      "gut": null,
+      "am": {
+        "view": true,
+        "laundry": true,
+        "storage": true,
+        "closets": true,
+        "gas": true,
+        "pool": true,
+        "gym": true,
+        "sauna": true,
+        "turco": true,
+        "jacuzzi": true,
+        "social": true,
+        "coworkish": true,
+        "trails": true,
+        "security": true,
+        "cctv": true,
+        "elevator": true,
+        "visitpark": true
+      },
+      "lat": 6.1614549,
+      "lng": -75.572953,
+      "geoExact": true,
+      "geoLabel": "Conjunto Residencial Ártiko (exact coords from Google Maps)",
+      "poi": {
+        "counts": {
+          "park": 8,
+          "grocery": 4,
+          "culture": 1,
+          "gym": 5,
+          "food": 1,
+          "transit": 2
+        },
+        "countsAdj": {
+          "park": 1,
+          "grocery": 1,
+          "culture": 1,
+          "gym": 2
+        },
+        "nearest": {
+          "park": 180,
+          "grocery": 229,
+          "culture": 247,
+          "gym": 277,
+          "food": 904,
+          "transit": 911
+        },
+        "nearestAdj": {
+          "park": 516,
+          "grocery": 661,
+          "culture": 691,
+          "gym": 710
+        },
+        "home": 1740,
+        "at": "2026-08-16",
+        "radius": 1000,
+        "items": [
+          {
+            "c": "park",
+            "n": "",
+            "d": 180,
+            "la": 6.163006,
+            "ln": -75.572495,
+            "up": 56,
+            "de": 516
+          },
+          {
+            "c": "grocery",
+            "n": "City Plaza",
+            "d": 229,
+            "la": 6.163445,
+            "ln": -75.573484,
+            "up": 72,
+            "de": 661
+          },
+          {
+            "c": "culture",
+            "n": "Cinépolis",
+            "d": 247,
+            "la": 6.163558,
+            "ln": -75.573661,
+            "up": 74,
+            "de": 691
+          },
+          {
+            "c": "gym",
+            "n": "Bodytech City plaza",
+            "d": 277,
+            "la": 6.16377,
+            "ln": -75.573873,
+            "up": 79,
+            "de": 751
+          },
+          {
+            "c": "gym",
+            "n": "",
+            "d": 422,
+            "la": 6.159411,
+            "ln": -75.576168,
+            "up": 48,
+            "de": 710
+          },
+          {
+            "c": "gym",
+            "n": "Piscina Residencial Alquerías de San Isidro",
+            "d": 622,
+            "la": 6.164242,
+            "ln": -75.577827,
+            "up": 97,
+            "de": 1204
+          },
+          {
+            "c": "grocery",
+            "n": "Farmacias Pasteur - Montevento",
+            "d": 733,
+            "la": 6.157282,
+            "ln": -75.578091,
+            "up": 101,
+            "de": 1339
+          },
+          {
+            "c": "grocery",
+            "n": "Terracina Plaza",
+            "d": 824,
+            "la": 6.16768,
+            "ln": -75.568902,
+            "up": 30,
+            "de": 1004
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 836,
+            "la": 6.168784,
+            "ln": -75.571253,
+            "up": 66,
+            "de": 1232
+          },
+          {
+            "c": "grocery",
+            "n": "",
+            "d": 855,
+            "la": 6.165391,
+            "ln": -75.579602,
+            "up": 133,
+            "de": 1653
+          },
+          {
+            "c": "park",
+            "n": "Parque Urbano El Chinguí",
+            "d": 893,
+            "la": 6.154017,
+            "ln": -75.576,
+            "up": 57,
+            "de": 1235
+          },
+          {
+            "c": "park",
+            "n": "Patio de I.E San Vicente de Paul",
+            "d": 900,
+            "la": 6.167057,
+            "ln": -75.578829,
+            "up": 132,
+            "de": 1692
+          },
+          {
+            "c": "food",
+            "n": "Bancon´s Burger",
+            "d": 904,
+            "la": 6.15362,
+            "ln": -75.575134,
+            "up": 47,
+            "de": 1186
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 908,
+            "la": 6.166902,
+            "ln": -75.579072,
+            "up": 135,
+            "de": 1718
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 911,
+            "la": 6.153456,
+            "ln": -75.574749,
+            "up": 41,
+            "de": 1157
+          },
+          {
+            "c": "park",
+            "n": "Institución Educativa Darío de Bedout",
+            "d": 913,
+            "la": 6.167745,
+            "ln": -75.578264,
+            "up": 141,
+            "de": 1759
+          },
+          {
+            "c": "park",
+            "n": "Patio de la I.E. San Vicente de Paul",
+            "d": 926,
+            "la": 6.167112,
+            "ln": -75.579102,
+            "up": 136,
+            "de": 1742
+          },
+          {
+            "c": "park",
+            "n": "",
+            "d": 935,
+            "la": 6.165239,
+            "ln": -75.580509,
+            "up": 137,
+            "de": 1757
+          },
+          {
+            "c": "gym",
+            "n": "",
+            "d": 952,
+            "la": 6.161658,
+            "ln": -75.581565,
+            "up": 133,
+            "de": 1750
+          },
+          {
+            "c": "transit",
+            "n": "",
+            "d": 967,
+            "la": 6.153985,
+            "ln": -75.577426,
+            "up": 84,
+            "de": 1471
+          },
+          {
+            "c": "gym",
+            "n": "",
+            "d": 981,
+            "la": 6.162238,
+            "ln": -75.581791,
+            "up": 127,
+            "de": 1743
+          }
+        ]
+      },
+      "photoUrls": [
+        "photos/art9609/01.jpg",
+        "photos/art9609/02.jpg",
+        "photos/art9609/03.jpg",
+        "photos/art9609/04.jpg",
+        "photos/art9609/05.jpg",
+        "photos/art9609/06.jpg",
+        "photos/art9609/07.jpg",
+        "photos/art9609/08.jpg",
+        "photos/art9609/09.jpg",
+        "photos/art9609/10.jpg",
+        "photos/art9609/11.jpg",
+        "photos/art9609/12.jpg",
+        "photos/art9609/13.jpg",
+        "photos/art9609/14.jpg",
+        "photos/art9609/15.jpg",
+        "photos/art9609/16.jpg",
+        "photos/art9609/17.jpg",
+        "photos/art9609/18.jpg",
+        "photos/art9609/19.jpg",
+        "photos/art9609/20.jpg",
+        "photos/art9609/21.jpg"
+      ],
+      "rAssumed": {
+        "light": true,
+        "quiet": true,
+        "layout": true,
+        "kitchen": true,
+        "building": true,
+        "hood": true,
+        "safety": true
+      },
+      "rWhy": {
+        "light": "Built 2010. Balcon with panoramic view and natural light listed; check which way it faces.",
+        "quiet": "Gated conjunto up the Escobero away from through traffic. Guess - you were there.",
+        "layout": "90 m2 with 3 habitaciones - the only 3-bedroom of the two, though older stock.",
+        "kitchen": "Cocina integral with gas and calentador, plus cuarto util and zona de ropas.",
+        "building": "Pool, gym, sauna/turco, jacuzzi, salon comunal, meeting rooms, ecological trails, PET ZONE, 24h, elevator with entry on both sides.",
+        "hood": "1740 m up the hill with only 21 things inside 1 km and City Plaza the nearest grocery at a 72 m climb. Same problem as the other Escobero places.",
+        "safety": "Estrato 5 conjunto cerrado with 24h vigilancia and CCTV."
+      }
     }
   ],
   "weights": {
