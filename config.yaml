@@ -34,8 +34,11 @@ fx_cop_per_usd: 4050
 # these lowercase, accent-stripped tokens found in the neighborhood name.
 # Fincaraíz is scraped per-area URL, so its area is trusted from the source.
 areas:
-  # Las Palmas is listed FIRST so its listings match here before Poblado/Envigado
-  # (the corridor straddles both). match_area returns the first area that matches.
+  # Frontera & Las Palmas are listed FIRST so their listings match here before
+  # Poblado/Envigado (they straddle borders). match_area returns first match.
+  frontera:
+    label: "La Frontera"
+    tokens: ["frontera", "la frontera"]
   las_palmas:
     label: "Las Palmas"
     tokens: ["las palmas", "via las palmas", "alto de las palmas", "palmas"]
@@ -88,6 +91,7 @@ sources:
     enabled: true
     max_pages_per_area: 6          # ~21 listings/page
     areas:
+      frontera:       "arriendo/casas-y-apartamentos/la-frontera/antioquia"
       poblado:        "arriendo/casas-y-apartamentos/el-poblado/suroriente/medellin"
       las_palmas:     "arriendo/casas-y-apartamentos/las-palmas/suroriente/medellin"
       ciudad_del_rio: "arriendo/casas-y-apartamentos/ciudad-del-rio/suroriente/medellin"
@@ -103,6 +107,7 @@ sources:
     enabled: true
     max_pages: 4                   # ~54 listings/page, per-neighborhood
     areas:
+      frontera:       "casas-apartamentos/arriendo/envigado/la-frontera/"
       poblado:        "casas-apartamentos/arriendo/medellin/el-poblado/"
       las_palmas:     "casas-apartamentos/arriendo/medellin/las-palmas/"
       ciudad_del_rio: "casas-apartamentos/arriendo/medellin/ciudad-del-rio/"

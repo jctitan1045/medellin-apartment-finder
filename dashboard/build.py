@@ -203,6 +203,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
     <span class="lg"><span class="dot" style="background:#b45309"></span>Envigado</span>
     <span class="lg"><span class="dot" style="background:#0369a1"></span>Ciudad del Río</span>
     <span class="lg"><span class="dot" style="background:#db2777"></span>Las Palmas</span>
+    <span class="lg"><span class="dot" style="background:#dc2626"></span>La Frontera</span>
   </div>
 </div>
 <div class="empty" id="empty" style="display:none"></div>
@@ -460,7 +461,7 @@ document.getElementById('shareBroker').onclick=()=>{
 };
 
 // ---- map view (Leaflet + OpenStreetMap, lazy-initialised on first open) ----
-const AREA_COLOR={poblado:'#1f7a5a',laureles:'#6d28d9',envigado:'#b45309',ciudad_del_rio:'#0369a1',las_palmas:'#db2777'};
+const AREA_COLOR={poblado:'#1f7a5a',laureles:'#6d28d9',envigado:'#b45309',ciudad_del_rio:'#0369a1',las_palmas:'#db2777',frontera:'#dc2626'};
 let map=null, markerLayer=null;
 const mapBtn=document.getElementById('mapBtn'), mapwrap=document.getElementById('mapwrap');
 function initMap(){
