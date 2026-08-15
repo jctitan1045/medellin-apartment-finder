@@ -122,6 +122,8 @@
   .rate{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;margin:9px 0}
   .rate .rl{font-size:13.5px}
   .rate .rl small{display:block;color:var(--muted);font-size:11.5px}
+  .rate .rl em{display:block;color:var(--warn);font-size:11.5px;font-style:normal;margin-top:2px}
+  .stars button.guess{background:transparent;border-style:dashed;border-color:var(--warn);color:var(--warn);font-weight:700}
   .stars{display:flex;gap:4px}
   .stars button{width:36px;height:34px;padding:0;border-radius:8px;font-size:13px;color:var(--muted)}
   .stars button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
@@ -262,7 +264,10 @@
       <div class="fld"><label>Decide by</label><input type="date" id="decideBy"></div>
       <div class="fld"><label>Need to be moved in by</label><input type="date" id="moveBy"></div>
     </div>
-    <div style="margin-top:12px"><button class="link" id="wipe">Erase everything</button></div>
+    <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="link" onclick="reloadStarter()">Reload the starter board</button>
+      <button class="link" id="wipe">Erase everything</button>
+    </div>
   </div>
 </div>
 
@@ -803,6 +808,8 @@ function card(r,i,topScore){
   const as=amenityScore(p); if(as!=null) st.push('<span class="chip">amenities '+Math.round(as)+'/100</span>');
   if(p.gut) st.push('<span class="chip">gut '+p.gut+'/5</span>');
   if(r.missing.length) st.push('<span class="chip warn">'+r.missing.length+' unrated</span>');
+  const nAss=Object.keys(p.rAssumed||{}).length;
+  if(nAss) st.push('<span class="chip warn">'+nAss+' of mine to confirm</span>');
   const brk=r.brk.length?'<span class="chip bad">⚑ '+r.brk.map(esc).join(' · ')+'</span>':'';
 
   // strengths / weaknesses among weighted factors with data
@@ -1002,6 +1009,16 @@ function renderPlace(id){
       '<div class="fld" style="max-width:220px;margin-top:10px"><label>COP per USD (edit if it moved)</label>'+
       '<input id="usdRate" inputmode="numeric" value="'+rate+'"></div></div>'+
 
+    (Object.keys(p.rAssumed||{}).length?'<div class="panel"><h2 style="margin-top:0">My guesses, not your ratings'+
+      ' <span class="chip warn">'+Object.keys(p.rAssumed).length+' to confirm</span></h2>'+
+      '<div class="sub">I filled these from the listing, the photos and what the area is like. You were '+
+      'there — open Edit / rate and correct any that are wrong. Touching a rating makes it yours.</div>'+
+      '<div class="bdrows" style="grid-template-columns:130px 40px 1fr">'+
+      SUBS.filter(f=>p.rAssumed[f.k]).map(f=>
+        '<span>'+esc(f.lbl)+'</span><span class="v">'+(p.r[f.k]||'–')+'/5</span>'+
+        '<span style="font-size:12px">'+esc((p.rWhy||{})[f.k]||'')+'</span>').join('')+
+      '</div></div>':'')+
+
     '<div class="panel"><h2 style="margin-top:0">Score breakdown</h2>'+bdHtml+'</div>'+
 
     (p.notes?'<div class="panel"><h2 style="margin-top:0">Notes</h2><div class="note">'+esc(p.notes)+'</div></div>':'');
@@ -1136,10 +1153,11 @@ function openEdit(id){
   $('#f_pets').value=tri(p.pets); $('#f_furn').value=tri(p.furnished); $('#f_park').checked=!!p.park;
   $('#f_notes').value=p.notes||'';
   tmpR={...(p.r||{})}; tmpW={...(p.walk||{})}; tmpGut=p.gut||0; tmpAm={...(p.am||{})};
+  tmpAssumed={...(p.rAssumed||{})}; tmpWhy={...(p.rWhy||{})};
   renderRates(); renderWalk(); renderGut(); renderAm();
   $('#dlg').showModal();
 }
-let tmpR={},tmpW={},tmpGut=0,tmpAm={};
+let tmpR={},tmpW={},tmpGut=0,tmpAm={},tmpAssumed={},tmpWhy={};
 function renderAm(){
   $('#amBox').innerHTML=AMENITIES.map(a=>
     '<label class="'+(tmpAm[a.k]?'has':'hasnt')+'"><input type="checkbox" data-am="'+a.k+'"'+
@@ -1148,16 +1166,22 @@ function renderAm(){
 const todayISO=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
 const untri=v=>v==='yes'?true:v==='no'?false:null;
 
-function starRow(cur,cb){
+function starRow(cur,guess){
   let h='<div class="stars">';
-  for(let i=1;i<=5;i++) h+='<button type="button" class="'+(cur===i?'on':'')+'" data-v="'+i+'">'+i+'</button>';
+  for(let i=1;i<=5;i++) h+='<button type="button" class="'+(cur===i?(guess?'on guess':'on'):'')+
+    '" data-v="'+i+'">'+i+'</button>';
   h+='<button type="button" class="clr" data-v="0" title="clear">✕</button></div>';
   return h;
 }
 function renderRates(){
-  $('#rateBox').innerHTML=SUBS.map(f=>
-    '<div class="rate" data-rate="'+f.k+'"><div class="rl">'+esc(f.lbl)+
-    (f.hint?'<small>'+esc(f.hint)+'</small>':'')+'</div>'+starRow(tmpR[f.k]||0)+'</div>').join('');
+  $('#rateBox').innerHTML=SUBS.map(f=>{
+    const guess=!!(tmpAssumed&&tmpAssumed[f.k]);
+    const why=guess&&tmpWhy?tmpWhy[f.k]:'';
+    return '<div class="rate" data-rate="'+f.k+'"><div class="rl">'+esc(f.lbl)+
+      (f.hint?'<small>'+esc(f.hint)+'</small>':'')+
+      (why?'<em>my guess: '+esc(why)+'</em>':'')+'</div>'+
+      starRow(tmpR[f.k]||0,guess)+'</div>';
+  }).join('');
 }
 function renderGut(){ $('#gutStars').outerHTML=starRow(tmpGut).replace('class="stars"','class="stars" id="gutStars"'); }
 function renderWalk(){
@@ -1170,7 +1194,11 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('.stars button'); if(!b) return;
   const v=+b.dataset.v, box=b.closest('.stars');
   if(box.id==='gutStars'){ tmpGut=v; renderGut(); return; }
-  const row=b.closest('[data-rate]'); if(row){ tmpR[row.dataset.rate]=v||undefined; renderRates(); }
+  const row=b.closest('[data-rate]');
+  if(row){ const k=row.dataset.rate;
+    tmpR[k]=v||undefined;
+    delete tmpAssumed[k]; delete tmpWhy[k];   // you touched it, so it's yours now
+    renderRates(); }
 });
 
 $('#frm').addEventListener('submit',e=>{
@@ -1188,6 +1216,7 @@ $('#frm').addEventListener('submit',e=>{
     avail:$('#f_avail').value, url:$('#f_url').value.trim(),
     pets:untri($('#f_pets').value), furnished:untri($('#f_furn').value), park:$('#f_park').checked,
     notes:$('#f_notes').value, r:tmpR, walk, gut:tmpGut||null, am:tmpAm,
+    rAssumed:tmpAssumed, rWhy:tmpWhy,
   };
   if(editing){
     // address changed → the old pin and area scan no longer describe this place
@@ -1302,6 +1331,24 @@ const areaName=k=>({poblado:'El Poblado',laureles:'Laureles',envigado:'Envigado'
   history.replaceState(null,'',location.pathname);
 })();
 
+/* First visit on a fresh browser: pull the starter board (places, specs, photos,
+   area scans) that ships with the site, so the page is never an empty shell. */
+async function loadStarter(force){
+  if(!force&&S.places.length) return false;
+  try{
+    const r=await fetch('data/visits-seed.json',{cache:'no-cache'});
+    if(!r.ok) return false;
+    const d=await r.json();
+    if(!d.places||!d.places.length) return false;
+    if(force&&S.places.length&&!confirm('Replace the '+S.places.length+
+        ' place(s) here with the starter board?')) return false;
+    const keep={usdRate:S.usdRate};
+    S={...defState(),...d,...keep,view:'rank',openId:null};
+    save(); return true;
+  }catch(e){ return false; }
+}
+window.reloadStarter=()=>loadStarter(true).then(ok=>{ if(ok) renderAll(); });
+
 function renderAll(){
   ['rank','table','setup','place'].forEach(v=>$('#view-'+v).classList.toggle('hidden',S.view!==v));
   document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.view===S.view));
@@ -1317,6 +1364,7 @@ function renderAll(){
     'Stored in this browser only.';
 }
 renderAll();
+loadStarter(false).then(ok=>{ if(ok) renderAll(); });
 window.openEdit=openEdit;
 </script>
 </body>

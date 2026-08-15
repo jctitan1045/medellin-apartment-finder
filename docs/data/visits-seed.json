@@ -1,0 +1,564 @@
+{
+  "places": [
+    {
+      "id": "p_salta",
+      "name": "Saltamonte T3 · Apto 106",
+      "date": "2026-08-14",
+      "addr": "Carrera 27G #35 Sur - 175",
+      "barrio": "Loma del Escobero",
+      "area": "Envigado",
+      "status": "visited",
+      "rent": 4600000,
+      "admin": null,
+      "beds": 3,
+      "baths": 2,
+      "m2": 110,
+      "floor": 1,
+      "avail": "",
+      "url": "https://www.fincaraiz.com.co/apartamento-en-arriendo-en-loma-del-escobero-envigado/193419194",
+      "pets": true,
+      "furnished": null,
+      "park": true,
+      "notes": "Agency: A&B Inmobiliaria. Urbanización Saltamonte, Loma del Escobero (near City Plaza / Euro del Escobero / Hospital Uribe Angel). Estrato 5.\n\n110 m2, 3 alcobas, 2 banos, TWO parking spaces, piso 1. Ground floor of the tower, but the building sits on the Escobero hillside, so the listing photos still show a LARGE brick-paved terrace with a full valley view — correcting my earlier assumption that piso 1 meant no view. And no elevator wait every time the dog needs out. Sala-comedor, cocina integral WITH DISHWASHER, estudio, zona de ropas, master with ensuite + vestier. Wood laminate in the bedrooms, delivered empty and freshly painted.\n\nBuilding: 24h security, visitor parking, salon social, pool, sauna, turco, elevator, gym, sports zone, playground, green areas, and PET ZONES — the listing says so explicitly, which is why this one is marked pets-ok and the Poblado one is not.\n\nASK A&B: administracion (not published), furnished or not, available date, and whether the ground floor gets noise off the shared areas.",
+      "r": {
+        "light": 4,
+        "quiet": 3,
+        "layout": 4,
+        "kitchen": 4,
+        "building": 5,
+        "hood": 4,
+        "safety": 5
+      },
+      "walk": {},
+      "gut": null,
+      "am": {
+        "terrace": true,
+        "view": true,
+        "study": true,
+        "laundry": true,
+        "closets": true,
+        "gas": true,
+        "pool": true,
+        "sauna": true,
+        "turco": true,
+        "gym": true,
+        "sports": true,
+        "social": true,
+        "trails": true,
+        "security": true,
+        "elevator": true,
+        "visitpark": true
+      },
+      "lat": 6.1679102,
+      "lng": -75.577703,
+      "geoExact": true,
+      "geoLabel": "Cra 27G #35 Sur-175 (coords from the Fincaraíz listing)",
+      "poi": {
+        "counts": {
+          "grocery": 31,
+          "food": 19,
+          "culture": 4,
+          "gym": 8,
+          "transit": 2,
+          "park": 17
+        },
+        "nearest": {
+          "grocery": 248,
+          "food": 411,
+          "culture": 323,
+          "gym": 260,
+          "transit": 334,
+          "park": 65
+        },
+        "at": "2026-08-14",
+        "radius": 1000,
+        "items": [
+          {
+            "c": "park",
+            "n": "Institución Educativa Darío de Bedout",
+            "d": 65,
+            "la": 6.1677454,
+            "ln": -75.578264
+          },
+          {
+            "c": "grocery",
+            "n": "Supermercado La Paz",
+            "d": 248,
+            "la": 6.168004,
+            "ln": -75.5799458
+          },
+          {
+            "c": "gym",
+            "n": "Piscina del Municipio",
+            "d": 260,
+            "la": 6.1702254,
+            "ln": -75.5773769
+          },
+          {
+            "c": "culture",
+            "n": "Las Cometas",
+            "d": 323,
+            "la": 6.1707899,
+            "ln": -75.5780563
+          },
+          {
+            "c": "grocery",
+            "n": "Drogueria Uribe Angel",
+            "d": 340,
+            "la": 6.170186,
+            "ln": -75.5797572
+          },
+          {
+            "c": "grocery",
+            "n": "Carnes la Sebastiana",
+            "d": 367,
+            "la": 6.16968,
+            "ln": -75.5805104
+          },
+          {
+            "c": "park",
+            "n": "La Piedra de La Ayua",
+            "d": 375,
+            "la": 6.1665762,
+            "ln": -75.580822
+          },
+          {
+            "c": "food",
+            "n": "Calisto Parrilla & BBQ",
+            "d": 411,
+            "la": 6.1667443,
+            "ln": -75.5812278
+          },
+          {
+            "c": "food",
+            "n": "Panadería Tartinorium Café Francés",
+            "d": 518,
+            "la": 6.1674534,
+            "ln": -75.5823677
+          },
+          {
+            "c": "grocery",
+            "n": "D1 Los Naranjos",
+            "d": 558,
+            "la": 6.1681679,
+            "ln": -75.5827424
+          },
+          {
+            "c": "food",
+            "n": "Pizzería Antica",
+            "d": 604,
+            "la": 6.1669822,
+            "ln": -75.583082
+          },
+          {
+            "c": "gym",
+            "n": "Bodytech City Plaza",
+            "d": 625,
+            "la": 6.1637701,
+            "ln": -75.5738726
+          },
+          {
+            "c": "park",
+            "n": "Parque Amaneceres",
+            "d": 634,
+            "la": 6.1691376,
+            "ln": -75.5833041
+          },
+          {
+            "c": "culture",
+            "n": "Cinépolis",
+            "d": 659,
+            "la": 6.1635581,
+            "ln": -75.5736606
+          },
+          {
+            "c": "grocery",
+            "n": "City Plaza",
+            "d": 681,
+            "la": 6.1634446,
+            "ln": -75.5734844
+          },
+          {
+            "c": "food",
+            "n": "Red House Envigado",
+            "d": 699,
+            "la": 6.1634352,
+            "ln": -75.5821413
+          },
+          {
+            "c": "grocery",
+            "n": "La Vaquita Envigado",
+            "d": 915,
+            "la": 6.1696409,
+            "ln": -75.5857968
+          },
+          {
+            "c": "culture",
+            "n": "Plaza de mercado de Envigado",
+            "d": 918,
+            "la": 6.169179,
+            "ln": -75.5859127
+          },
+          {
+            "c": "grocery",
+            "n": "Locatel",
+            "d": 999,
+            "la": 6.168686,
+            "ln": -75.5867044
+          }
+        ]
+      },
+      "photoUrls": [
+        "photos/salta/01.jpg",
+        "photos/salta/02.jpg",
+        "photos/salta/03.jpg",
+        "photos/salta/04.jpg",
+        "photos/salta/05.jpg",
+        "photos/salta/06.jpg",
+        "photos/salta/07.jpg",
+        "photos/salta/08.jpg",
+        "photos/salta/09.jpg",
+        "photos/salta/10.jpg",
+        "photos/salta/11.jpg",
+        "photos/salta/12.jpg",
+        "photos/salta/13.jpg",
+        "photos/salta/14.jpg",
+        "photos/salta/15.jpg",
+        "photos/salta/16.jpg",
+        "photos/salta/17.jpg",
+        "photos/salta/18.jpg",
+        "photos/salta/19.jpg",
+        "photos/salta/20.jpg",
+        "photos/salta/21.jpg",
+        "photos/salta/22.jpg",
+        "photos/salta/23.jpg",
+        "photos/salta/24.jpg"
+      ],
+      "rAssumed": {
+        "light": true,
+        "quiet": true,
+        "layout": true,
+        "kitchen": true,
+        "building": true,
+        "hood": true,
+        "safety": true
+      },
+      "rWhy": {
+        "light": "Photos show a full-width living-room window, a big terrace and daylight in every bedroom, but it's the ground floor on a hillside so trees and the slope cut some of it.",
+        "quiet": "Loma del Escobero is a busy arterial up the hill with constant bus and car traffic, and piso 1 sits closest to both the road and the pool/playground areas.",
+        "layout": "110 m2 laid out conventionally: sala-comedor, separate estudio, 3 alcobas, master with ensuite and vestier. Rooms look well proportioned and squared off in the photos.",
+        "kitchen": "Cocina integral with a dishwasher, which is genuinely uncommon at this price in Medellin. Storage is helped by the vestier and closets.",
+        "building": "Pool, sauna, turco, jacuzzi, gym, squash, sports zone, salon social, game room, playground, 24h security, visitor parking. About as complete as an Envigado conjunto gets.",
+        "hood": "The 1 km scan found 31 grocery points, 19 restaurants, City Plaza at 680 m and Envigado's plaza de mercado at 918 m. Real town amenities, but on a hill you drive more than you'd like.",
+        "safety": "Estrato 5 gated conjunto with 24h vigilancia and CCTV, in Envigado, which is consistently among the safest municipalities in the metro area."
+      }
+    },
+    {
+      "id": "p_indio",
+      "name": "Loma del Indio · piso 22",
+      "date": "2026-08-14",
+      "addr": "Loma del Indio, El Poblado",
+      "barrio": "Loma del Indio",
+      "area": "El Poblado",
+      "status": "visited",
+      "rent": 5000000,
+      "admin": null,
+      "beds": 3,
+      "baths": 2,
+      "m2": 98,
+      "floor": 22,
+      "avail": "",
+      "url": "",
+      "pets": null,
+      "furnished": false,
+      "park": false,
+      "notes": "5.000.000/mo as quoted. UNCONFIRMED whether that includes administracion — in a tower with heated pool + sauna + turco, admin is often 700k-1M more. Ask.\n\nFrom the photos: big wraparound terrace with a real valley view, floor-to-ceiling sliders off the living room, proper zona de ropas (Bosch gas heater + sink), compact black-granite kitchen with gas cooktop, oven and a slatted island bar, master bath with double vanity + glass shower, second bath smaller. Interior is heavily styled: 3D geometric wallpaper on several walls, faux-stone accent wall, crystal chandeliers, mirrored wall. Not neutral — you'd be living inside someone's taste.\n\n98 m2 with a terrace that big means the indoor half is tight for 3BR+2BA. Bedrooms in the photos are modest.\n\nAmenities: heated adult + kids pool, sauna, turco, kids park + game room, sports field, walking trails, salon social.",
+      "r": {
+        "light": 5,
+        "quiet": 5,
+        "layout": 3,
+        "kitchen": 3,
+        "building": 5,
+        "hood": 3,
+        "safety": 5
+      },
+      "walk": {},
+      "gut": null,
+      "am": {
+        "terrace": true,
+        "view": true,
+        "laundry": true,
+        "gas": true,
+        "pool": true,
+        "heatpool": true,
+        "sauna": true,
+        "turco": true,
+        "sports": true,
+        "trails": true,
+        "social": true,
+        "elevator": true
+      },
+      "lat": 6.2248092,
+      "lng": -75.5606365,
+      "geoExact": false,
+      "geoLabel": "Loma del Indio / La Asomadera (barrio-level, not the building)",
+      "poi": {
+        "counts": {
+          "grocery": 8,
+          "food": 12,
+          "culture": 2,
+          "gym": 23,
+          "transit": 8,
+          "park": 26
+        },
+        "nearest": {
+          "grocery": 432,
+          "food": 248,
+          "culture": 273,
+          "gym": 455,
+          "transit": 148,
+          "park": 338
+        },
+        "at": "2026-08-14",
+        "radius": 1000,
+        "items": [
+          {
+            "c": "transit",
+            "n": "Bosques de Sandiego",
+            "d": 148,
+            "la": 6.2260145,
+            "ln": -75.5612103
+          },
+          {
+            "c": "food",
+            "n": "Café (unnamed)",
+            "d": 248,
+            "la": 6.225693,
+            "ln": -75.562697
+          },
+          {
+            "c": "culture",
+            "n": "Mirador de Loreto",
+            "d": 273,
+            "la": 6.2223588,
+            "ln": -75.5606726
+          },
+          {
+            "c": "food",
+            "n": "La Magía de Os",
+            "d": 314,
+            "la": 6.2219855,
+            "ln": -75.5606635
+          },
+          {
+            "c": "park",
+            "n": "Cancha de fútbol La Marquetalia",
+            "d": 338,
+            "la": 6.2276545,
+            "ln": -75.5617236
+          },
+          {
+            "c": "transit",
+            "n": "Calle 29 Av. Las Palmas",
+            "d": 430,
+            "la": 6.2266463,
+            "ln": -75.5640571
+          },
+          {
+            "c": "grocery",
+            "n": "Minimercado España",
+            "d": 432,
+            "la": 6.2266821,
+            "ln": -75.5640628
+          },
+          {
+            "c": "food",
+            "n": "Origin Cafe 777",
+            "d": 530,
+            "la": 6.2244494,
+            "ln": -75.5654205
+          },
+          {
+            "c": "food",
+            "n": "Bora Bora",
+            "d": 539,
+            "la": 6.2224599,
+            "ln": -75.5649016
+          },
+          {
+            "c": "food",
+            "n": "Restaurante Country Club",
+            "d": 603,
+            "la": 6.2193961,
+            "ln": -75.560889
+          },
+          {
+            "c": "grocery",
+            "n": "Supermercado Maxioferta Palmas",
+            "d": 611,
+            "la": 6.2270097,
+            "ln": -75.5656969
+          },
+          {
+            "c": "grocery",
+            "n": "Mall El Indio",
+            "d": 641,
+            "la": 6.227411,
+            "ln": -75.5658105
+          },
+          {
+            "c": "grocery",
+            "n": "D1",
+            "d": 643,
+            "la": 6.2273024,
+            "ln": -75.5658832
+          },
+          {
+            "c": "food",
+            "n": "Crepes & Waffles",
+            "d": 821,
+            "la": 6.2204296,
+            "ln": -75.5666135
+          },
+          {
+            "c": "park",
+            "n": "Parque Puntepiedra",
+            "d": 829,
+            "la": 6.2277959,
+            "ln": -75.5675033
+          },
+          {
+            "c": "gym",
+            "n": "BFit",
+            "d": 872,
+            "la": 6.2196622,
+            "ln": -75.5665897
+          },
+          {
+            "c": "grocery",
+            "n": "Carulla Las Palmas",
+            "d": 948,
+            "la": 6.217629,
+            "ln": -75.5652672
+          },
+          {
+            "c": "grocery",
+            "n": "Mall Palms Avenue",
+            "d": 949,
+            "la": 6.2175047,
+            "ln": -75.5650705
+          }
+        ]
+      },
+      "photoUrls": [
+        "photos/indio/01.jpg",
+        "photos/indio/02.jpg",
+        "photos/indio/03.jpg",
+        "photos/indio/04.jpg",
+        "photos/indio/05.jpg",
+        "photos/indio/06.jpg",
+        "photos/indio/07.jpg",
+        "photos/indio/08.jpg",
+        "photos/indio/09.jpg",
+        "photos/indio/10.jpg",
+        "photos/indio/11.jpg",
+        "photos/indio/12.jpg",
+        "photos/indio/13.jpg",
+        "photos/indio/14.jpg",
+        "photos/indio/15.jpg",
+        "photos/indio/16.jpg",
+        "photos/indio/17.jpg",
+        "photos/indio/18.jpg",
+        "photos/indio/19.jpg"
+      ],
+      "rAssumed": {
+        "light": true,
+        "quiet": true,
+        "layout": true,
+        "kitchen": true,
+        "building": true,
+        "hood": true,
+        "safety": true
+      },
+      "rWhy": {
+        "light": "Piso 22 with floor-to-ceiling sliders onto a wraparound terrace and nothing blocking the valley. Photos show hard sunlight reaching deep into the rooms.",
+        "quiet": "22 floors up, set back in forest off the Las Palmas hillside and well away from Provenza and Lleras. Expect wind rather than street noise.",
+        "layout": "98 m2 including a terrace that large leaves a tight interior for 3 bedrooms plus 2 baths. Photos show a long narrow living strip and modest bedrooms.",
+        "kitchen": "Compact, semi-enclosed, with a gas cooktop, oven and island bar. It looks good but there's little counter or pantry space, and no cuarto util is mentioned.",
+        "building": "Heated adult and kids pools, sauna, turco, sports field, walking trails, game room, salon social. Strong amenity set for a Poblado tower.",
+        "hood": "The scan found 8 grocery points inside 1 km with the nearest at 432 m, versus 31 at Saltamonte. Mall El Indio is 641 m away and downhill. This is a car-dependent hillside, not walkable Poblado.",
+        "safety": "Estrato 6 tower cluster with porteria and controlled access, on a hillside pocket with no through traffic."
+      }
+    }
+  ],
+  "weights": {
+    "price": 8,
+    "value": 4,
+    "size": 7,
+    "bedrooms": 5,
+    "bathrooms": 3,
+    "proximity": 6,
+    "walkability": 7,
+    "amenities": 5,
+    "vibe": 9,
+    "light": 7,
+    "quiet": 7,
+    "layout": 6,
+    "kitchen": 4,
+    "building": 4,
+    "hood": 6,
+    "safety": 5
+  },
+  "scales": {
+    "price_best": 3000000,
+    "price_worst": 5500000,
+    "ppm_best": 28000,
+    "ppm_worst": 60000,
+    "m2_worst": 55,
+    "m2_best": 140,
+    "beds_worst": 1,
+    "beds_best": 3,
+    "baths_worst": 1,
+    "baths_best": 3,
+    "walk_best": 8,
+    "walk_worst": 35
+  },
+  "rules": {
+    "maxTotal": 4500000,
+    "minBeds": 2,
+    "minBaths": 1,
+    "minM2": 60,
+    "needPets": true,
+    "noFurnished": true,
+    "availBy": "2026-09-05"
+  },
+  "anchors": [
+    {
+      "id": "a1",
+      "name": "Gym / calisthenics",
+      "addr": ""
+    },
+    {
+      "id": "a2",
+      "name": "Grocery",
+      "addr": ""
+    },
+    {
+      "id": "a3",
+      "name": "Cafe / coworking",
+      "addr": ""
+    },
+    {
+      "id": "a4",
+      "name": "Metro or main road",
+      "addr": ""
+    }
+  ],
+  "decideBy": "2026-08-21",
+  "moveBy": "2026-09-05",
+  "hideOut": false,
+  "sortBy": "score",
+  "view": "rank",
+  "usdRate": 4000,
+  "openId": null
+}
