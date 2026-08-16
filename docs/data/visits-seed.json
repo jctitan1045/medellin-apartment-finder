@@ -2246,10 +2246,10 @@
       "floor": null,
       "avail": "",
       "url": "https://spicol.co/es/properties/9856",
-      "pets": null,
+      "pets": true,
       "furnished": false,
       "park": true,
-      "notes": "MATCHED FROM YOUR MAP PIN. Google put you at Urbanizacion Biocity Grand, Cl. 37 Sur #27-90, Colina Campestre. Spicol 9856's own map pin sits 82 m from that building, well inside GPS noise, so this is the listing. Agency: Su Propiedad Inmobiliaria (Spicol).\n\n86 m2, 2 alcobas, 2 banos, 1 VESTIER, 2 closets, ESTUDIO INDEPENDIENTE, sala comedor, zona de ropas, cocina integral con gas, amplio balcon with panoramic view, ceramic floors. 1 parqueadero + 1 cuarto util. Estrato 5, built 2020. Sin amoblar.\n\nBuilding: 24h vigilancia, CCTV, elevator, salon social, pool, gym, SQUASH + placa, JACUZZI, SPA AND MASSAGE ROOM, BBQ zone, kids park, green areas, visitor parking. Near City Plaza, Euro Supermercado Guadalcanal, La Vaquita.\n\nWALKABILITY: 1743 m up the hill. Only 13 things of any kind inside 1 km. Nearest grocery is City Plaza at 388 m with a 75 m climb home; nearest restaurant 841 m. Flat 67, hill-adjusted 35 - the same wall as the other Escobero places.\n\nASK: does 4.85M include administracion, pets, available date, which floor.",
+      "notes": "MATCHED FROM YOUR MAP PIN. Google put you at Urbanizacion Biocity Grand, Cl. 37 Sur #27-90, Colina Campestre. Spicol 9856's own map pin sits 82 m from that building, well inside GPS noise, so this is the listing. Agency: Su Propiedad Inmobiliaria (Spicol).\n\n86 m2, 2 alcobas, 2 banos, 1 VESTIER, 2 closets, ESTUDIO INDEPENDIENTE, sala comedor, zona de ropas, cocina integral con gas, amplio balcon with panoramic view, ceramic floors. 1 parqueadero + 1 cuarto util. Estrato 5, built 2020. Sin amoblar.\n\nBuilding: 24h vigilancia, CCTV, elevator, salon social, pool, gym, SQUASH + placa, JACUZZI, SPA AND MASSAGE ROOM, BBQ zone, kids park, green areas, visitor parking. Near City Plaza, Euro Supermercado Guadalcanal, La Vaquita.\n\nWALKABILITY: 1743 m up the hill. Only 13 things of any kind inside 1 km. Nearest grocery is City Plaza at 388 m with a 75 m climb home; nearest restaurant 841 m. Flat 67, hill-adjusted 35 - the same wall as the other Escobero places.\n\nCONFIRMED 16 Aug: dogs are fine here. Vibe 5/5 - Jordan called it immaculate.\n\nSTILL ASK: does 4.85M include administracion and how much, available date, which floor.",
       "r": {
         "light": 4,
         "quiet": 4,
@@ -2257,7 +2257,8 @@
         "kitchen": 3,
         "building": 5,
         "hood": 1,
-        "safety": 5
+        "safety": 5,
+        "vibe": 5
       },
       "walk": {},
       "gut": null,
@@ -2497,7 +2498,7 @@
       "pets": true,
       "furnished": false,
       "park": true,
-      "notes": "PROBABLE MATCH, NOT CONFIRMED. Your second pin is Conjunto Residencial Artiko, Cl. 37 Sur #27-200, La Pradera. Spicol 9609 is the closest listing in the batch at 418 m, and its description mentions a ZONA PARA MASCOTAS while Google separately flags Artiko as 'Se permiten perros' - the two corroborate. But 418 m is not proof. Open the listing photos and tell me if it is the place; if not, the flat you saw is not in this batch.\n\n90 m2, 3 HABITACIONES (the only 3-bedroom of today's two), 2 banos, sala comedor con balcon, cocina integral CON HORNO, zona de ropas, porcelanato + laminated wood, vestier. 2 covered linear parking + cuarto util. Estrato 5, built 2010. Sin amoblar.\n\nBuilding: elevator with entry on BOTH sides, porteria 24h, gym, salon comunal, meeting rooms, sauna/turco, jacuzzi, ZONA PARA MASCOTAS, ecological trails, sprinklers, motion sensors, visitor parking. Near Terracina Plaza, City Plaza, San Lucas Plaza.\n\nWALKABILITY: 1740 m. 21 things inside 1 km. Nearest grocery City Plaza 229 m but a 72 m climb home; nearest restaurant 904 m. Flat 67, hill-adjusted 35.\n\nASK: does 5M include administracion, available date, which floor.",
+      "notes": "PROBABLE MATCH, NOT CONFIRMED. Your second pin is Conjunto Residencial Artiko, Cl. 37 Sur #27-200, La Pradera. Spicol 9609 is the closest listing in the batch at 418 m, and its description mentions a ZONA PARA MASCOTAS while Google separately flags Artiko as 'Se permiten perros' - the two corroborate. But 418 m is not proof. Open the listing photos and tell me if it is the place; if not, the flat you saw is not in this batch.\n\n90 m2, 3 HABITACIONES (the only 3-bedroom of today's two), 2 banos, sala comedor con balcon, cocina integral CON HORNO, zona de ropas, porcelanato + laminated wood, vestier. 2 covered linear parking + cuarto util. Estrato 5, built 2010. Sin amoblar.\n\nBuilding: elevator with entry on BOTH sides, porteria 24h, gym, salon comunal, meeting rooms, sauna/turco, jacuzzi, ZONA PARA MASCOTAS, ecological trails, sprinklers, motion sensors, visitor parking. Near Terracina Plaza, City Plaza, San Lucas Plaza.\n\nWALKABILITY: 1740 m. 21 things inside 1 km. Nearest grocery City Plaza 229 m but a 72 m climb home; nearest restaurant 904 m. Flat 67, hill-adjusted 35.\n\nCONFIRMED 16 Aug: dogs are fine here too. Vibe 4/5.\n\nSTILL ASK: does 5M include administracion and how much, available date, which floor.",
       "r": {
         "light": 4,
         "quiet": 4,
@@ -2505,7 +2506,8 @@
         "kitchen": 3,
         "building": 5,
         "hood": 1,
-        "safety": 5
+        "safety": 5,
+        "vibe": 4
       },
       "walk": {},
       "gut": null,
