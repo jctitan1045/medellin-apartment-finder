@@ -513,7 +513,7 @@
   },
   "fincaraiz:193707657": {
     "first_seen": "2026-07-27",
-    "last_seen": "2026-08-29"
+    "last_seen": "2026-11-24"
   },
   "fincaraiz:193913012": {
     "first_seen": "2026-07-27",
@@ -8053,7 +8053,7 @@
   },
   "metrocuadrado:17267-M5525122": {
     "first_seen": "2026-10-16",
-    "last_seen": "2026-11-02"
+    "last_seen": "2026-11-24"
   },
   "fincaraiz:194411113": {
     "first_seen": "2026-10-16",
@@ -8353,7 +8353,7 @@
   },
   "ciencuadras:174993-4304": {
     "first_seen": "2026-10-27",
-    "last_seen": "2026-10-27"
+    "last_seen": "2026-11-24"
   },
   "ciencuadras:15062-19434410": {
     "first_seen": "2026-10-27",
@@ -8361,7 +8361,7 @@
   },
   "ciencuadras:174993-4321": {
     "first_seen": "2026-10-27",
-    "last_seen": "2026-11-13"
+    "last_seen": "2026-11-24"
   },
   "ciencuadras:1217217-10404608": {
     "first_seen": "2026-10-28",
@@ -8373,7 +8373,7 @@
   },
   "metrocuadrado:11704-M6993115": {
     "first_seen": "2026-10-28",
-    "last_seen": "2026-11-11"
+    "last_seen": "2026-11-24"
   },
   "fincaraiz:193295185": {
     "first_seen": "2026-10-28",
@@ -8793,7 +8793,7 @@
   },
   "ciencuadras:15482-4637": {
     "first_seen": "2026-11-09",
-    "last_seen": "2026-11-09"
+    "last_seen": "2026-11-24"
   },
   "fincaraiz:194500301": {
     "first_seen": "2026-11-09",
@@ -8933,7 +8933,7 @@
   },
   "ciencuadras:1222296-1342": {
     "first_seen": "2026-11-15",
-    "last_seen": "2026-11-21"
+    "last_seen": "2026-11-24"
   },
   "metrocuadrado:22582-M7238599": {
     "first_seen": "2026-11-15",
@@ -8989,7 +8989,7 @@
   },
   "fincaraiz:194548635": {
     "first_seen": "2026-11-18",
-    "last_seen": "2026-11-22"
+    "last_seen": "2026-11-24"
   },
   "ciencuadras:16057-10546988": {
     "first_seen": "2026-11-18",
@@ -9156,6 +9156,22 @@
     "last_seen": "2026-11-24"
   },
   "metrocuadrado:17465-M6443949": {
+    "first_seen": "2026-11-24",
+    "last_seen": "2026-11-24"
+  },
+  "metrocuadrado:18777-M6643559": {
+    "first_seen": "2026-11-24",
+    "last_seen": "2026-11-24"
+  },
+  "ciencuadras:174993-4439": {
+    "first_seen": "2026-11-24",
+    "last_seen": "2026-11-24"
+  },
+  "metrocuadrado:2511-M7255561": {
+    "first_seen": "2026-11-24",
+    "last_seen": "2026-11-24"
+  },
+  "metrocuadrado:233-M7256237": {
     "first_seen": "2026-11-24",
     "last_seen": "2026-11-24"
   }
